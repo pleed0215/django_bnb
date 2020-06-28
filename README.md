@@ -4,6 +4,8 @@
 
 ## AirBnB course learning point
 
+### Introduction and env. setup
+
 - [ ] understanding why use pipenv, nico called pipenv bubble.
 - [ ] install pacakge via pipenv, "pipenv shell", into the bubble.
 - [ ] inside pipenv shell, install django.
