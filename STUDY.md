@@ -47,14 +47,15 @@
       - DateField는 blank가 될 수가 없다. null=True를 같이 넣어주자.
   - CF) class 를 만들 때 """ explaination """ 을 넣어두면 VSC에서 다이렉트로 실시간 설명을 볼 수 있다.
 
-- TimeStampedModel에 대해...
-  - review, room, conversation 등 모두 만들어진 시간과 업데이트된 시간이 있기 때문에... 클래스 이용.
-  - 그래서 django-admin startapp core를 통해 core 앱을 만든 거지만...
-  - 우리는 core 앱의 model이 db에 등록되는 것을 원하지 않기 때문에...
-  - 안에 Meta라는 클래스를 만들어준다.
-  - class Meta: abtract = True를 이용하여 주는데, 추상적 모델이지 실제 db에는 반영되지 않음.
-    - 위의 User model이 AbstractUser 모델을 상속 받는데, AbstractUser 모델은 db에 실제 등록되는 것이 아니다.
-    - 그래서 이름을 **AbstractTimeStamped**로 내가 변경을 했다.
+## TimeStampedModel에 대해...
+
+- review, room, conversation 등 모두 만들어진 시간과 업데이트된 시간이 있기 때문에... 클래스 이용.
+- 그래서 django-admin startapp core를 통해 core 앱을 만든 거지만...
+- 우리는 core 앱의 model이 db에 등록되는 것을 원하지 않기 때문에...
+- 안에 Meta라는 클래스를 만들어준다.
+- class Meta: abtract = True를 이용하여 주는데, 추상적 모델이지 실제 db에는 반영되지 않음.
+  - 위의 User model이 AbstractUser 모델을 상속 받는데, AbstractUser 모델은 db에 실제 등록되는 것이 아니다.
+  - 그래서 이름을 **AbstractTimeStamped**로 내가 변경을 했다.
 
 ## ROOMS APP
 
