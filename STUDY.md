@@ -62,7 +62,7 @@
 - country filed : 모든 국가를 어떻게 입력해?? django countries 라는 라이브러리가 있음!
   - package import rules
     - python lib. -> django lib. -> third party lib. 순으로 import
-  - 1:n - foreign key 지정 방법.
+  - **1:n - foreign key 지정 방법**.
     - Models.ForeignKey를 이용하면 된다.
       - on_delete = models.CASCADE, delete시 행동
       - documentation 참고, (CASCADE, PROTECT, SET_NULL, SET_DEFAULT, SET, DO_NOTHING)
@@ -70,6 +70,8 @@
         - ex) ForeinKey(User) -> ForeignKey("User") 라고 해도 된다.
           - 다만 다른 앱의 모델을 지정할 때에는 모델까지 지정해줘야 한다.
           - Room에서 User를 참고할 때 "users.User" 라고 해줘야 한다.
+      - forien key의 데이터 접속은 아주 쉽다. 그냥 클래스 쓰듯 하면 된다.
+        - ex) user.name
   - n:n - Models.ManyToManyField
   - **str** method
     - db model 대표값을 리턴해준다.
