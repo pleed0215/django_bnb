@@ -7,7 +7,14 @@ from . import models
 # 아래처럼 여러개를 만들 필요 없다.
 @admin.register(models.RoomType, models.Amenity, models.Facility, models.HouseRule)
 class AbstractItem(admin.ModelAdmin):
-    pass
+
+    list_display = (
+        "name",
+        "used_by",
+    )
+
+    def used_by(self, obj):
+        return obj.my_rooms.count()
 
 
 """
@@ -53,6 +60,7 @@ class RoomAdmin(admin.ModelAdmin):
         "check_out",
         "instant_book",
         "count_amenities",
+        "count_photos",
     )
     list_filter = (
         "room_type",
@@ -101,9 +109,15 @@ class RoomAdmin(admin.ModelAdmin):
     )
 
     def count_amenities(self, obj):
-        return "hi"
+        return obj.amenities.count()
 
     count_amenities.short_description = "n. amenities"
+
+    def count_photos(self, obj):
+        # print(models.Photo.objects.filter(room__id=obj.id))
+        return obj.my_photos.count()
+
+    count_photos.short_description = "n. photos"
 
     # filter_vertical = ("amenities",)
 

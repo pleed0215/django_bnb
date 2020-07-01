@@ -49,7 +49,9 @@ class Photo(AbstractTimeStamped):
 
     caption = models.CharField(max_length=80)
     image = models.ImageField()
-    room = models.ForeignKey("Room", on_delete=models.CASCADE, blank=True)
+    room = models.ForeignKey(
+        "Room", related_name="my_photos", on_delete=models.CASCADE, blank=True
+    )
 
     def __str__(self):
         return self.caption
@@ -73,13 +75,19 @@ class Room(AbstractTimeStamped):
     check_out = models.TimeField()
     instant_book = models.BooleanField(default=False)
 
-    host = models.ForeignKey("users.User", on_delete=models.CASCADE)
-    room_type = models.ForeignKey(
-        RoomType, on_delete=models.SET_NULL, null=True, blank=True
+    host = models.ForeignKey(
+        "users.User", related_name="my_rooms", on_delete=models.CASCADE
     )
-    amenities = models.ManyToManyField(Amenity, blank=True)
-    facilities = models.ManyToManyField(Facility, blank=True)
-    house_rules = models.ManyToManyField(HouseRule, blank=True)
+    room_type = models.ForeignKey(
+        RoomType,
+        related_name="my_rooms",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+    amenities = models.ManyToManyField(Amenity, related_name="my_rooms", blank=True)
+    facilities = models.ManyToManyField(Facility, related_name="my_rooms", blank=True)
+    house_rules = models.ManyToManyField(HouseRule, related_name="my_rooms", blank=True)
 
     def __str__(self):
         return self.name

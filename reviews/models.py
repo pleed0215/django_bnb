@@ -16,8 +16,12 @@ class Review(AbstractTimeStamped):
     value = models.IntegerField()
 
     # Forein Key
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE)
-    room = models.ForeignKey("rooms.Room", on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        "users.User", related_name="my_reviews", on_delete=models.CASCADE
+    )
+    room = models.ForeignKey(
+        "rooms.Room", related_name="my_reviews", on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return f"{self.user.username}'s review of {self.room.name}"

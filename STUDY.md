@@ -92,21 +92,65 @@
 
 ## 6. Room Admin
 
-- Admin page 꾸미기
-  - ModelAdmin page 참고.
-  - list_display
-  - list_filter
-  - search_fields
-    - searching text 관련하여 icontains 참고바람..
-      - ^: Start with, =: exact, @: search, None: icontains,
-      - foreign key 접근 하는 방법
-        - ex) host\_\_usrename
-  - filter_horizontal, filter_vertical
-    - ManyToManyFields 에서만 작동.
-  - 'classes': 'collapse'
-    - fieldssets 에 fields와 같이 사용 가능하다.
-    - category를 접을 수 있음.
-  - amenities, facilities 등은 갯수를 보여줘야 할 때도 있는데...
-    - list_display의 필드자리에 함수를 추가..
-      - ex) , count_amenities
-      - def count_amenities (self, obj): ~~~
+### Admin page 꾸미기
+
+- ModelAdmin page 참고.
+- list_display
+- list_filter
+- search_fields
+  - searching text 관련하여 icontains 참고바람..
+    - ^: Start with, =: exact, @: search, None: icontains,
+    - foreign key 접근 하는 방법
+      - ex) host\_\_usrename
+- filter_horizontal, filter_vertical
+  - ManyToManyFields 에서만 작동.
+- 'classes': 'collapse'
+  - fieldssets 에 fields와 같이 사용 가능하다.
+  - category를 접을 수 있음.
+- amenities, facilities 등은 갯수를 보여줘야 할 때도 있는데...
+  - list_display의 필드자리에 함수를 추가..
+    - ex) , count_amenities
+    - def count_amenities (self, obj): ~~~
+  - 위의 obj는 QuerySet Object이다...
+    - 참고는 당연히 documentation을 해야하고..
+
+### Manager & QuerySet
+
+- cf. python shell 을 이용하여 django에 접근하려면..
+
+  - python manage.py shell을 이용하여야 한다.
+  - shell 안에서..
+
+    - 이 두가지를 배워야 한다.
+    - dir: 현재 정의한 것들의 이름을 반환.
+    - vars: attribute를 반환.
+    - User를 import 한 후(shell에서 from users.models import User) User.objects를 쳐보면..
+      - django.contrib.auth.models.UserManager 라는 오브젝트를 반환.
+      - Room은 manager를 반환.
+    - Document를 참고하면...
+      - data model을 만들면, django가 자동으로 database-abtracion API를 줘서, object를 CRUD 할 수 있게끔 해준다한다.
+    - 유용한 method
+
+      - all
+      - filter
+      - count
+      - get
+      - QuerySet Object들을 리턴해주는 경우가 있는데..
+
+        - QuerySet에서 .. forein key의 역으로... 이를테면.. 한 유저가 여러개의 방을 가지고 있다고 가정해보자.
+
+          - 그 유저의 QuerySet에서.. room_set 메소드를 활용을 하면.. manager가 만들어지는데..
+
+            - naming rule: '\<modelname\>\_set' 인것을 알 수 있다.
+            - **naming을 바꾸려면 foreignkey를 생성할 때, related_name 옵션을 주면 된다.**
+            - related_name은 foreignkey 대상을 위한 것이다.
+            - set 메소드를 사용하지 않고, 대상을 확인하려면..
+              - models.Photo.objects.filter(room\_\_id=obj.id) 이런식으로...
+              - 상대 model에서 filter해도 될 것이다.
+
+          - UserQuerySet.room_set을 shell에 입력해 보면 알 수 있다.
+            - the result will be 'django.db.models.fileds.related_descriptors.create_reverse_may_to_one_manager'
+
+        - id로 object를 얻는 방법
+          - ex) Room.objects.get (id=1)
+          - id 대신 pk(Primary Key)를 써도 된다.
