@@ -84,7 +84,29 @@
       - verbose_name_plural에서 복수형 설정할 수 있다.
       - ordering = ['-order_data']: order_data에는 order할 field 사용.
         - '-'가 들어가면 역순 정렬.
+        - 여러가지 field들어갈 수 있음.
 
 ### Reservation, Review, List, Photo model
 
 - 위에서 한 것들로 전부 커버가 되는 내용이라 딱히 적을 내용은 없다.
+
+## 6. Room Admin
+
+- Admin page 꾸미기
+  - ModelAdmin page 참고.
+  - list_display
+  - list_filter
+  - search_fields
+    - searching text 관련하여 icontains 참고바람..
+      - ^: Start with, =: exact, @: search, None: icontains,
+      - foreign key 접근 하는 방법
+        - ex) host\_\_usrename
+  - filter_horizontal, filter_vertical
+    - ManyToManyFields 에서만 작동.
+  - 'classes': 'collapse'
+    - fieldssets 에 fields와 같이 사용 가능하다.
+    - category를 접을 수 있음.
+  - amenities, facilities 등은 갯수를 보여줘야 할 때도 있는데...
+    - list_display의 필드자리에 함수를 추가..
+      - ex) , count_amenities
+      - def count_amenities (self, obj): ~~~
