@@ -84,3 +84,7 @@
       - verbose_name_plural에서 복수형 설정할 수 있다.
       - ordering = ['-order_data']: order_data에는 order할 field 사용.
         - '-'가 들어가면 역순 정렬.
+
+### Reservation, Review, List, Photo model
+
+- 위에서 한 것들로 전부 커버가 되는 내용이라 딱히 적을 내용은 없다.
