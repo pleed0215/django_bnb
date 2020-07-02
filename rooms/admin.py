@@ -53,8 +53,14 @@ class PhotoAdmin(admin.ModelAdmin):
     get_thumbnail.short_description = "thumbnail"
 
 
+class PhotoInline(admin.TabularInline):
+    model = models.Photo
+
+
 @admin.register(models.Room)
 class RoomAdmin(admin.ModelAdmin):
+    inlines = (PhotoInline,)
+
     list_display = (
         "name",
         "country",
@@ -103,6 +109,8 @@ class RoomAdmin(admin.ModelAdmin):
         ("Booking information", {"fields": ("check_in", "check_out", "instant_book")},),
         ("Last info.", {"classes": ("collapse",), "fields": ("host",)},),
     )
+    raw_id_fields = ("host",)
+
     search_fields = ("=city", "^host__username")
     filter_horizontal = (
         "amenities",

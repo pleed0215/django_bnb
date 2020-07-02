@@ -205,3 +205,31 @@
   - return f'\<img src="{obj.image.url}"/\>'
   - 해도 별 반응 없다. django의 security 기능임.
   - from django.utils.html import mark_safe 해서 사용하면 됩니다~
+
+### raw_ids and inline admin
+
+- raw_ids
+
+  - raw_ids_fields
+    - 기본적으로 django는 foreignkey selection에 input select를 사용한다.
+    - input select를 바꾸는 것.
+    - 예를 들어, room에 user가 너무 많으면.. 리스트에서 찾기 어려우니까..
+
+- InlineModelAdmin
+
+  - admin page에 다른 admin page를 추가하는 것.
+  - InlineModelAdmin, TabularInline, StackedInline이 있음.
+  - 먼저 InlineModel class를 만든다.
+    - class PhotoInline(TarbularInlineModel):
+      models = models.Photo
+    - 그리고 삽입할 admin에 inlines = ( PhotoInline)을 추가하면 된다.
+
+- save() method, -+\*models의 event를 가로채보자.
+
+  - save method를 overriding해서 부모의 save 메소드 나중에 호출하는 것.
+  - django documentation의 overriding predefined method 내용 참고.
+
+- admin 페이지에서도 save시의 이벤트를 가로챌 수 있다.
+  - save_model (self, request, obj, form, change)
+    - change: 변경된 것이 있는지..
+    - form: form 그자체의 html
