@@ -6,11 +6,14 @@ from . import models
 class ConversationAdmin(admin.ModelAdmin):
     """ Conversation admin difinition """
 
-    pass
+    list_display = ("__str__", "created_at", "get_num_messages")
 
 
 @admin.register(models.Message)
 class MessageAdmin(admin.ModelAdmin):
     """ Message admin difinition """
 
-    pass
+    list_display = (
+        "__str__",
+        "created_at",
+    )

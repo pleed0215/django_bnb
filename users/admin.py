@@ -16,7 +16,6 @@ class CustomUserAdmin(UserAdmin):
         "currency",
         "gender",
         "language",
-        "avatar",
         "currency",
         "is_superhost",
     )
@@ -28,6 +27,7 @@ class CustomUserAdmin(UserAdmin):
             "User Informations",
             {
                 "fields": (
+                    "avatar",
                     "gender",
                     "language",
                     "currency",

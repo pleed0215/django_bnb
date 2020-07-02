@@ -15,3 +15,8 @@ class List(AbstractTimeStamped):
 
     def __str__(self):
         return f"{self.name} - list of {self.user}"
+
+    def get_num_rooms(self):
+        return self.rooms.count()
+
+    get_num_rooms.short_description = "n. rooms"

@@ -161,3 +161,47 @@
         - id로 object를 얻는 방법
           - ex) Room.objects.get (id=1)
           - id 대신 pk(Primary Key)를 써도 된다.
+
+## django media
+
+- ImageField로 올린 image들을 보면... 링크로 연결이 안된다.
+
+### MEDIA_ROOT
+
+- config/settings.py에서 MEDIA_ROOT를 설정해줘야 한다.
+  - 당연히 documentation 참고 해야하며..
+  - absolute root를 가진다.
+  - settings.py에 보면 이미 BASE_DIR로 절대 경로를 제공해준다.
+  - os.path.join (BASE_DIR, 'uploads')등으로 설정해주면 된다.
+- upload된 photo 등을 확인해보면 링크가 있는데, 클릭 해보면 이동하지 않는다.
+  - 이상한 url을 나타내며..
+  - ex) room/1/photo/change/@@@ 이런식으로..
+
+### MEDIA_URL
+
+- URL that handles the media served from MEDIA_ROOT, used for managing stored files. It must end in a slash if set to a non-empty value. You will need to configure these files to be served in both development and production environments.
+- '/'로 끝나야 한다.
+- MEDIA_URL을 다룰 때에는 absolute path, relative path를 알아야 한다.
+  - django bnb에서는 absolute path로 한다.
+  - 이렇게 한다고 해도 바로 연결이 되는 건 아니다.
+
+### URLConfig
+
+- config/urls.py
+  - setting을 import해야 하는데..
+    - 같은 폴더라고 from . import settings 하면 안된다.
+    - from django.conf import settings로 import해야 한다.
+- static 제공.
+  - from django.conf.urls.static import static.
+  - local 파일을 제공하는 것은 좋지 않기 때문에 debug 모드에서만 제공하는 것이 좋다.
+  - debug mode. if settings.Debug:
+
+### Media로 다시 돌아가서.. ImageField의 속성 확인.
+
+- 생각보다 많다.
+- print 해보면 경로만 나와서 object가 아닌 것으로 착각하는 경우가 많음.
+- dir을 해보거나, type(obj)로 확인해보자.
+- PhotoAdmin에 get_thumbnail 함수를 만들었는데...
+  - return f'\<img src="{obj.image.url}"/\>'
+  - 해도 별 반응 없다. django의 security 기능임.
+  - from django.utils.html import mark_safe 해서 사용하면 됩니다~
