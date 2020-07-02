@@ -9,6 +9,11 @@ from . import models
 class CustomUserAdmin(UserAdmin):
     list_display = (
         "username",
+        "first_name",
+        "last_name",
+        "email",
+        "language",
+        "currency",
         "gender",
         "language",
         "avatar",

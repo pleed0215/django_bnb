@@ -31,3 +31,18 @@ class Reservation(AbstractTimeStamped):
 
     def __str__(self):
         return f"Room: {self.room} reservation on {self.checkin_date}"
+
+    def is_in_progress(self):
+        today = timezone.now().date()
+        return (today >= self.checkin_date) and (today <= self.checkout_date)
+
+    is_in_progress.short_description = "progress?"
+    is_in_progress.boolean = True
+
+    def is_finished(self):
+        today = timezone.now().date()
+        return today > self.checkout_date
+
+    is_finished.short_description = "finished?"
+    is_finished.boolean = True
+

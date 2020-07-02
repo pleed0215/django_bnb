@@ -113,6 +113,13 @@
     - def count_amenities (self, obj): ~~~
   - 위의 obj는 QuerySet Object이다...
     - 참고는 당연히 documentation을 해야하고..
+  - 이런 함수는 admin에서 뿐만 아니라, models에서는 만들 수 있다.
+    - review의 average 얻는 것을 참고.
+    - admin page에 함수를 만드는 것과의 차이점은..
+      - 전자는 admin에서만 사용, 후자는 여러 페이지에서 사용 가능하다는 점..
+  - custom으로 만든 함수가 boolean 타입인데...
+    - 그냥 사용하면 list_display에서 True, False식으로 표시되는데.
+    - function.boolean = True로 하면.. 아이콘 모양으로 바뀐다.
 
 ### Manager & QuerySet
 

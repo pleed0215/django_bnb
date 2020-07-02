@@ -51,16 +51,14 @@ class RoomAdmin(admin.ModelAdmin):
         "country",
         "city",
         "price",
-        "address",
         "guests",
         "beds",
         "bedrooms",
         "baths",
-        "check_in",
-        "check_out",
         "instant_book",
         "count_amenities",
         "count_photos",
+        "get_ratings",
     )
     list_filter = (
         "room_type",
@@ -118,6 +116,18 @@ class RoomAdmin(admin.ModelAdmin):
         return obj.my_photos.count()
 
     count_photos.short_description = "n. photos"
+
+    def get_ratings(self, obj):
+        reviews = obj.my_reviews.all()
+        avgs = 0.0
+
+        if reviews.count() > 0:
+            for r in reviews:
+                avgs = avgs + r.rating_average()
+            avgs = avgs / reviews.count()
+        return round(avgs, 2)
+
+    get_ratings.short_description = "Ratings"
 
     # filter_vertical = ("amenities",)
 
