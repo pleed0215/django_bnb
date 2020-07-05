@@ -233,3 +233,24 @@
   - save_model (self, request, obj, form, change)
     - change: 변경된 것이 있는지..
     - form: form 그자체의 html
+
+## django seed
+
+- 가짜 데이터를 빠르게 만들 수 있게 해준다.
+- application 폴더에 들어가서 management라는 폴더를 만들어 준다(일종의 하위 어플리케이션)
+  - django에서 자동으로 이용하는 것...
+  - management안에
+    - \_\_init\_\_.py를 만들도록 한다.
+    - commands라는 폴더를 만들고 그 안에도 \_\_init\_\_.py를 만든다.
+    - 그리고 command 안에 command 칠 python 파일을 만든다.
+      - python manage.py fileyoumade
+        - 라고 입력을 하면 커맨드가 완성된 것..
+        - 그리고 만든 파일에 class Command를 만들어 준다..
+          - 이 클래스는 django.core.management.base 의 BaseCommand 클래스를 상속 받는다.
+          - 필요 메소드: handle(self, \*args, \*\*options)
+            - handle에서 console로 메시지를 찍을 때, print 써도 되지만, success message를 쓰고 싶은 경우.
+              - self.stdout.write (self.style.SUCCESS("message"))를 권장.
+              - error 메시지는 style.ERROR 이용.
+          - --times 와같은 argument를 넣고 싶다면, parser.add_arguments(self, parser) 함수를 만든다.
+            - parser의 add_argument에 원하는 argument 넣어주면 된다.
+            - action, default, type, help 등을 인자로 받음.
