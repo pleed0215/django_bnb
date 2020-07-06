@@ -238,7 +238,12 @@
 
 - 가짜 데이터를 빠르게 만들 수 있게 해준다.
 - install: pipenv install django-seed
+
   - settings.py에 django_seed를 추가한다.
+    - django seed의 document 참고. 검색해서..
+  - 더미 유저 만들 때 사용했는데, superuser, staff 권한은 주지 않아야 한다는 것 참고.
+    - seeder.add_entity(Model, howmany, { entity option })
+    - option 자리에 따로 데이터를 지정할 수 있다.
 
 ### python manage.py <<command>>
 

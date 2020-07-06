@@ -18,9 +18,11 @@ class CustomUserAdmin(UserAdmin):
         "language",
         "currency",
         "is_superhost",
+        "is_staff",
+        "is_superuser",
     )
 
-    list_filter = ("is_superhost", "language", "currency")
+    list_filter = ("is_superhost", "language", "currency", "is_superuser", "is_staff")
     # default UserAmdin.fieldsets + CustomFieldSets
     fieldsets = UserAdmin.fieldsets + (
         (
