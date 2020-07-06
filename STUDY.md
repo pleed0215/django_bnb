@@ -237,6 +237,11 @@
 ## django seed
 
 - 가짜 데이터를 빠르게 만들 수 있게 해준다.
+- install: pipenv install django-seed
+  - settings.py에 django_seed를 추가한다.
+
+### python manage.py <<command>>
+
 - application 폴더에 들어가서 management라는 폴더를 만들어 준다(일종의 하위 어플리케이션)
   - django에서 자동으로 이용하는 것...
   - management안에
@@ -254,3 +259,4 @@
           - --times 와같은 argument를 넣고 싶다면, parser.add_arguments(self, parser) 함수를 만든다.
             - parser의 add_argument에 원하는 argument 넣어주면 된다.
             - action, default, type, help 등을 인자로 받음.
+    - rooms / management/commands/seed_amenities 코드 확인.
