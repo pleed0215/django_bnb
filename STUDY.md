@@ -282,6 +282,8 @@
     - 쿼리셋에서 배열로 데이터를 얻고 싶을 때에는 \*를 사용한다.(list의 command 참고)
     - 이걸 몰라서 엄청 삽질 했다...
     - choices를 사용하여 add 성공.
+  - timedelta.
+    - python은 기본 라이브러리들이 참 좋네..
 
 ### python manage.py <<command>>
 

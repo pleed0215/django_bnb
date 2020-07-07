@@ -18,8 +18,8 @@ class Reservation(AbstractTimeStamped):
         max_length=12, choices=STATUS_CHOICE, default=STATUS_PENDING
     )
 
-    checkin_date = models.DateField(null=True, default=timezone.now())
-    checkout_date = models.DateField(null=True, default=timezone.now())
+    checkin_date = models.DateField(null=True)
+    checkout_date = models.DateField(null=True)
 
     # foreign key
     guest = models.ForeignKey(
