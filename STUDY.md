@@ -245,6 +245,44 @@
     - seeder.add_entity(Model, howmany, { entity option })
     - option 자리에 따로 데이터를 지정할 수 있다.
 
+- ForkeyKey를 seed 하고싶을 때에는..??
+
+  1. rooms를 예를 들면, host가 필요할 것인데..
+
+  - 일단 유저들을 데이터베이스에서 가져온다.
+    - 모든 유저들을 가져오는 것은 현명하지 못하다.
+    - test이기에 일부 유저만 가져오는 것이 좋다.
+    - 유저드이 너무 많을 때에는?? 데이터베이스에서 너무 많이 가져와야 되니까.
+  - 개중요한 내용
+    - 자바스크립트처럼 익명 함수를 넣어줄 수 있다.
+    - lambda x:
+    - python이 정말 편한 함수들이 많구나.
+      - random.choice (array)
+        - 이렇게 하면 배열에서 임의 원소 하나 끄집어 낸다.
+  - 임의로 넣어주는 내용이 마음에 들지 않으면..
+    - 위의 foreignkey 설정한 것처럼 해주면 된다.
+    - lambda x: random.randint(r_min, r_max)
+  - faker 라이브러리를 활용하는 것도 좋다.
+  - photos 가 import하기 어려운 것 중 하나.
+    - seeder의 execute를 실행하면, pk의 id list를 리턴한다.
+    - 만들어진 list는 밑의 django.contrib.admin.utils.flatten을 이용하여 pk리스트를 만든다.
+    - 만들어진 리스트를 이용하여 get(pk) 하여 room을 얻고..
+    - Photo.object.create 하는데... 강의에서는 3~10/17 장의 사진을 만들어낸다.
+    - photo를 upload 폴더에 넣어서.. media에 접근.. (기억이 나지 않으면 static 부분 참고)
+    - 1~31까지의 랜덤을 이용하여 사진을 만들어 낸다.
+  - django의 flatten
+    - double array된 list를 끄집어 낼 때 사용..
+    - from django.contrib.admin.utils import flatten
+  - n:n 필드를 seeding
+    - 여러가지 방법이 있을 수 있겠다만, 여기서는 랜덤정수를 줘서 짝수이면 어메니티를 추가.
+      - room이 많을 경우는 문제가 있을 수도 있다.
+    - 일단 따르자.
+    - n:n field에서 아이템을 넣는 방법은 add 메소드를 사용하면 된다.
+  - 또 중요한 내용.
+    - 쿼리셋에서 배열로 데이터를 얻고 싶을 때에는 \*를 사용한다.(list의 command 참고)
+    - 이걸 몰라서 엄청 삽질 했다...
+    - choices를 사용하여 add 성공.
+
 ### python manage.py <<command>>
 
 - application 폴더에 들어가서 management라는 폴더를 만들어 준다(일종의 하위 어플리케이션)
