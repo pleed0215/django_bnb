@@ -322,6 +322,11 @@
       - render의 context를 이용하면 됨. 딕셔너리 방식.
       - html에서는 \{\{\}\}: 변수 사용. \{% %\}: 파이썬 로직 사용.
         - 로직 사용시에는 일반 파이썬과는 달리 endif, endfor 등을 넣어 줘야한다.
+  - template 사용
+    - base.html을 상속 받아서 쓸 수 있음.
+    - {% extends %}
+    - {% block namespace %}
+    - {% include %}
 
 * urls.py
   - project가 작다면 config에 urls.py에 모든 url을 넣을 수 있지만, 프로젝트가 커지면 힘드니.. 분리하자.
