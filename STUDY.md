@@ -305,3 +305,30 @@
             - parser의 add_argument에 원하는 argument 넣어주면 된다.
             - action, default, type, help 등을 인자로 받음.
     - rooms / management/commands/seed_amenities 코드 확인.
+
+# view part 시작
+
+## Introduction to views and urls
+
+- views.py
+
+  - HttpResponse
+    - view는 HttpResonse를 리턴해줘야 한다. django.http.HttpResponse
+  - 실제로는 템플릿 렌더하는 경우가 더 많아서.. render 함수를 이용한다.
+  - 템플릿을 사용하려면, settings.py -> TEMPLATES에 템플릿이 어디에 있는지 알려줘야한다.
+    - DIRS 배열에, 현재 디렉토리의 template위치를 알려줘야한다. 지금 프로젝트인 경우에는 /templates라는 폴더를 사용한다.
+      - So, we add a line that 'os.path.join(BASE_DIR, "templates")
+    - 템플릿에 변수를 보낼 수 있다.
+      - render의 context를 이용하면 됨. 딕셔너리 방식.
+      - html에서는 \{\{\}\}: 변수 사용. \{% %\}: 파이썬 로직 사용.
+        - 로직 사용시에는 일반 파이썬과는 달리 endif, endfor 등을 넣어 줘야한다.
+
+* urls.py
+  - project가 작다면 config에 urls.py에 모든 url을 넣을 수 있지만, 프로젝트가 커지면 힘드니.. 분리하자.
+  - 각각 프로젝트에 urls.py를 만들고, core에는 home, login, logout 등의 앱이 없는 url을 추가해주자.
+    - url path는 기본적으로 django.urls.path를 이용한다.
+      - path에 render를 지정할 때, *name*을 지정할 수 있다.
+    - 이러한 urls.py는 config/urls.py에 django.urls.include를 이용하여 추가한다.
+      - in config/urls.py -> urlpatterns = \[path("", include("core.urls")\] 이런식으로..
+      - path와 비슷하게, include에서는 namespace를 지정할 수 있다.
+        - namespace를 사용할 때에는 반드시, app_name을 같이 지정해줘야 한다.
