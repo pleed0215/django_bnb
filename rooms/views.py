@@ -2,7 +2,22 @@ import math
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.core.paginator import Paginator, EmptyPage
+from django.views.generic import ListView
+from django.utils import timezone
 from .models import Room
+
+# third way. make list.
+class HomeView(ListView):
+    """ HomeView definition """
+
+    model = Room
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        now = timezone.now()
+        context["now"] = now
+        return context
 
 
 # Create your views here.

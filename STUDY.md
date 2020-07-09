@@ -376,3 +376,25 @@
       - get_page는 페이지를 잘못 들어가도, 1페이지 또는 마지막 페이지로 이동..
       - 에러 핸들링에는 page를 사용하는 것이 더 낫다.
       - redirect하는 방법 배움.
+- templateview를 이용하는 방법.
+
+  - ListView: ClassBasedView 에서 파생..
+    - django.views.generic.ListView
+    - view class들은 as_view 함수가 내장되어 있다.
+    - urls.py에 가서 render를 바꿔준다. HomeView.as_view()이런식으로..
+    - 기본적으로 template을 갖는다. modelname_list.html 형태를 갖는다.
+    - object_list를 내장하고 있다.
+    - ClassBasedView를 보려면 좀 .. 쉽지 않아서..
+      - ccv.co.uk 사이트에 가면 class based view에 대한 내용을 한눈에 보기 편하게 해놨다.
+    - paginated_by
+    - page_kwargs = 'page' 가 기본인데..
+      - 놀랍게도 GET method의 page 입력이 자동으로 설정되어 있는 것.. 그래서 page라는 키워드라면... 자동으로... pagination
+    - template_name_suffix = "\_list" 이렇게 되어 있기 때문에.. model_list.html 을 자동으로 찾는 것..
+    - page_obj
+  - 1,2 번째 방법에 비해 Class를 이용하니 코드가 아주 간단해 졌다.
+  - class based view vs. function based view.
+
+    - class based view: 한가지만 잘함.
+    - function based view: 여러가지 잘하려면.. function based view가 더 낫다...
+
+  - get_context_data를 overriding 해서 return 값을 주면.. context를 넘겨줄 수도 있다.
