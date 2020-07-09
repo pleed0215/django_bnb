@@ -4,10 +4,47 @@
 Home
 {% endblock pagename %}
 {% block content %}
+  <!-- paging using paginator -->
+  {% for r in page.object_list %}
+    <div>
+      <h4>{{ r.name }}</h4>
+    </div>
+  {% endfor %}
+  page {{page.number}} of {{page.paginator.num_pages}}>> 
+  {% if  page.has_previous %}
+    <a href="?page={{page.previous_page_number}}"><span><< prev</span></a>
+  {% endif %}
+  {% for p in page.paginator.page_range %}
+    {% if p != page.number %}<a href="?page={{p}}">
+    <span>&nbsp;{{p}}&nbsp;</span></a>
+    {% else %}
+    <span>&nbsp;{{p}}&nbsp;</span>
+    {% endif %}
+  {% endfor %}
+  {% if  page.number != page.paginator.num_pages %}
+    <a href="?page={{page.next_page_number}}"><span>>> next</span></a>
+  {% endif %}
+  {% if error %}<p>{{msg}}{% endif %}
+  <!-- using template without paginator
   {% for r in rooms %}
     <div>
       <h4>{{ r.name }}</h4>
     </div>
   {% endfor %}
+  page {{current_page}} of {{last_page}}>> 
+  {% if  current_page != 1 %}
+    <a href="?page={{current_page|add:-1}}"><span><< prev</span></a>
+  {% endif %}
+  {% for p in pages %}
+    {% if p != current_page %}<a href="?page={{p}}">
+    <span>&nbsp;{{p}}&nbsp;</span></a>
+    {% else %}
+    <span>&nbsp;{{p}}&nbsp;</span>
+    {% endif %}
+  {% endfor %}
+  {% if  current_page != last_page %}
+    <a href="?page={{current_page|add:1}}"><span>>> next</span></a>
+  {% endif %}
+  -->
 {% endblock content %}
 

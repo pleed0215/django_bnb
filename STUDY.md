@@ -328,7 +328,7 @@
     - {% block namespace %}
     - {% include %}
 
-* urls.py
+- urls.py
   - project가 작다면 config에 urls.py에 모든 url을 넣을 수 있지만, 프로젝트가 커지면 힘드니.. 분리하자.
   - 각각 프로젝트에 urls.py를 만들고, core에는 home, login, logout 등의 앱이 없는 url을 추가해주자.
     - url path는 기본적으로 django.urls.path를 이용한다.
@@ -337,3 +337,42 @@
       - in config/urls.py -> urlpatterns = \[path("", include("core.urls")\] 이런식으로..
       - path와 비슷하게, include에서는 namespace를 지정할 수 있다.
         - namespace를 사용할 때에는 반드시, app_name을 같이 지정해줘야 한다.
+
+## Home view
+
+- view 만드는 방법 세가지로 보여준다 함.
+
+  1. 100% 수동. 완전히 python만 이용.
+  2. 코드 어느정도 사용..
+  3. 코드 없이 view만으로 작업.
+
+- home view에서 만약, 10개 씩의 방을 보여주고 싶다면..
+  - Room.objects.all()\[0:10\]이런 식으로 제한을 주고 오프셋을 주면 된다.
+  - 일반적으로 페이지 쿼리는 ~~/?page=1 이런식으로 쿼리를 주는 것이다.
+    - 이런 파라미터들은 GET method
+    - view의 인자로 들어오는 request.GET에서 가져오면 되는데...
+    - GET은 QueryDict ...형태..
+- QuerySet에 대해서..
+  - QuerySet에서 all() method를 호출 한다고 해서 바로 모든 오브젝트들을 읽어 오진 않는다.
+  - QuerySet은 게으르다.
+  - print 등으로 사용하면 바로 데이터베이스에서 읽어온다.
+- template에서...
+  - python 문법을 전부다 사용 할 수 있는 것은 아니다..
+  - 이를 테면.. for i in range(0, 100) 이런식으로 range 사용할 수 없다..
+  - 또, 숫자 더하기 조차도 되지 않는다...
+    - current_page + 1 이런 건 허용되지 않고, current_page|add:1, 이런식으로 필터링을 사용한다.
+- template에서 여태까지 pagination을 만들었는데, django paginator라는 라이브러리가 있다고 한다.
+  - django.core.paginator import Paginator하면 된다.
+  - paginator = Paginator (list, size)
+  - render에 넘겨줄 변수는 rooms = paginator.get_page(page_number) 이용하면, 여러가지 정보를 갖는 paginator를 얻는다.
+    - object_list: 해당 페이지의 리스트
+    - number: 현재 페이지
+    - paginator.num_pages: 페이지 갯수, 마지막 페이지.
+    - paginator에서 만약 잘못된 페이지로 가면... 마지막 페이지 등으로 이동하는데.. 예외처리가 몇 가지가 있는 것..
+    - orphans의 개념
+      - 마지막 페이지 등에 몇개의 아이템만 남는 경우가 많을 것인데..page보다 작은 요소..
+      - orphans 옵션을 주면 옵션에 따라.. 옵션보다 작은 숫자의 아이템들은 표시되지 않는다.
+    - get_page / page 차이
+      - get_page는 페이지를 잘못 들어가도, 1페이지 또는 마지막 페이지로 이동..
+      - 에러 핸들링에는 page를 사용하는 것이 더 낫다.
+      - redirect하는 방법 배움.
