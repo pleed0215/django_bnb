@@ -5,7 +5,7 @@
 {% for r in object_list %}
 <div>
   <a href="{% url "rooms:detail" r.pk %}">
-  <h4>{{ r.name }} / {{r.price}}</h4>
+  <h4>{{ r.name }} / {{r.price}} {% if r.host.is_superhost %}(superhost){% endif %}</h4>
   </a>
 </div>
 {% endfor %} page {{page_obj.number}} of {{page_obj.paginator.num_pages}}>> {% if page_obj.has_previous %}

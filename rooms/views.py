@@ -1,9 +1,10 @@
 import math
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.core.paginator import Paginator, EmptyPage
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.utils import timezone
+from django.urls import reverse
 from .models import Room
 
 # third way. make list.
@@ -20,9 +21,19 @@ class HomeView(ListView):
         return context
 
 
+class RoomDetailView(DetailView):
+    """ DetailView definition """
+
+    model = Room
+
+
 def detail_view(request, pk):
-    room = Room.objects.get(pk=pk)
-    return render(request, "rooms/detail.html", context={"room": room})
+    try:
+        room = Room.objects.get(pk=pk)
+        return render(request, "rooms/detail.html", context={"room": room})
+    except Room.DoesNotExist:
+        # return redirect(reverse("core:home"))
+        raise Http404()
 
 
 # Create your views here.

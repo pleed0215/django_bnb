@@ -2,30 +2,30 @@
 {% block pagename %} Home {% endblock pagename %}
 {%block content %}
 <div>
-    <h2>{{room.name}}</h2>
-    <h4>{{room.description}}</h4>
+    <h2>{{object.name}}</h2>
+    <h4>{{object.description}}</h4>
 </div>
 <div>
-    <h2>By: {{room.host}} {% if room.host.is_superhost %}&lt;&lt;Super host&gt;&gt;{% else %}&lt;&lt;Not a Super host&gt;&gt;{% endif %}</h2>
+    <h2>By: {{object.host}} {% if object.host.is_superhost %}&lt;&lt;Super host&gt;&gt;{% else %}&lt;&lt;Not a Super host&gt;&gt;{% endif %}</h2>
     <h3>Amenities</h3>
-    <h4>Room type: {{room.room_type}}</h4>
-    {% for p in room.my_photos.all %}
+    <h4>Room type: {{object.room_type}}</h4>
+    {% for p in object.my_photos.all %}
         <img src="{{p.image.url}}" width="100px" height="100px" />
     {% endfor %}
     <ul>
-    {% for a in room.amenities.all %}
+    {% for a in object.amenities.all %}
         <li>{{a}}</li>
     {% endfor %}
     </ul>
     <h3>Facilities</h3>
     <ul>
-    {% for a in room.facilities.all %}
+    {% for a in object.facilities.all %}
         <li>{{a}}</li>
     {% endfor %}
     </ul>
     <h3>House rules</h3>
     <ul>
-    {% for a in room.house_rules.all %}
+    {% for a in object.house_rules.all %}
         <li>{{a}}</li>
     {% endfor %}
     </ul>

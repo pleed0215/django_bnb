@@ -423,3 +423,17 @@
     - 위 처럼 namespace를 이용할 수 있게 해준다.
     - reverse ("namespace:name", kwargs = { ...keyword arguments })
       - ex) reverse("homes:detail", kwargs = {'pk': self.pk})
+- template에서 django object에 접근하는 것은 쉬운편.. 기본적으로 장고에서 사용하는 방법과 동일.
+- exception
+  - django.db.models DoesNotExist
+- 404 error
+  - from django.http import Http404
+    - error 코드라, raise Http404 하면 된다.
+  - template에 가서. 404.html페이지를 만들면 된다.
+  - _error handling이 하라는대로 했는데, 잘안됨. 나중에 따로 해야 될 부분인듯.._
+
+### DetailView Class
+
+- Detail 역시 View class가 존재한다.
+- 복잡하지 않기 때문에 굳이 function 타입을 지우지 않아도 될 듯하다.
+- 그래도 알아야 하니..
