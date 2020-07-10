@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from core.models import AbstractTimeStamped
 from django_countries.fields import CountryField
 
@@ -74,6 +75,9 @@ class Room(AbstractTimeStamped):
     check_in = models.TimeField()
     check_out = models.TimeField()
     instant_book = models.BooleanField(default=False)
+
+    def get_absolute_url(self):
+        return reverse("rooms:detail", kwargs={"pk": self.pk})
 
     host = models.ForeignKey(
         "users.User", related_name="my_rooms", on_delete=models.CASCADE

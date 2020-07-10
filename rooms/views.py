@@ -20,6 +20,11 @@ class HomeView(ListView):
         return context
 
 
+def detail_view(request, pk):
+    room = Room.objects.get(pk=pk)
+    return render(request, "rooms/detail.html", context={"room": room})
+
+
 # Create your views here.
 def all_rooms(request):
     # version of Paginator with django library.

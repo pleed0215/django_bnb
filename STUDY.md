@@ -398,3 +398,28 @@
     - function based view: 여러가지 잘하려면.. function based view가 더 낫다...
 
   - get_context_data를 overriding 해서 return 값을 주면.. context를 넘겨줄 수도 있다.
+
+## Detail View
+
+- rooms/:id 로 갈 것이기 때문에, urls.py를 만들어서 config해줘야 한다.
+  - config/urls.py에도 추가할 것. app_name 추가하는 것도 잊지 말 것.
+- js 와는 다른 url 패턴을 가진다.
+  - js에서는 :id 등으로 들어가지만 django에서는 \<int:id> 형식으로 들어간다.
+  - django document를 참고하는 것이 좋다.
+  - int, str, slug, uuid, path
+- rooms/urls.py에서 urlpattern에 \<int:pk> 를 추가.
+  - detail_view() got an unexpected keyword argument 'pk' 이러한 메시지가 뜬다...
+  - detail_view에 pk라는 argument를 추가해야 한다.
+  - namespace를 사용하는 이유.
+    - 일일히 urlpattern을 다 기억안하고 있어도 된다.
+    - url tag를 사용하면 된다. {% url "namespace:name" path_arg %} 이런식으로.. 예를 들면,
+      - "{% url "rooms:detail" r.pk %}" 이렇게 사용.
+      - "{% url "core:home" %}" 얘는 argument가 없어도 된다.
+- get_absolute_url
+  - models.py에서 만든다. model에서 get_absolute_url을 override하는 것.
+  - admin 사이트에서 이용하는 것인듯..
+  - admin에서 그 모델에 해당하는 사이트로 이동하게 해준다...
+  - django.urls.reverse 라는 함수를 이용..
+    - 위 처럼 namespace를 이용할 수 있게 해준다.
+    - reverse ("namespace:name", kwargs = { ...keyword arguments })
+      - ex) reverse("homes:detail", kwargs = {'pk': self.pk})

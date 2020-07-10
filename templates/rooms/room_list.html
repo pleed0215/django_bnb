@@ -4,7 +4,9 @@
 <p>{{now}}</p>
 {% for r in object_list %}
 <div>
-  <h4>{{ r.name }}</h4>
+  <a href="{% url "rooms:detail" r.pk %}">
+  <h4>{{ r.name }} / {{r.price}}</h4>
+  </a>
 </div>
 {% endfor %} page {{page_obj.number}} of {{page_obj.paginator.num_pages}}>> {% if page_obj.has_previous %}
 <a href="?page={{page_obj.previous_page_number}}"><span><< prev</span></a>
