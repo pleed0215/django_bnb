@@ -7,7 +7,15 @@
     {% endblock pagename %}</title>
   </head>
   <body>
-        {% include "partials/header.html" %}
+      <header>
+        {% include "partials/nav.html" %}
+        {% block search_bar %}
+          <form method="get" action="{% url "rooms:search" %}">
+          <input name="city" id="city" placeholder="Search by city" />
+        {% endblock search_bar %}
+         
+    </form>
+      </header>
 
       {% block content %}
       {% endblock content %}

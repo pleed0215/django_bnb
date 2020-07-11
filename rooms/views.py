@@ -5,7 +5,9 @@ from django.core.paginator import Paginator, EmptyPage
 from django.views.generic import ListView, DetailView
 from django.utils import timezone
 from django.urls import reverse
-from .models import Room
+from .models import Room, RoomType
+
+from django_countries import countries
 
 # third way. make list.
 class HomeView(ListView):
@@ -25,6 +27,36 @@ class RoomDetailView(DetailView):
     """ DetailView definition """
 
     model = Room
+
+
+"""  ---------------------------------------------------- """
+
+
+def search_view(request):
+    city = request.GET.get("city", "anywhere")
+    country = request.GET.get("country")
+
+    room_type = request.GET.get("room_type")
+    room_type = room_type and int(room_type) or None
+
+    room_types = RoomType.objects.all()
+
+    form = {
+        "room_types": room_types,
+        "countries": countries,
+        "city": city,
+    }
+
+    selected = {
+        "s_room_type": room_type,
+        "s_country": country,
+    }
+
+    if city != "":
+        city = str.capitalize(city)
+    else:
+        city = "Anywhere"
+    return render(request, "rooms/search.html", context={**form, **selected},)
 
 
 def detail_view(request, pk):
