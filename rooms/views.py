@@ -5,7 +5,7 @@ from django.core.paginator import Paginator, EmptyPage
 from django.views.generic import ListView, DetailView
 from django.utils import timezone
 from django.urls import reverse
-from .models import Room, RoomType
+from .models import Room, RoomType, Amenity, Facility, HouseRule
 
 from django_countries import countries
 
@@ -34,29 +34,126 @@ class RoomDetailView(DetailView):
 
 def search_view(request):
     city = request.GET.get("city", "anywhere")
-    country = request.GET.get("country")
+    city = city == "" and "anywhere" or city
+    country = request.GET.get("country", "AnyCountry")
 
-    room_type = request.GET.get("room_type")
-    room_type = room_type and int(room_type) or None
+    room_type = request.GET.get("room_type", 0)
+    room_type = int(room_type)
+
+    min_price = request.GET.get("min_price")
+    min_price = min_price and int(min_price) or 10
+
+    max_price = request.GET.get("max_price")
+    max_price = max_price and int(max_price) or 100
+
+    guests = request.GET.get("guests")
+    guests = guests and int(guests) or 2
+
+    beds = request.GET.get("beds")
+    beds = beds and int(beds) or 2
+
+    baths = request.GET.get("baths")
+    baths = baths and int(baths) or 1
+
+    bedrooms = request.GET.get("bedrooms")
+    bedrooms = bedrooms and int(bedrooms) or 1
+
+    checked_amenities = request.GET.getlist("amenities")
+    checked_facilities = request.GET.getlist("facilities")
+
+    is_instant = bool(request.GET.get("instant", False))
+    is_superhost = bool(request.GET.get("superhost", False))
 
     room_types = RoomType.objects.all()
+    amenities = Amenity.objects.all()
+    facilities = Facility.objects.all()
+    house_rules = HouseRule.objects.all()
+
+    filtering = {}
+
+    # city filtering
+    if city != "anywhere":
+        filtering["city__startswith"] = city
+
+    if country != "AnyCountry":
+        filtering["country"] = country
+
+    # filter with price
+    filtering["price__gte"] = min_price
+    filtering["price__lte"] = max_price
+
+    # room type filtering
+    if room_type != 0:
+        filtering["room_type_id"] = room_type
+
+    # guests, beds, bedrooms, baths filtering
+    if guests != 0:
+        filtering["guests__gte"] = guests
+    if beds != 0:
+        filtering["beds__gte"] = beds
+    if bedrooms != 0:
+        filtering["bedrooms__gte"] = bedrooms
+    if baths != 0:
+        filtering["baths__gte"] = baths
+    # instant book filtering
+    filtering["instant_book"] = is_instant
+    # superhost filtering
+    filtering["host__is_superhost"] = is_superhost
+
+    mtom_filter = Room.objects.filter()
+    if len(checked_amenities) > 0:
+        for c in checked_amenities:
+            mtom_filter = mtom_filter.filter(amenities__pk=int(c))
+
+    print(room_type)
+    print(filtering)
+
+    rooms = mtom_filter.filter(**filtering)
+    print(rooms)
+
+    """ 이 삽질은 잘못된 삽질입니다. getlist를 이용하십시오... 퍼킹..
+    for a in amenities:
+        is_checked = bool(request.GET.get(f"a_{a.pk}"))
+        if is_checked is True:
+            checked_amenities.append(a.pk)
+
+    for f in facilities:
+        is_checked = bool(request.GET.get(f"f_{f.pk}"))
+        if is_checked is True:
+            checked_facilities.append(f.pk)
+    """
 
     form = {
         "room_types": room_types,
         "countries": countries,
         "city": city,
+        "amenities": amenities,
+        "facilities": facilities,
+        "house_rules": house_rules,
     }
 
     selected = {
         "s_room_type": room_type,
         "s_country": country,
+        "min_price": min_price,
+        "max_price": max_price,
+        "guests": guests,
+        "beds": beds,
+        "baths": baths,
+        "bedrooms": bedrooms,
+        "checked_amenities": checked_amenities,
+        "checked_facilities": checked_facilities,
+        "is_superhost": is_superhost,
+        "is_instant": is_instant,
     }
 
     if city != "":
         city = str.capitalize(city)
     else:
         city = "Anywhere"
-    return render(request, "rooms/search.html", context={**form, **selected},)
+    return render(
+        request, "rooms/search.html", context={**form, **selected, "rooms": rooms},
+    )
 
 
 def detail_view(request, pk):

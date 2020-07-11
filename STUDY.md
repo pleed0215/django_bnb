@@ -448,3 +448,23 @@
 - is 와 == 차이
   - is 는 오브젝트 타입도 같아야 true
   - == 는 오브젝트 타입이 달라도 값이 같으면 True
+- request.GET.get, request.GET.getlist 차이
+  - getlist는 같은 이름을 갖는.. 애들의 리스트를 리턴해서..
+  - 만약 체크박스에서 같은 이름을 갖는 애들을 한 번 얻고 싶으면, getlist를 사용하여야 한다.
+    - search view확인 하면 예를 볼 수 있다.
+    - getlist 값들은 string이라는 점..
+  - pk는 int이기 때문에 stringify해야 하는데... django template에서는 str함수가 안된다.
+    - slugify라는 필터링을 이용하면 된다.
+
+## Filtering
+
+- filter
+  - django document 확인 필수 적으로 해야 할듯하다.
+  - SQL을 몰라도.. SQL 조건문을 이용할 수 있는 것..
+  - 여러가지 필터링을 할 수도 있고.. 조건부 필터링을 걸 수도 있다.
+    - 예를들어, guest가 0이라면, 0으로 검색하면 안된다.
+  - filter는 chaining이 가능하다. 여러가지 필터링을 걸어야 하는 것..
+    - 코드 꼭 확인 문서 꼭 확인.
+  - 강의에서 filtering trick을 알려준다.
+    - dictionary를 만들어서.. kwargs 형태로 filter에 넘겨줌.
+    - 코드확인.
