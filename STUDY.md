@@ -468,3 +468,36 @@
   - 강의에서 filtering trick을 알려준다.
     - dictionary를 만들어서.. kwargs 형태로 filter에 넘겨줌.
     - 코드확인.
+  - many to many field 를 filter해주는 것에서 강의 내용이 조금 이상했다.
+
+## django form..
+
+- 위에 개.. 긴 코드 및 삽질을 django form이 해준단다. 얼쑤~
+- search.html, search_view 모두 지워야 한다고 해서..
+- 사본 만들거나 주석처리 하였음.
+
+### forms.py를 만들자.
+
+- model을 정의한 것처럼, form을 정의 해주면 된다.
+- 항상 그렇듯 documentation을 많이 참조해야 한다.
+- model이 field를 가진 것처럼, form도 field를 갖는다.
+  - Charfield
+    - initial을 줄 수 있다.
+- 보이는 형태. html
+  - html을 확인 해보면 기본적으로 table로 나오는데..
+  - as_p, as_ul, as_table로써 변경할 수 있다.
+- 문서를 참고하고..
+  - initial 초기값
+  - required
+  - widget => 보여지는 형태를 정해주는 기본이라 할 수 있는데..
+    - CharField 같은 경우에는 TextInput 등으로 되어 있는데 .. 시험삼아 Textarea등으로 바꾸면.. 보여지는 형태로 바뀐다.
+    - many to many field를 선택할 경우 기본적으로 선택하는 방식이 좀 지저분해 보이긴한다.
+      - amenity를 예를 들면.. ModeMultipleChoiceField 기본적으로 스크롤하면서, 컨트롤을 누르면서 여러가지 아이템을 선택하는 것.
+      - widget을 forms.CheckboxSelectMultiple로 바꿔보자.
+- django form을 사용하지 않고, python으로만 했을 때 form 값을 기억하는 방법은 request.GET.~~을 사용하였는데..
+  - django form에서 그 값을 기억 시키려면, 생성자에서 request.GET을 넘겨주면 된다.
+  - unbound form -> bound form 가면서 data 유효성도 검사한다.
+  - is_valid 메소드. form 데이터가 다 옳은가 검사.
+- cf. alt + 더블클릭. 여러 줄 선택할 때 사용.. 맥에서는 command+shift+L, 윈도우에서는 alt+shift+L
+- 결과값들을 paginator 하기..
+  - 한가지 문제점: paginating 할 때마다 filter 및 query 수행할 것인데.. 괜찮을까..??

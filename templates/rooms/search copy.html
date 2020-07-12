@@ -3,11 +3,6 @@
 Seaeerch
 {% endblock pagename %}
 {% block search_bar %}
-    <form method="get" action="{% url "rooms:search" %}">
-        {{forms.as_p}}
-        <button>Search</button>
-    </form>
-    <!-- django form을 이용하지 않고 만들어 보기. 겁나 복잡하다.
     {{s_country}}
     <form method="get" action="{% url "rooms:search" %}">
     <div>
@@ -82,33 +77,13 @@ Seaeerch
         {% endfor %}
         </ul>
     </div>
-    
     <button>Search</button>
-    -->
     <div>
-        {% if rooms %}
-            <h1>{{rooms.paginator.object_list.count}} found</h1>
-            {% for r in rooms %}
-            <a href="/rooms/{{r.pk}}"><p>{{r.name}}</p></a>
-            {% endfor %}
-            page {{rooms.number}} of {{rooms.paginator.num_pages}}>> 
-            {% if  rooms.has_previous %}
-                <a href="{{uri}}&page={{rooms.previous_page_number}}"><span><< prev</span></a>
-            {% endif %}
-            {% for p in rooms.paginator.page_range %}
-                {% if p != rooms.number %}<a href="{{uri}}&page={{p}}">
-                <span>&nbsp;{{p}}&nbsp;</span></a>
-                {% else %}
-                <span>&nbsp;{{p}}&nbsp;</span>
-                {% endif %}
-            {% endfor %}
-            {% if  rooms.number != rooms.paginator.num_pages %}
-                <a href="{{uri}}&page={{rooms.next_page_number}}"><span>>> next</span></a>
-            {% endif %}
-        {% endif %}
-
+        <h1>{{rooms.count}} found</h1>
+        {% for r in rooms %}
+        <a href="/rooms/{{r.pk}}"><p>{{r.name}}</p></a>
+        {% endfor %}
     </div>
-    
 {% endblock search_bar %}
 {% block content %}
 You are searching city {{city}}, right?

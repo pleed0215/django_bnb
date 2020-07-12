@@ -6,6 +6,7 @@ from django.views.generic import ListView, DetailView
 from django.utils import timezone
 from django.urls import reverse
 from .models import Room, RoomType, Amenity, Facility, HouseRule
+from .forms import SearchForm
 
 from django_countries import countries
 
@@ -31,8 +32,86 @@ class RoomDetailView(DetailView):
 
 """  ---------------------------------------------------- """
 
-
+# class 형태로 바꾸고 싶다면.. class SearchView(View): get method를 아래 함수로 오버라이딩하면 된다.
 def search_view(request):
+
+    forms = SearchForm(request.GET)
+    rooms = None
+    uri = request.get_raw_uri()
+    if forms.is_valid():
+        city = forms.cleaned_data.get("city")
+        country = forms.cleaned_data.get("country")
+        min_price = forms.cleaned_data.get("min_price")
+        max_price = forms.cleaned_data.get("max_price")
+        room_type = forms.cleaned_data.get("room_type")
+        guests = forms.cleaned_data.get("guests")
+        baths = forms.cleaned_data.get("baths")
+        beds = forms.cleaned_data.get("beds")
+        bedrooms = forms.cleaned_data.get("bedrooms")
+        instant_book = forms.cleaned_data.get("instant_book")
+        superhost = forms.cleaned_data.get("superhost")
+        amenities = forms.cleaned_data.get("amenities")
+        facilities = forms.cleaned_data.get("facilities")
+
+        filtering = {}
+
+        # city filtering
+        if city != "Anywhere":
+            filtering["city__startswith"] = city
+
+        if country:
+            filtering["country"] = country
+
+        # filter with price
+        filtering["price__gte"] = min_price
+        filtering["price__lte"] = max_price
+
+        # room type filtering
+        if room_type is not None:
+            filtering["room_type"] = room_type
+
+        # guests, beds, bedrooms, baths filtering
+        if guests != 0:
+            filtering["guests__gte"] = guests
+        if beds != 0:
+            filtering["beds__gte"] = beds
+        if bedrooms != 0:
+            filtering["bedrooms__gte"] = bedrooms
+        if baths != 0:
+            filtering["baths__gte"] = baths
+        # instant book filtering
+        if instant_book:
+            filtering["instant_book"] = instant_book
+        # superhost filtering
+        if superhost:
+            filtering["host__is_superhost"] = superhost
+
+        mtom_filter = Room.objects.filter()
+
+        for c in amenities:
+            mtom_filter = mtom_filter.filter(amenities=c)
+
+        for c in facilities:
+            mtom_filter = mtom_filter.filter(facilities=c)
+
+        qs = mtom_filter.filter(**filtering).order_by("created_at")
+        paginator = Paginator(qs, 10, allow_empty_first_page=True)
+        page = int(request.GET.get("page", 1))
+        rooms = paginator.page(page)
+        print(filtering)
+        print(rooms)
+    else:
+        forms = SearchForm()
+
+    return render(
+        request,
+        "rooms/search.html",
+        context={"forms": forms, "rooms": rooms, "uri": uri},
+    )
+
+
+# django form을 이용해야 하기 때문에.. 얘는 빠이빠이..
+"""def search_view(request):
     city = request.GET.get("city", "anywhere")
     city = city == "" and "anywhere" or city
     country = request.GET.get("country", "AnyCountry")
@@ -47,10 +126,10 @@ def search_view(request):
     max_price = max_price and int(max_price) or 100
 
     guests = request.GET.get("guests")
-    guests = guests and int(guests) or 2
+    guests = guests and int(guests) or 1
 
     beds = request.GET.get("beds")
-    beds = beds and int(beds) or 2
+    beds = beds and int(beds) or 1
 
     baths = request.GET.get("baths")
     baths = baths and int(baths) or 1
@@ -111,7 +190,8 @@ def search_view(request):
     rooms = mtom_filter.filter(**filtering)
     print(rooms)
 
-    """ 이 삽질은 잘못된 삽질입니다. getlist를 이용하십시오... 퍼킹..
+   
+    # 밑에 코드(for문 두개)는 주석처리 해야 한다. 이 삽질은 잘못된 삽질입니다. getlist를 이용하십시오... 퍼킹..
     for a in amenities:
         is_checked = bool(request.GET.get(f"a_{a.pk}"))
         if is_checked is True:
@@ -121,8 +201,7 @@ def search_view(request):
         is_checked = bool(request.GET.get(f"f_{f.pk}"))
         if is_checked is True:
             checked_facilities.append(f.pk)
-    """
-
+    
     form = {
         "room_types": room_types,
         "countries": countries,
@@ -153,7 +232,7 @@ def search_view(request):
         city = "Anywhere"
     return render(
         request, "rooms/search.html", context={**form, **selected, "rooms": rooms},
-    )
+    )"""
 
 
 def detail_view(request, pk):
