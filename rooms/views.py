@@ -32,6 +32,11 @@ class RoomDetailView(DetailView):
 
 """  ---------------------------------------------------- """
 
+
+def if_none_default(value, default):
+    return value is not None and value or default
+
+
 # class 형태로 바꾸고 싶다면.. class SearchView(View): get method를 아래 함수로 오버라이딩하면 된다.
 def search_view(request):
 
@@ -63,29 +68,31 @@ def search_view(request):
             filtering["country"] = country
 
         # filter with price
-        filtering["price__gte"] = min_price
-        filtering["price__lte"] = max_price
+        if min_price is not None and max_price is not None:
+            filtering["price__gte"] = min_price
+            filtering["price__lte"] = max_price
 
         # room type filtering
         if room_type is not None:
             filtering["room_type"] = room_type
 
         # guests, beds, bedrooms, baths filtering
-        if guests != 0:
+        if guests is not None:
             filtering["guests__gte"] = guests
-        if beds != 0:
+        if beds is not None:
             filtering["beds__gte"] = beds
-        if bedrooms != 0:
+        if bedrooms is not None:
             filtering["bedrooms__gte"] = bedrooms
-        if baths != 0:
+        if baths is not None:
             filtering["baths__gte"] = baths
         # instant book filtering
-        if instant_book:
+        if instant_book is not None:
             filtering["instant_book"] = instant_book
         # superhost filtering
-        if superhost:
+        if superhost is not None:
             filtering["host__is_superhost"] = superhost
 
+        print(filtering)
         mtom_filter = Room.objects.filter()
 
         for c in amenities:

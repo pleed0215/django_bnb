@@ -47,9 +47,11 @@ class SignupForm(forms.ModelForm):
         print(password)
         print(password2)
         if password == password2:
+            print("I've got password.")
             return password2
         else:
-            forms.ValidationError("Password is not match each other.")
+            print("Passwords do not match")
+            raise forms.ValidationError("Password does not match each other.")
 
     def clean_email(self):
         email = self.cleaned_data.get("email")

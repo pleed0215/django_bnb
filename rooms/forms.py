@@ -5,7 +5,7 @@ from django_countries.fields import CountryField
 
 
 class SearchForm(forms.Form):
-    city = forms.CharField(initial="Anywhere",)
+    city = forms.CharField(required=False, initial="Anywhere",)
     country = CountryField(blank=True).formfield()
     min_price = forms.IntegerField(required=False, initial=10)
     max_price = forms.IntegerField(required=False, initial=1000)
