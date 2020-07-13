@@ -5,6 +5,6 @@
             <li><a href="{% url "users:logout" %}">logout</a></li>
             <li><p>Hello, {{user.username}}({{ip_address}}) </p></li>    
         {% else %}
-            <li><a href="{% url "users:login" %}">login</a></li>
+            <li><a href="{% url "users:login" %}">login</a> (Are you new here? then <a href="{% url "users:signup" %}">signup</a> now)</li>
         {% endif %}
     </ul>

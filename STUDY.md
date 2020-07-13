@@ -504,7 +504,9 @@
 
 # User Login / Logout
 
-## Relatively harder way making authentication
+# LoginView
+
+### Relatively harder way making authentication
 
 - 이쯤 되면 위에서 배운 내용이 중복되서 나오는...
 - form view를 이용하여 form을 만드는데..
@@ -555,3 +557,23 @@
 - login 만드는 방법은 여러가지가 있는 것 같아~~
 - django.contrib.auth.LoginView를 이용도 해봤고..
 - 직접 폼을 만들어서 로그인까지 진행도 해보고, FormView를 이용해서도 해봤다.
+
+## Signup View
+
+- 다른 건 로그인과 비슷..
+- clean 사용법 좀더 익히고..
+- save method 오버라이딩 하는 것 참고.
+  - user 만드는 방법도 참고.
+
+* Signup은 일종의 데이터베이스 모델에 있는 데이터를 폼에 렌더링하고 폼의 데이터를 데이터베이스에 입히는 것..이지만..!
+  - django에서는 이것을 도와주는 ModelForm이라는 것이 있다...
+    - ModelForm을 상속 받고..
+    - Meta class를 안에 만들어주면 된다.
+      - 속성으로 models, fields를 만들어주면 된다.
+    - 기본적으로 clean method들과 save 메소드가 있다.
+      - Form 버전과는 달리 굳이 uniqueness validation을 하지 않아도 된다.
+      - 기본적으로 만들어져 있기 때문에, save method가 원하는 바대로 잘 되지 않을 수 있다.
+        - 이를테면, username에 email을 넣고 싶은데.. 잘 안된다.
+        - save method를 overriding해야 하는데, commit=False 옵션을 save에 줘야 한다.
+          - commit=False의 의미는 데이터베이스에 데이터를 만드는데, 데이터베이스에 데이터를 올리는 것은 아닌 단계..
+          - 즉 save method commit=False하여, username=email을 넘겨주면 되는 것이다.
