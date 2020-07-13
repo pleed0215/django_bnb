@@ -501,3 +501,44 @@
 - cf. alt + 더블클릭. 여러 줄 선택할 때 사용.. 맥에서는 command+shift+L, 윈도우에서는 alt+shift+L
 - 결과값들을 paginator 하기..
   - 한가지 문제점: paginating 할 때마다 filter 및 query 수행할 것인데.. 괜찮을까..??
+
+# User Login / Logout
+
+## Relatively harder way making authentication
+
+- 이쯤 되면 위에서 배운 내용이 중복되서 나오는...
+- form view를 이용하여 form을 만드는데..
+- 패스워드 필드 만드는 방법
+  - charfield 이용하여 만든다. 스택오버플로우 검색 내용으로는 CharField(widget=forms.PassInput())으로 하면 된다고 하고 실제로 작동하긴 함.
+- method post로 form 데이터를 넘길 때..
+
+  - csrf_token을 줘야 한다. 잘못된 입력 방지.. 위해. 해킹 방지 등.. cross site request forgery
+
+- data 유효성 확인 및 정리.
+
+  - clean\_(fieldname)
+    - 아무것도 리턴하지 않으면, 그 필드 값을 지워버린다.
+  - cleaned_data는 모든 데이터 정리한 결과.
+  - data validation과 error handling 방법 화인할 필요가 있음.
+  - password 맞는지 체크하려면 유저데이터를 가지고 와야 한다.
+
+  - clean method.
+
+    - clean\_(fieldname) 방식으로 유효성 검사하기에는 좀 그런경우.. 여러가지 데이터를 같이 검증해야 하는 경우 사용.
+
+    - error handling
+      - add_error(field, error)
+      - clean method를 사용하려면, 어디에서 에러가 발생했는지.. 알려줘야 한다. 코드 참고.
+        - 이 경우에는 raise를 굳이 사용할 필요는 없다.
+    - clean method를 사용했다면, cleaned_data를 리턴해줘야 하는 것이.. 옳다.
+
+  - django.contrib.auth lib에 보면.. authenticate, login 함수가 있다.
+    - authenticate 이후 login을 하게 되면..
+    - request.user 가 활성화...
+    - request.user.is_authenticated 확인하면.. 로그인 여부를 알 수 있는 것.
+      - request의 user정보가 어떻게 넘어왔을까??
+      - django의 context_processor라는 것에 의해.
+        - template에 정보를 추가하는 역할을 한다.
+    - logout은 상대적으로 굉장히 간단.
+
+## easy way making authentication
