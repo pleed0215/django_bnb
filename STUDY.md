@@ -542,3 +542,16 @@
     - logout은 상대적으로 굉장히 간단.
 
 ## easy way making authentication
+
+- LoginView라는 것도 있는데..?
+  - django.contrib.auth.views.LoginView
+- FormView 활용..
+
+  - django.views.generic.FormView
+
+- reverse_lazy
+  - config.url 을 불러오기 전에 reverse가 호출되면...
+  - url 관련 에러가 발생하는데.. 이를 막기 위한 것..
+- login 만드는 방법은 여러가지가 있는 것 같아~~
+- django.contrib.auth.LoginView를 이용도 해봤고..
+- 직접 폼을 만들어서 로그인까지 진행도 해보고, FormView를 이용해서도 해봤다.

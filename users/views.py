@@ -1,6 +1,14 @@
 from django.shortcuts import render, redirect, reverse
+from django.urls import reverse_lazy
 from django.views import View
-from django.contrib.auth import authenticate, login, logout
+from django.views.generic import FormView
+from django.contrib.auth import (
+    authenticate,
+    login,
+    logout,
+    views as auth_views,
+    forms as auth_forms,
+)
 
 from . import models, forms
 
@@ -9,7 +17,51 @@ def user_view(request, pk):
     pass
 
 
-class LoginView(View):
+"""class LoginView(FormView):
+    template_name = "users/login.html"
+    form_class = forms.LoginForm
+    success_url = reverse_lazy("core:home")
+
+    def form_valid(self, form):
+        email = form.cleaned_data.get("email")
+        password = form.cleaned_data.get("password")
+
+        user = authenticate(self.request, username=email, password=password)
+        if user is not None:
+            print("login success")
+            login(self.request, user)
+            return redirect(reverse("core:home"))
+        else:
+            print("login failed")
+        return super().form_valid(form)
+"""
+
+
+class LoginView(auth_views.LoginView):
+    template_name = "users/login.html"
+    authentication_form = auth_forms.AuthenticationForm
+    success_url = reverse_lazy("core:home")
+    redirect_authenticated_user = True
+
+    def form_valid(self, form):
+        email = form.cleaned_data.get("username")
+        password = form.cleaned_data.get("password")
+
+        print(email)
+        print(password)
+
+        user = authenticate(self.request, username=email, password=password)
+        if user is not None:
+            print("login success")
+            login(self.request, user)
+            return redirect(reverse("core:home"))
+        else:
+            print("login failed")
+        return redirect(self.get_success_url())
+
+
+# login form page, using just View Class.
+"""class LoginView(View):
     def get(self, request):
         return render(request, "users/login.html", context={"forms": forms.LoginForm()})
 
@@ -30,7 +82,7 @@ class LoginView(View):
         else:
             print("data validation error")
         print(form.cleaned_data)
-        return render(request, "users/login.html", context={"forms": form})
+        return render(request, "users/login.html", context={"form": form})"""
 
 
 def logout_view(request):
