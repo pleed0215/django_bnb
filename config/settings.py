@@ -132,3 +132,10 @@ STATIC_URL = "/static/"
 AUTH_USER_MODEL = "users.User"
 MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
 MEDIA_URL = "/media/"
+
+
+# Email Configuration
+EMAIL_HOST = os.environ.get("MAILGUN_HOST")
+EMAIL_PORT = os.environ.get("MAILGUN_PORT")
+EMAIL_HOST_USER = os.environ.get("MAILGUN_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("MAILGUN_HOST_PASSWORD")

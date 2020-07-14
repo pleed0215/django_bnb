@@ -504,7 +504,7 @@
 
 # User Login / Logout
 
-# LoginView
+# 14. LoginView
 
 ### Relatively harder way making authentication
 
@@ -558,7 +558,7 @@
 - django.contrib.auth.LoginView를 이용도 해봤고..
 - 직접 폼을 만들어서 로그인까지 진행도 해보고, FormView를 이용해서도 해봤다.
 
-## Signup View
+## 15. Signup View
 
 - 다른 건 로그인과 비슷..
 - clean 사용법 좀더 익히고..
@@ -577,3 +577,25 @@
         - save method를 overriding해야 하는데, commit=False 옵션을 save에 줘야 한다.
           - commit=False의 의미는 데이터베이스에 데이터를 만드는데, 데이터베이스에 데이터를 올리는 것은 아닌 단계..
           - 즉 save method commit=False하여, username=email을 넘겨주면 되는 것이다.
+
+# 16.Email verification
+
+## from django.core.mail import send_mail
+
+### mailgun.com
+
+- google 계정이나 다른 계정에서 지금 서버에서 메일을 보내면 스팸 처리가 될 것..
+- 그래서 mailgun.com이라는 사이트를 이용해보자.
+  - singup 시 웬만하면 카드 정보를 입력해야 한다. 그렇지 않으면, 너가 등록한 이메일 계정으로 밖에 이메일을 보낼 수 밖에 없음.
+  - 언제나 그렇듯 documentation을 참고해야 한다.
+    - django sendmail은 smtp를 사용하므로, 일단은 setting.py에 EMAIL_HOST, EMAIL_PORT를 설정해줘야 한다.
+    - EMAIL_HOST_USER, EMAIL_HOST_PASSWORD 설정도 해줘야한다.
+    - password를 소스코드에 남기는 심각한 문제가 발생하는데...!
+    - django environment라는 라이브러리를 사용한다. dotenv cross env와 비슷헌듯..
+      - manage.py 에 main 시작 또는 시작전에 dotenv import하고 dotenv.read_dotenv()함수 호출하고..
+      - 사용은 os.environ.get("key")로 사용하면 된다.
+- 설정이 완료 되었으면,
+  - User model에 가서 field를 추가해주자.
+  - is_email_confirmed = models.BooleanField로 ...
+  - email_verify_key도 하나 만들어주자.
+    - 기본적으로 verification을 해야 하니.. verification 키가 있는 것이 맞다.

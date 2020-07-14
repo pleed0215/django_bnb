@@ -35,6 +35,7 @@ class User(AbstractUser):
         choices=CURRENCY_CHOICE, max_length=3, blank=True, default=CURRENCY_KRW
     )
     is_superhost = models.BooleanField(default=False)
+    is_email_confirmed = models.BooleanField(default=False)
 
     def get_absolute_url(self):
         return reverse("users:user", kwargs={"pk": self.pk})
