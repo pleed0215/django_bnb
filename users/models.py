@@ -1,6 +1,13 @@
+import uuid
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
+from django.core.mail import send_mail
+from django.utils.html import strip_tags
+from django.template.loader import render_to_string
+from django.conf import settings
+
 
 # Create your models here.
 class User(AbstractUser):
@@ -35,7 +42,26 @@ class User(AbstractUser):
         choices=CURRENCY_CHOICE, max_length=3, blank=True, default=CURRENCY_KRW
     )
     is_superhost = models.BooleanField(default=False)
+    email_verified = models.BooleanField(default=False)
     email_secret = models.CharField(max_length=128, default="")
+
+    def verify_email(self):
+        if self.email_verified is True:
+            pass
+        else:
+            self.email_secret = uuid.uuid4().hex[:20]
+            # using template file instead.
+            link = f"http://127.0.0.1:8000/users/{self.email_secret}"
+            html_msg = render_to_string("mail_body.html", context={"link": link})
+            # html_msg = f'<p>This is just verficiatino mail and do not reply.</p><p>To verify click <a href="http://127.0.0.1:8000/users/{self.email_secret}">here</a></p>'
+            send_mail(
+                "Hello, from DjangoBnB, account verification mail!",
+                strip_tags(html_msg),
+                "pleed0215@hotmail.com",
+                [self.email,],
+                fail_silently=False,
+                html_message=html_msg,
+            )
 
     def get_absolute_url(self):
         return reverse("users:user", kwargs={"pk": self.pk})

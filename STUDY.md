@@ -599,3 +599,11 @@
   - is_email_confirmed = models.BooleanField로 ...
   - email_verify_key도 하나 만들어주자.
     - 기본적으로 verification을 해야 하니.. verification 키가 있는 것이 맞다.
+  - from django.conf import setting 하면.. setting에 있는 설정들 쓸 수 있다.
+  - send_mail 함수에서 html_message를 사용하여야 html태그를 이메일에 첨부할 수 있다.
+    - 그냥 message에서 사용하면 태그들이 들어가지 않는다..
+    - from django.utils.html import strip_tags를 사용하면, html 태그를 일반 텍스트로 바꿔준다..
+      - mail message는 html 메시지로 작성을 하고, strip_tags(html_message)를 이용하여 일반 텍스트도 만들어줘야 한다.
+        - 가끔 html이 포함안되는 메일들이 있기 때문이다.
+      - from django.template.loader import render_to_string 을 이용..하여..
+        - template을 문자열로 만든다.
