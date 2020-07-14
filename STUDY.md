@@ -607,3 +607,6 @@
         - 가끔 html이 포함안되는 메일들이 있기 때문이다.
       - from django.template.loader import render_to_string 을 이용..하여..
         - template을 문자열로 만든다.
+- 강의에서는 verification failed 시에 일단 나중에 알려준다고 넘어감.
+  - django message에 대해..
+  - 나는 일단 template으로 처리했다.

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block pagename %}
+Result of user verification
+{% endblock pagename %}
+{% block content %}
+    {% if success %} 
+    <h2>You have confirmed your account!</h2>
+    <h3>Welcome to out site!</h3>
+    {% else %}
+    Error, invalid token!
+    {% endif %}
+{% endblock content %}

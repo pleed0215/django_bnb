@@ -9,6 +9,7 @@ from django.contrib.auth import (
     views as auth_views,
     forms as auth_forms,
 )
+from django.http import Http404
 
 from . import models, forms
 
@@ -50,9 +51,12 @@ class LoginView(auth_views.LoginView):
 
         user = authenticate(self.request, username=email, password=password)
         if user is not None:
-            print("login success")
-            login(self.request, user)
-            return redirect(reverse("core:home"))
+            if user.email_verified is True:
+                print("login success")
+                login(self.request, user)
+                return redirect(reverse("core:home"))
+            else:
+                return render(self.request, "users/verification_not_yet.html")
         else:
             print("login failed")
         return redirect(self.get_success_url())
@@ -103,12 +107,36 @@ class SignupView(FormView):
         form.save()
         user = authenticate(self.request, username=email, password=password)
         if user is not None:
-            print("login success")
-            login(self.request, user)
-            return redirect(reverse("core:home"))
+            return render(
+                self.request,
+                "users/sending_verification.html",
+                context={"email": user.email},
+            )
         else:
             print("login failed")
         return super().form_valid(form)
+
+
+def complete_verification(request, key):
+    is_success = False
+    print(key)
+    try:
+        user = models.User.objects.get(email_secret=key)
+        if user is not None:
+            user.email_verified = True
+            user.save()
+            is_success = True
+        print("success")
+
+    except models.User.DoesNotExist as e:
+        print(e)
+        is_success = False
+        print("failed")
+
+    finally:
+        return render(
+            request, "users/verification.html", context={"success": is_success}
+        )
 
 
 """

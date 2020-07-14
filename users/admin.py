@@ -19,7 +19,7 @@ class CustomUserAdmin(UserAdmin):
         "currency",
         "is_superhost",
         "is_staff",
-        "is_superuser",
+        "email_verified",
     )
 
     list_filter = ("is_superhost", "language", "currency", "is_superuser", "is_staff")

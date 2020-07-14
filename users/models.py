@@ -50,8 +50,9 @@ class User(AbstractUser):
             pass
         else:
             self.email_secret = uuid.uuid4().hex[:20]
+            self.save()
             # using template file instead.
-            link = f"http://127.0.0.1:8000/users/{self.email_secret}"
+            link = f"http://127.0.0.1:8000/users/verify/{self.email_secret}"
             html_msg = render_to_string("mail_body.html", context={"link": link})
             # html_msg = f'<p>This is just verficiatino mail and do not reply.</p><p>To verify click <a href="http://127.0.0.1:8000/users/{self.email_secret}">here</a></p>'
             send_mail(
