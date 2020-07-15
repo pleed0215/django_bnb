@@ -610,3 +610,26 @@
 - 강의에서는 verification failed 시에 일단 나중에 알려준다고 넘어감.
   - django message에 대해..
   - 나는 일단 template으로 처리했다.
+
+# 17. Log in with github
+
+- OAuth 프로토콜 이용하는 모든 로그인 방법 다 통한다.
+- partials/social_login.html을 만들어서 login에 include.
+- view와 url에 일단 social login 관련 url / view를 만들어주고...
+  - github 같은 경우 my / settings / development setting / oauth apps에 가서 setting 진행.
+    - callback url등 지정하고, 세팅 완료 후, clientid, client_secret key를 밭게 되는데 이를 .env에 저장.
+    - django로 돌아와서 callback 관련된 url 및 view도 만들어줘야 한다.
+    - .env에 관련된 변수들도 만들어주자.
+- models.py로 가서 login method 관련 필드를 만들어주자.
+- github login은 총 3단계,
+  1. app에 접근하여 get method로 보내라는 데이터 보내고 나서, code를 얻는다.
+  2. 얻은 코드와 client id, client secret, code 등을 post method로 보내 token을 얻는다.
+  3. 얻은 토큰을 get method 이용하여 해당하는 api 주소에 가서 정보를 받아 온다.
+- github에서 콜백이 되면 code 관련된 파라미터가 리턴으로 들어오는데, 이를 GET을 이용하여 get하자.
+  - 나중에 이 코드를 github auth 관련된 주소에 POST로 보내야 한다.
+  - 자세한건 github auth 관련된 페이지를 참고하면 된다.
+  - django나 python에서 post하는 방법에 대해서는 알려주지 않았는데.. 이부분은 나중에 알아도 되고...
+  - python scraping에서 사용하였던, requests 라이브러리를 사용한다고 한다.
+    - post method 사용 시, github auth 페이지에 가면...
+    - json type으로 데이터를 받거나 xml타입으로 받고 싶으면.. header에 옵션을 application/json, xml 등으로 줘야 한다고 적힘.
+      - headers 주는 것도 한 번 확인 해보길..

@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import render, redirect, reverse
 from django.urls import reverse_lazy
 from django.views import View
@@ -10,6 +11,8 @@ from django.contrib.auth import (
     forms as auth_forms,
 )
 from django.http import Http404
+
+import requests
 
 from . import models, forms
 
@@ -148,3 +151,131 @@ def login_view(request):
         pass
 와 동일하다.
 """
+
+# Social login part
+class GithubException(Exception):
+    pass
+
+
+def github_login(request):
+    # need to view
+    # https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps
+
+    auth_id = os.environ.get("GITHUB_AUTH_ID")
+
+    callback = f'http://127.0.0.1:8000{reverse_lazy("users:github_callback")}'
+    auth_to = os.environ.get("GITHUB_REDIRECT")
+    scope = "read:user"  # only read github users profil.
+
+    auth_to = f"{auth_to}?client_id={auth_id}&redirect_uri={callback}&scope={scope}"
+
+    return redirect(auth_to)
+
+
+def github_callback(request):
+    code = request.GET.get("code", None)
+
+    try:
+        if code is not None:
+            auth_id = os.environ.get("GITHUB_AUTH_ID")
+            auth_secret = os.environ.get("GITHUB_AUTH_SECRET")
+            auth_to = os.environ.get("GITHUB_POST_URL")
+            callback = f'http://127.0.0.1:8000{reverse_lazy("users:github_callback")}'
+            receive = requests.post(
+                auth_to,
+                data={
+                    "client_id": auth_id,
+                    "client_secret": auth_secret,
+                    "code": code,
+                    "redirect_uri": callback,
+                },
+                headers={"Accept": "application/json",},
+            )
+            if receive:
+                result_json = receive.json()
+                error = result_json.get("error", None)
+                if error is not None:
+                    # there is an error getting github login information.
+                    print("Error occured in github login.")
+                    raise GithubException(
+                        f"Error occured in getting github access_token"
+                        f"\nError Message: {error}"
+                    )
+                else:
+                    auth_token = result_json.get("access_token", None)
+                    api_url = os.environ.get("GITHUB_API_URL")
+                    user_from_github = requests.get(
+                        api_url,
+                        headers={
+                            "Accept": "application/json",
+                            "Authorization": f"token {auth_token}",
+                        },
+                    )
+
+                    github_user = user_from_github.json()
+                    username = github_user.get("login", None)
+
+                    if username is not None:
+                        name = github_user.get("name")
+                        email = github_user.get("email")
+                        bio = github_user.get("bio")
+
+                        name = name is not None and name or ""
+                        bio = bio is not None and bio or "No bio"
+
+                        if email is None:
+                            raise GithubException(
+                                "No information of email address in github profile. Cann't log in."
+                            )
+
+                        try:
+                            # user has the github email is exist.
+                            user = models.User.objects.get(email=email)
+
+                            # todo: think about already exist email and git hub login method.
+
+                            if (
+                                user.email_verified is True
+                                and user.login_method == models.User.LOGIN_METHOD_GITHUB
+                            ):
+                                login(request, user)
+                            else:
+                                raise GithubException(
+                                    "The github email that you logged in is already exist"
+                                    "and that user do not have github login method."
+                                )
+                        except models.User.DoesNotExist:
+                            # no error getting github data.
+                            # new user, we'll create user.
+                            user = models.User.objects.create(
+                                username=email, bio=bio, email=email, first_name=name
+                            )
+                            user.email_verified = True
+                            user.login_method = models.User.LOGIN_METHOD_GITHUB
+                            user.set_unusable_password()
+                            user.save()
+                            login(request, user)
+                    else:
+                        raise GithubException(
+                            "Error in receiving username on github profile."
+                        )
+            else:
+                # while getting code from github auth page, error occured.
+                raise GithubException("Cannot retrive code from ")
+        else:
+            # while getting code from github auth page, error occured.
+            raise GithubException("While getting code, error occured.")
+    except GithubException as e:
+        print(e)
+        return redirect(reverse("users:login"))
+    finally:
+        print("Success getting github login data.")
+        return redirect(reverse("core:home"))
+
+
+def kakao_login(request):
+    pass
+
+
+def kakao_callback(request):
+    pass

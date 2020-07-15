@@ -20,6 +20,7 @@ class CustomUserAdmin(UserAdmin):
         "is_superhost",
         "is_staff",
         "email_verified",
+        "login_method",
     )
 
     list_filter = ("is_superhost", "language", "currency", "is_superuser", "is_staff")
@@ -36,6 +37,7 @@ class CustomUserAdmin(UserAdmin):
                     "is_superhost",
                     "birthday",
                     "bio",
+                    "login_method",
                 ),
             },
         ),
