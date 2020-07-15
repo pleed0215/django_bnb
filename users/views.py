@@ -11,6 +11,7 @@ from django.contrib.auth import (
     forms as auth_forms,
 )
 from django.http import Http404
+from django.core.files.base import ContentFile
 
 import requests
 
@@ -274,6 +275,8 @@ def github_callback(request):
         print("Success getting github login data.")
         return redirect(reverse("core:home"))
 
+class KakaoException(Exception):
+    pass
 
 def kakao_login(request):
     auth_id = os.environ.get("KAKAO_AUTH_ID")
@@ -289,5 +292,99 @@ def kakao_login(request):
 
 
 def kakao_callback(request):
-    print(request.GET.get("code"))
-    return redirect(reverse("users:login"))
+    auth_code = request.GET.get("code", None)
+    try:
+        if auth_code is not None:
+        # Getting auth_code success
+            auth_host = os.environ.get("KAKAO_AUTH_HOST") + "/oauth/token"
+            auth_id = os.environ.get("KAKAO_AUTH_ID")
+            redirect_uri = "http://127.0.0.1:8000" + reverse("users:kakao_callback")
+            payloads = {
+                "grant_type": "authorization_code",
+                "client_id": auth_id,
+                "redirect_uri": redirect_uri,
+                "code": auth_code
+            }
+            headers = {"Content-type": "application/x-www-form-urlencoded;charset=utf-8"}
+            received = requests.post (auth_host, params=payloads, headers=headers)
+            
+            received_json = received.json()            
+            access_token = received_json.get("access_token", None)
+            error = received_json.get("error", None)
+            
+            if error is None and access_token is not None:
+                # continue using auth api which is the third step.
+                api_url = os.environ.get("KAKAO_API_URL")
+                user_info_url = api_url+"/v2/user/me"
+                headers = {"Authorization": f"Bearer {access_token}","Content-type": "application/x-www-form-urlencoded;charset=utf-8"}
+                received = requests.post (user_info_url, headers=headers)
+                received_json = received.json()
+                kakao_account = received_json.get("kakao_account", None)
+                
+                
+                if kakao_account is not None:
+                    profile = kakao_account.get("profile")
+                    email = kakao_account.get("email")
+                    name = profile.get("nickname")
+                    profile_url = profile.get("thumbnail_image_url")
+                    
+
+                    name = name is not None and name or ""
+                    profile_url = profile_url is not None and profile_url or ""
+                    
+                    if email is None:
+                        raise KakaoException(
+                            "No information of email address in kakao profile. Cann't log in."
+                        )
+
+                    try:
+                        # user has the github email is exist.
+                        user = models.User.objects.get(email=email)
+
+                        # todo: think about already exist email and git hub login method.
+
+                        if (
+                            user.email_verified is True
+                            and user.login_method == models.User.LOGIN_METHOD_KAKAO
+                        ):
+                            login(request, user)
+                        else:
+                            raise KakaoException(
+                                "The kakao email that you logged in is already exist"
+                                " and that user do not have kakao login method."
+                            )
+                    except models.User.DoesNotExist:
+                        # no error getting kakao data.
+                        # new user, we'll create user.
+                        user = models.User.objects.create(
+                            username=email, email=email, first_name=name
+                        )
+                        
+                        user.email_verified = True                        
+                        user.login_method = models.User.LOGIN_METHOD_KAKAO
+                        user.set_unusable_password()
+                        user.save()                        
+                        if profile_url is not None:
+                            profile_request = requests.get(profile_url)                            
+                            user.avatar.save(f"{name}_avatar", ContentFile(profile_request.content))
+
+                        login(request, user)
+                else:
+                    raise KakaoException(
+                        "Error in receiving profile from kakao."
+                    )
+            else:
+                raise KakaoException(error)
+        else:
+        # Failed to get auth_code
+            error = request.GET.get("error", None)
+            if error is not None:
+                raise KakaoException(error)
+            else:
+                raise KakaoException("Failed to get auth code that is first step getting authorization.")
+    except KakaoException as e:
+        print ("Failed to log in using kakao auth.")
+        print (f"Message: {e}")
+        return redirect(reverse("users:login"))
+    finally:
+        return redirect(reverse("core:home"))
