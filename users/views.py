@@ -153,6 +153,8 @@ def login_view(request):
 """
 
 # Social login part
+
+## Github Login
 class GithubException(Exception):
     pass
 
@@ -274,8 +276,18 @@ def github_callback(request):
 
 
 def kakao_login(request):
-    pass
+    auth_id = os.environ.get("KAKAO_AUTH_ID")
+    auth_host = os.environ.get("KAKAO_AUTH_HOST")
+    redirect_uri = "http://127.0.0.1:8000" + reverse("users:kakao_callback")
+
+    redirect_to = (
+        f"{auth_host}/oauth/authorize?client_id={auth_id}&redirect_uri={redirect_uri}"
+        "&response_type=code"
+    )
+
+    return redirect(redirect_to)
 
 
 def kakao_callback(request):
-    pass
+    print(request.GET.get("code"))
+    return redirect(reverse("users:login"))

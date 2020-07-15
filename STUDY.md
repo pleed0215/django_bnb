@@ -633,3 +633,7 @@
     - post method 사용 시, github auth 페이지에 가면...
     - json type으로 데이터를 받거나 xml타입으로 받고 싶으면.. header에 옵션을 application/json, xml 등으로 줘야 한다고 적힘.
       - headers 주는 것도 한 번 확인 해보길..
+
+# 18. Log in with kakao
+
+- 스스로 먼저해보기.
