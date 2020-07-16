@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+
 from . import models
 
 
@@ -27,7 +29,36 @@ class LoginForm(forms.Form):
             )
 
 
+# Let's make UserCreationForm version
+class SignupForm(UserCreationForm):
+    username = forms.EmailField(label="Email", help_text="This will be your username.")    
+
+    class Meta:
+        model= models.User
+        fields = ("username", "first_name", "last_name")
+
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+
+        try:
+            models.User.objects.get(username=username)
+            raise forms.ValidationError(
+                f"{username} is already exist. Use another please."
+            )
+        except models.User.DoesNotExist:
+            return username
+
+    def save(self, *args, **kwargs):
+        username = self.cleaned_data.get("username")
+
+        user = super().save(commit=False)
+        user.email = username
+        user.save()
+
+        user.verify_email()
+
 # Let's make ModelFrom version.
+"""
 class SignupForm(forms.ModelForm):
     class Meta:
         model = models.User
@@ -73,7 +104,7 @@ class SignupForm(forms.ModelForm):
         user.set_password(password)
         user.save()
 
-        user.verify_email()
+        user.verify_email()"""
 
 
 """class SignupForm(forms.Form):

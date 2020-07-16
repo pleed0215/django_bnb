@@ -60,11 +60,22 @@ class LoginView(auth_views.LoginView):
                 login(self.request, user)
                 return redirect(reverse("core:home"))
             else:
-                return render(self.request, "users/verification_not_yet.html")
+                return render(self.request, "users/verification_not_yet.html", context={"user_id": user.pk})
         else:
             print("login failed")
         return redirect(self.get_success_url())
 
+def send_verify_view(request, user_id):
+    try:        
+        user = models.User.objects.get(pk=user_id)
+        user.verify_email()
+        return render(
+                request,
+                "users/sending_verification.html",
+                context={"email": user.email},
+            )
+    except models.User.DoesNotExist:
+        return redirect("404.html")
 
 # login form page, using just View Class.
 """class LoginView(View):

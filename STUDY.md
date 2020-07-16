@@ -640,11 +640,21 @@
 - kakao는 development 페이지에서 설정해줄 것이 몇가지 있다. 이설정을 안해주면 정보를 얻어 올 수 없어.
 - profile image url을 추가하는 것이 쉽지 않다.
 - User model의 avatar는 ImageField인데, FieldFile과 같다.
+
   - FieldFile은 save메소드가 있는데, save(name, content, save=True)인데.. filename과 filecontent를 스토리지 클래스에 넘겨준다(저장한다는 뜻..)
   - content에 들어갈 것은 말그대로 이미지 파일 정보.
   - 여기서는 kakao profile 의 이미지를 가져오는데.. requests module을 통하여 가져온다.. 그러면.. kakao profile url에 있는 내용을 requests를 통해서 가져올 수 있으며..
-    - 이는 requests.get의 결과값에 content()메소드를 이용하면 content를 가져올 수 있는 것.
+    - 이는 requests.get의 결과값에 content attribute를 이용하면 content를 가져올 수 있는 것.
   - 여기서 또 한가지 어려운 개념이 나오는데..
     - 위의 content만으로는 django에서 부족하다, 니코의 이야기에 따르면 bullshit 이 필요한데..
       - django.core.files.base import ContentFile 클래스를 이용하는데..
       - 실제파일이라기 보다는 raw-content를 갖는..File-like object라한다.
+  - 그래서 avatar를 저장하려면. avatar.save (name, ContentFile(request_result.content)) 하면 되는 것..
+
+  - # 18.3 UserCreationForm.
+  - 우리는 django를 거의 이용하지 않고, python 기능만 사용해서 유저등록 폼을 만들었는데..
+  - UserCreationForm을 이용하면 더 쉽게 유저 등록을 시킬 수 있다.
+  - view에서 그냥 UserCreationForm을 이용해도 되고 아니면, 만들어 놓은 폼클래스는 forms.ModelForm을 상속받았는데.. UserCreationForm을 상속받아서 하면 아주 간단하다.
+    - django.contrib.auth.forms.UserCreationForm
+    - 참고. django의 password validation 기능을 이용하고 싶다면, django.contrib.auth.password_validation을 사용하면 된다.
+    - UserCreationForm에서 확인해서 코드를 보는 것도 좋다고 본다.

@@ -5,4 +5,5 @@ Result of user verification
 {% block content %}
     <h1>You're not confirmed your email address.</h1>
     <h3>Please verify your email address and try to log in again</h3>
+    <h5>Haven't you received verification email?? <a href="{% url 'users:send-verify' user_id %}">Click</a> here if you want to get verification email again.</h5>
 {% endblock content %}

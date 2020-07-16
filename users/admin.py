@@ -38,6 +38,7 @@ class CustomUserAdmin(UserAdmin):
                     "birthday",
                     "bio",
                     "login_method",
+                    "email_verified",
                 ),
             },
         ),
