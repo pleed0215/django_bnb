@@ -706,3 +706,12 @@
               - top에, {% load static %}, <link rel="stylesheet" href="{% static "css/styles.css" %}/>
 
 - .gitignore에 node_modules 추가해주는 걸 잊지 말자.
+
+
+## tailwind css
+- 사이즈 단위
+  - em, rem 많이 사용
+    - em: fontsize, rem: root fontsize
+    - tailwind default root font size는 16px
+- container -> box 이지만, responsive.
+
