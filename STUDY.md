@@ -658,3 +658,51 @@
     - django.contrib.auth.forms.UserCreationForm
     - 참고. django의 password validation 기능을 이용하고 싶다면, django.contrib.auth.password_validation을 사용하면 된다.
     - UserCreationForm에서 확인해서 코드를 보는 것도 좋다고 본다.
+
+# 19. Tailwind CSS
+
+- 대부분은 framework식으로 거진 다 만들어져있는 것들이 많은디..
+  - Most CSS frameworks do too much
+  - flask와 비슷한 말을.. 하지만 나는 쟝고를 사용하고... 뭔가 모순적이지만, 도움될듯..
+  - 부트스트랩 같은 프레임워크를 사용하면 사이트들이 다 똑같아 보이는데, tailwind는 그렇지 않다.
+    - builtwithtailwind.com
+  - vscode 에서 사용하려면.
+    - tailwind intellisense를 사용하도록.
+
+* 테일윈드는 utility first
+* 직관적으로 빠른데,
+* 코드 재사용 문제에 대해 고찰할 필요가 있었는지..
+  - css에서 @apply를 사용하는데, 나는 이걸 첨본다.
+* Preflight ...?
+
+  - tailwind color pallete
+
+* tailwind는 PostCSS라는 것을 사용한다.
+
+  - gulp를 setting 해줘야 하기 때문에 nodes를 사용 하여야 한다.
+    - npm install -D gulp gulp-csso gulp-postcss gulp-sass node-sass autoprefixer
+  - 그리고 나서 tailwind css install
+    - npm install tailwindcss -D
+    - npx tailwind init -> tailwind.config.js
+  - gulpfile.js를 /에 만들어 놓자.
+
+    - 위 라이브러리를 gulpfile.js에 세팅해서 export 해줘야 함. 파일 참고.
+    - 라이브러리 사용방법이라 그냥 익히는 수 밖에 없다.
+    - gulp 설정 이후 결과적으로 assets들을 static으로 optimize하는데...
+
+      - 모든 수정은 assets에서 이뤄져야 하며, 컴파일된 결과를 서버에서 사용하는 것.
+        - assets를 수정할 때마다, gulp 컴파일을 해줘야 한다.
+      - static을 그냥 url에서 사용할 수 없기 때문에, django에게 static 사용하는 것을 알려줘야 한다.
+        !!!!!!!!!!
+
+        - static 설정방법
+
+          - settings.py -> STATICFILES_DIR을 설정해준다.
+          - UPLOAD 설정과 비슷하게 os.path.join을 이용한다.
+          - template/base.html에 stylesheet를 링크 시켜 줘보자.
+            - <link rel="stylesheet" href="http://127.0.0.1:8000/static/css/styles.css" />
+            - 링크는 더러워 보이는데 추후에 간단하게 하는 방법이 있고, 적용하면 tailwindcss의 기본스타일이 적용된 것을 확인 가능하다.
+            - load static 이후, static 태그를 사용하면 간단하게 볼 수 있다.
+              - top에, {% load static %}, <link rel="stylesheet" href="{% static "css/styles.css" %}/>
+
+- .gitignore에 node_modules 추가해주는 걸 잊지 말자.
