@@ -10,6 +10,9 @@ module.exports = {
       borderRadius: {
         xl: "1.5rem",
       },
+      minWidth: {
+        "1/2": "50%",
+      },
     },
   },
   variants: {},

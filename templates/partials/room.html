@@ -1,22 +1,23 @@
-<div class="flex flex-col">
-    <a href="{% url "rooms:detail" room.pk %}">
+<a href="{% url "rooms:detail" room.pk %}">
+    <div class="flex flex-col justify-center">
         <div class="mb-3 bg-center bg-cover w-full h-64 rounded-lg" style="background-image: url({{room.first_image}})"></div>
         <div class="flex justify-between  px-1">
-            <div class="flex items-center">
+            <div class="flex items-center w-4/5">
                 {% if  room.host.is_superhost %}
                 <span class="text-gray-800 font-bold text-xs border border-gray-800 rounded-md px-1 mr-1">SUPERHOST</span>
                 {% endif %}
-                <span class="text-gray-600 text-xs truncate">{{room.city}}·{{room.country.name}}</span>
+                <span class="text-gray-600 text-xs truncate pr-1">{{room.city}}·{{room.country.name}}</span>
             </div>
-            <div class="inline-block">
-                <span class="text-red-600 font-bold text-xs">★</span>
+            <div class="flex w-1/5 justify-end items-center">
+                <i class="fas fa-star text-red-600 font-bold text-xs mr-2"></i>
                 <span class="text-gray-900 text-xs">{{room.get_ratings}}</span>
             </div>
         </div>
+        <div class="h-6 w-11/12 mb-2 truncate">
+            <span class="text-gray-600 text-base font-thin">{{room.name}}</p>
+        </div>
         <div>
-            <p class="text-gray-600 text-base">{{room.name}}</p>
             <span class="text-gray-900 font-extrabold">${{room.price}}</span><span class="text-gray-600 font-thin"> / night</span>
         </div>
-
-    </a>
-</div>
+    </div>
+</a>
