@@ -707,11 +707,34 @@
 
 - .gitignore에 node_modules 추가해주는 걸 잊지 말자.
 
-
 ## tailwind css
+
 - 사이즈 단위
   - em, rem 많이 사용
     - em: fontsize, rem: root fontsize
     - tailwind default root font size는 16px
 - container -> box 이지만, responsive.
+- tailwind 다른 개념은 중요한건 없는 것 같은데..
 
+  - @apply 사용하면 scss 상에서 tailwind class 사용 가능.
+  - 확장하고 싶으면...?? 이를테면 h-screen은 100vh이지만,, 우리는 75vh, 50vh를 쓰고 싶은데...
+    - tailwind.config.js에서 설정을 해주면 된다.
+    - 설정 후 scss assets 등을 다시 컴파일.
+  - 다른 프레임워크에 비해 확장이나 수정이 쉬운 편이라, 커스터마이징을 조금 더 간편하게 할 수 있다.
+  - unsplash.com에 가면 이미지 좀 얻을 수 있음.
+
+- tailwind를 잠깐 사용하였지만, 단점이라 생각됐던 것이..
+  - 코드 재활용이 어렵지 않은가..라는 생각이었는데..
+  - html partial로 만드는 방법을 소개해주네..
+  - {% include '~~~' with variables=send_to %} 이런식으로 해주면 변수도 넘겨줄 수가 있네 그려..
+- 사진은 여러갠데.. 어떻게 얻어오지..?? 첫번째 사진만 얻어 오는 방법이 있다.
+  - 자세한 방법은 코드를 참고하고, rooms app의 room model에 first_image라는 메소드를 확인하자.
+  - unpacking value 라는 것을 배웠는데..
+    - 배열에서 이렇게 사용 가능하다. 만약 배열에 4가지 아이템이 있다면,,
+    - one, two, three, four = my_array
+    - 네가지가 순서대로 배열되는 것.
+    - 첫번째만 얻어 오고 싶다면
+      - one = my_array (x) -> one, = my_array (o)
+- css에는 negative margin이라는 것이 있었다..
+  - tailwind css 에는 container들의 width가 제한 되어 있는지.. 아무리 확장해도 1280정도 이상 늘어나지 않아서..
+    - 어떡해야 하나 싶었는데.. negative margin 주는 방법으로 해결하더라.

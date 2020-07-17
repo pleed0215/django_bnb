@@ -97,5 +97,19 @@ class Room(AbstractTimeStamped):
         self.city = str.capitalize(self.city)
         super().save(*args, **kwargs)  # Call the real save() method
 
+    def first_image(self):
+        (first,) = self.my_photos.all()[:1]
+        return first.image.url
+
+    def get_ratings(self):
+        reviews = self.my_reviews.all()
+        avgs = 0.0
+
+        if reviews.count() > 0:
+            for r in reviews:
+                avgs = avgs + r.rating_average()
+            avgs = avgs / reviews.count()
+        return round(avgs, 2)
+
     def __str__(self):
         return self.name

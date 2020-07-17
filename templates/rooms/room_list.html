@@ -1,27 +1,32 @@
 {% extends "base.html" %} 
 {% block pagename %} Home {% endblock pagename %} {%block content %}
 <!-- paging using paginator -->
-<p>{{now}}</p>
-{% for r in object_list %}
-<div>
-  <a href="{% url "rooms:detail" r.pk %}">
-  <h4>{{ r.name }} / {{r.price}} / {{r.city}} / {{r.country}} {% if r.host.is_superhost %}(superhost){% endif %}</h4>
-  </a>
+<div class="container mx-auto">
+  <div class="container w-full rounded-xl bg-gray-800 h-50vh mt-10 mb-20 bg-cover bg-center" style="background-image: url(https://images.unsplash.com/photo-1535189043414-47a3c49a0bed?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2689&q=80)"></div>
+
+  </div>
+  <div class="flex flex-col -mx-20">
+    <h1 class="text-gray-700 text-xl font-bold mb-2">Place to stay arounds the world.</h1>
+    <div class="grid grid-cols-4 gap-4">
+      {% for r in object_list %}
+        {% include "partials/room.html" with room=r %}
+      {% endfor %} 
+    </div>
+  </div>
+  page {{page_obj.number}} of {{page_obj.paginator.num_pages}}>> {% if page_obj.has_previous %}
+  <a href="?page={{page_obj.previous_page_number}}"><span><< prev</span></a>
+  {% endif %} {% for p in page_obj.paginator.page_range %} {% if p != page_obj.number %}<a
+    href="?page={{p}}"
+  >
+    <span>&nbsp;{{p}}&nbsp;</span></a>
+  {% else %}
+  <span>&nbsp;{{p}}&nbsp;</span>
+  {% endif %} {% endfor %} {% if page_obj.number != page_obj.paginator.num_pages %}
+  <a href="?page={{page_obj.next_page_number}}"><span>>> next</span></a>
+  {% endif %} {% if error %}
+  <p>
+    {{msg}}{% endif %}</p>
 </div>
-{% endfor %} page {{page_obj.number}} of {{page_obj.paginator.num_pages}}>> {% if page_obj.has_previous %}
-<a href="?page={{page_obj.previous_page_number}}"><span><< prev</span></a>
-{% endif %} {% for p in page_obj.paginator.page_range %} {% if p != page_obj.number %}<a
-  href="?page={{p}}"
->
-  <span>&nbsp;{{p}}&nbsp;</span></a
->
-{% else %}
-<span>&nbsp;{{p}}&nbsp;</span>
-{% endif %} {% endfor %} {% if page_obj.number != page_obj.paginator.num_pages %}
-<a href="?page={{page_obj.next_page_number}}"><span>>> next</span></a>
-{% endif %} {% if error %}
-<p>
-  {{msg}}{% endif %}</p>
   <!-- using template without paginator
   {% for r in rooms %}
     <div>

@@ -15,8 +15,8 @@ class HomeView(ListView):
     """ HomeView definition """
 
     model = Room
-    paginate_by = 10
-    ordering = ['created_at']
+    paginate_by = 12
+    ordering = ["created_at"]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
