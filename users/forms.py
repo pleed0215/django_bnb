@@ -5,15 +5,16 @@ from . import models
 
 
 class LoginForm(forms.Form):
-    email = forms.EmailField()
+    username = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput())
 
     def clean(self):
-        email = self.cleaned_data.get("email")
+        username = self.cleaned_data.get("username")
         password = self.cleaned_data.get("password")
 
+
         try:
-            users = models.User.objects.get(username=email)
+            users = models.User.objects.get(username=username)
             if users and users.check_password(password):
                 return self.cleaned_data
             else:
@@ -24,7 +25,7 @@ class LoginForm(forms.Form):
         except models.User.DoesNotExist as e:
             print(e)
             self.add_error(
-                "email",
+                "username",
                 forms.ValidationError("User has that email address doesn't exist."),
             )
 

@@ -39,13 +39,12 @@ def user_view(request, pk):
             return redirect(reverse("core:home"))
         else:
             print("login failed")
-        return super().form_valid(form)
-"""
-
+        return super().form_valid(form)"""
 
 class LoginView(auth_views.LoginView):
     template_name = "users/login.html"
     authentication_form = auth_forms.AuthenticationForm
+    form_class = forms.LoginForm
     success_url = reverse_lazy("core:home")
     redirect_authenticated_user = True
 
@@ -63,7 +62,7 @@ class LoginView(auth_views.LoginView):
                 return render(self.request, "users/verification_not_yet.html", context={"user_id": user.pk})
         else:
             print("login failed")
-        return redirect(self.get_success_url())
+        return super().form_valid(form)
 
 def send_verify_view(request, user_id):
     try:        
