@@ -3,6 +3,9 @@
 Sending a verification mail to you~!
 {% endblock pagename %}
 {% block content %}
+<h3 class="font-light text-gray-700">
 We've send you a verification mail to {{email}}~!
 Check your email and confirm your email address!
+</h3>
+<span>If you didn't get verification mail, click <a class="text-blue-500 hover:underline" href="{% url "users:send-verify" user_id %}">here</a> again.</span>
 {% endblock content %}

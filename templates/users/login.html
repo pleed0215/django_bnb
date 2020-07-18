@@ -5,13 +5,14 @@
 {% endblock pagename %}
 
 {% block content %}
-    <div class="xl:w-2/5 lg:w-2/5 md:w-40 sm:flex-shrink-0 border p-10 min-w-1/2 h-75vh">
+    <div class="xl:w-2/5 lg:w-2/5 md:w-40 sm:flex-shrink-0 border p-10 min-w-1/2 h-75vh overflow-y-auto">
         {% include "partials/social_login.html" %}
         
-        <form class="w-full text-center" method="post" action="{% url "users:login" %}">
+        <form class="w-full text-center form-auth" method="post" action="{% url "users:login" %}">
             {% csrf_token %}
-            <input class="auth-input" name="username" id="id_username" placeholder="EMAIL ADDRESS" type="email">
-            <input class="auth-input" name="password" id="id_password" placeholder="PASSWORD" type="password">
+            {{form.username}}
+            {{form.password}}
+            <span class="font-light text-red-600 text-left">{{form.non_field_errors}}</span>
             <div class="auth-btn mb-2 bg-red-500 text-white">
                 <button class="w-full h-full">Log in</button>
             </div>

@@ -41,9 +41,9 @@ def user_view(request, pk):
             print("login failed")
         return super().form_valid(form)"""
 
+
 class LoginView(auth_views.LoginView):
     template_name = "users/login.html"
-    authentication_form = auth_forms.AuthenticationForm
     form_class = forms.LoginForm
     success_url = reverse_lazy("core:home")
     redirect_authenticated_user = True
@@ -59,22 +59,28 @@ class LoginView(auth_views.LoginView):
                 login(self.request, user)
                 return redirect(reverse("core:home"))
             else:
-                return render(self.request, "users/verification_not_yet.html", context={"user_id": user.pk})
+                return render(
+                    self.request,
+                    "users/verification_not_yet.html",
+                    context={"user_id": user.pk},
+                )
         else:
             print("login failed")
-        return super().form_valid(form)
+        return redirect(self.get_success_url())
+
 
 def send_verify_view(request, user_id):
-    try:        
+    try:
         user = models.User.objects.get(pk=user_id)
         user.verify_email()
         return render(
-                request,
-                "users/sending_verification.html",
-                context={"email": user.email},
-            )
+            request,
+            "users/sending_verification.html",
+            context={"email": user.email, "user_id": user.pk},
+        )
     except models.User.DoesNotExist:
         return redirect("404.html")
+
 
 # login form page, using just View Class.
 """class LoginView(View):
@@ -113,22 +119,19 @@ class SignupView(FormView):
     success_url = reverse_lazy("core:home")
 
     def form_valid(self, form):
-        email = form.cleaned_data.get("email")
-        password = form.cleaned_data.get("password")
+        username = form.cleaned_data.get("username")
+        password = form.cleaned_data.get("password1")
 
-        if form.is_valid():
-            print("valid")
         form.save()
-        user = authenticate(self.request, username=email, password=password)
+        user = authenticate(self.request, username=username, password=password)
         if user is not None:
             return render(
                 self.request,
                 "users/sending_verification.html",
-                context={"email": user.email},
+                context={"email": user.email, "user_id": user.pk},
             )
         else:
-            print("login failed")
-        return super().form_valid(form)
+            return redirect(self.get_success_url())
 
 
 def complete_verification(request, key):
@@ -285,8 +288,10 @@ def github_callback(request):
         print("Success getting github login data.")
         return redirect(reverse("core:home"))
 
+
 class KakaoException(Exception):
     pass
+
 
 def kakao_login(request):
     auth_id = os.environ.get("KAKAO_AUTH_ID")
@@ -305,7 +310,7 @@ def kakao_callback(request):
     auth_code = request.GET.get("code", None)
     try:
         if auth_code is not None:
-        # Getting auth_code success
+            # Getting auth_code success
             auth_host = os.environ.get("KAKAO_AUTH_HOST") + "/oauth/token"
             auth_id = os.environ.get("KAKAO_AUTH_ID")
             redirect_uri = "http://127.0.0.1:8000" + reverse("users:kakao_callback")
@@ -313,35 +318,38 @@ def kakao_callback(request):
                 "grant_type": "authorization_code",
                 "client_id": auth_id,
                 "redirect_uri": redirect_uri,
-                "code": auth_code
+                "code": auth_code,
             }
-            headers = {"Content-type": "application/x-www-form-urlencoded;charset=utf-8"}
-            received = requests.post (auth_host, params=payloads, headers=headers)
-            
-            received_json = received.json()            
+            headers = {
+                "Content-type": "application/x-www-form-urlencoded;charset=utf-8"
+            }
+            received = requests.post(auth_host, params=payloads, headers=headers)
+
+            received_json = received.json()
             access_token = received_json.get("access_token", None)
             error = received_json.get("error", None)
-            
+
             if error is None and access_token is not None:
                 # continue using auth api which is the third step.
                 api_url = os.environ.get("KAKAO_API_URL")
-                user_info_url = api_url+"/v2/user/me"
-                headers = {"Authorization": f"Bearer {access_token}","Content-type": "application/x-www-form-urlencoded;charset=utf-8"}
-                received = requests.post (user_info_url, headers=headers)
+                user_info_url = api_url + "/v2/user/me"
+                headers = {
+                    "Authorization": f"Bearer {access_token}",
+                    "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
+                }
+                received = requests.post(user_info_url, headers=headers)
                 received_json = received.json()
                 kakao_account = received_json.get("kakao_account", None)
-                
-                
+
                 if kakao_account is not None:
                     profile = kakao_account.get("profile")
                     email = kakao_account.get("email")
                     name = profile.get("nickname")
                     profile_url = profile.get("thumbnail_image_url")
-                    
 
                     name = name is not None and name or ""
                     profile_url = profile_url is not None and profile_url or ""
-                    
+
                     if email is None:
                         raise KakaoException(
                             "No information of email address in kakao profile. Cann't log in."
@@ -369,32 +377,34 @@ def kakao_callback(request):
                         user = models.User.objects.create(
                             username=email, email=email, first_name=name
                         )
-                        
-                        user.email_verified = True                        
+
+                        user.email_verified = True
                         user.login_method = models.User.LOGIN_METHOD_KAKAO
                         user.set_unusable_password()
-                        user.save()                        
+                        user.save()
                         if profile_url is not None:
-                            profile_request = requests.get(profile_url)                            
-                            user.avatar.save(f"{name}_avatar", ContentFile(profile_request.content))
+                            profile_request = requests.get(profile_url)
+                            user.avatar.save(
+                                f"{name}_avatar", ContentFile(profile_request.content)
+                            )
 
                         login(request, user)
                 else:
-                    raise KakaoException(
-                        "Error in receiving profile from kakao."
-                    )
+                    raise KakaoException("Error in receiving profile from kakao.")
             else:
                 raise KakaoException(error)
         else:
-        # Failed to get auth_code
+            # Failed to get auth_code
             error = request.GET.get("error", None)
             if error is not None:
                 raise KakaoException(error)
             else:
-                raise KakaoException("Failed to get auth code that is first step getting authorization.")
+                raise KakaoException(
+                    "Failed to get auth code that is first step getting authorization."
+                )
     except KakaoException as e:
-        print ("Failed to log in using kakao auth.")
-        print (f"Message: {e}")
+        print("Failed to log in using kakao auth.")
+        print(f"Message: {e}")
         return redirect(reverse("users:login"))
     finally:
         return redirect(reverse("core:home"))

@@ -738,3 +738,17 @@
 - css에는 negative margin이라는 것이 있었다..
   - tailwind css 에는 container들의 width가 제한 되어 있는지.. 아무리 확장해도 1280정도 이상 늘어나지 않아서..
     - 어떡해야 하나 싶었는데.. negative margin 주는 방법으로 해결하더라.
+
+* django에서 form input 등을 만들 때, 속성을 줄 수 있다.
+  - email = EmailField(widget=forms.EmailInput(attrs={'placeholder': 'E-Mail'}))
+  - form을 이용하여 template에 rendering 할 경우 css 입히는 것 글타쳐도, 속성 조정하는 것이 어려워서.. 하는 방법 알아 놓는 것이 좋다.
+  - Meta class에 wigets를 추가해도 된다.
+  - 이렇게 만들어 놓으니,,, help text, error text들이 보이지 않는다.
+    > {% if form.subject.errors %}
+    >
+    >   <ol>
+    >   {% for error in form.subject.errors %}
+  - 이렇게 핸들링하면 된다.
+
+- form을 iterate 할수도 있다!!
+  - 이걸 왜 지금 알려주는거야..

@@ -1,17 +1,23 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 from . import models
 
 
-class LoginForm(forms.Form):
-    username = forms.EmailField()
+class LoginForm(AuthenticationForm):
+    username = forms.EmailField(widget=forms.EmailInput(attrs={"placeholder": "Email"}))
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"placeholder": "Password"})
+    )
+
+
+"""class LoginForm(forms.Form):
+    username = forms.EmailField(widget=forms.EmailInput(attrs={"placeholder": "Email"}))
     password = forms.CharField(widget=forms.PasswordInput())
 
     def clean(self):
         username = self.cleaned_data.get("username")
         password = self.cleaned_data.get("password")
-
 
         try:
             users = models.User.objects.get(username=username)
@@ -28,19 +34,29 @@ class LoginForm(forms.Form):
                 "username",
                 forms.ValidationError("User has that email address doesn't exist."),
             )
-
+"""
 
 # Let's make UserCreationForm version
 class SignupForm(UserCreationForm):
-    username = forms.EmailField(label="Email", help_text="This will be your username.")    
+
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={"placeholder": "Password"})
+    )
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={"placeholder": "Password confirmed"})
+    )
 
     class Meta:
-        model= models.User
-        fields = ("username", "first_name", "last_name")
+        model = models.User
+        fields = ("username", "first_name", "last_name", "password1", "password2")
+        widgets = {
+            "username": forms.EmailInput(attrs={"placeholder": "Email"}),
+            "first_name": forms.TextInput(attrs={"placeholder": "First name"}),
+            "last_name": forms.TextInput(attrs={"placeholder": "Last name"}),
+        }
 
     def clean_username(self):
         username = self.cleaned_data.get("username")
-
         try:
             models.User.objects.get(username=username)
             raise forms.ValidationError(
@@ -57,6 +73,8 @@ class SignupForm(UserCreationForm):
         user.save()
 
         user.verify_email()
+        return user
+
 
 # Let's make ModelFrom version.
 """

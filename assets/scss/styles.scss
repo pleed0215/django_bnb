@@ -25,4 +25,26 @@
     @apply outline-none border-teal-500;
   }
 }
+
+.form-auth {
+  input {
+    @apply flex rounded items-center h-20 my-2 w-full border px-5;
+    &:focus {
+      @apply outline-none border-teal-500;
+    }
+  }
+
+  &.input-error {
+    input {
+      @apply flex rounded items-center h-20 my-2 w-full border px-5 bg-red-100;
+      &:focus {
+        @apply outline-none border-red-500;
+      }
+    }
+  }
+  .error-message {
+    @apply my-1 text-red-600 font-light text-left;
+  }
+}
+
 @tailwind utilities;
