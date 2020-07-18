@@ -6,17 +6,8 @@
 
 {% block content %}
     <div class="xl:w-2/5 lg:w-2/5 md:w-40 sm:flex-shrink-0 border p-10 min-w-1/2 h-75vh overflow-y-auto">
-        {% include "partials/social_login.html" %}
-        
-        <form class="w-full text-center form-auth" method="post" action="{% url "users:login" %}">
-            {% csrf_token %}
-            {{form.username}}
-            {{form.password}}
-            <span class="font-light text-red-600 text-left">{{form.non_field_errors}}</span>
-            <div class="auth-btn mb-2 bg-red-500 text-white">
-                <button class="w-full h-full">Log in</button>
-            </div>
-        </form>
+        {% include "partials/social_login.html" %}        
+        {% include "partials/form_auth.html" with form=form cta="Log in" %}
         <span class="font-medium text-gray-500">Don't you have account? <a class="text-blue-500 font-bold hover:underline" href="{% url 'users:signup' %}">Sign up</a> Now</span>
     <div>
 {% endblock content %}

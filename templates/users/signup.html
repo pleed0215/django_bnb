@@ -7,18 +7,7 @@
 {% block content %}
     <div class="xl:w-2/5 lg:w-2/5 md:w-40 sm:flex-shrink-0 border p-10 min-w-1/2 h-75vh min-h-50vh overflow-y-auto">
         {% include "partials/social_login.html" %}
-        <form class="w-full" method="post" action="{% url "users:signup" %}">
-            {% csrf_token %}
-            {% for field in form %}
-                <div class="form-auth {% if field.errors %}input-error{% endif %}">
-                {{field}}
-                {% include 'partials/input_errors.html' with errors=field.errors %}
-                </div>
-            {% endfor %}
-            <div class="auth-btn mb-2 bg-red-500 text-white">
-                <button class="w-full h-full">Sign up now</button>
-            </div>
-        </form>
+        {% include "partials/form_auth.html" with form=form cta="Sing up now" %}
         <span class="font-medium text-gray-500">Do you already have an account? <a class="text-blue-500 font-bold hover:underline" href="{% url 'users:login' %}">Log in</a> Now</span>
     </div>
 {% endblock content %}
