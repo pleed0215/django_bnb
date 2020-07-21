@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block pagename %}
+{{profile.first_name}}'s profile
+{% endblock pagename %}
+{% block content %}
+    <div class="xl:w-2/5 lg:w-2/5 md:w-40 sm:flex-shrink-0 border p-10 min-w-1/2 h-75vh overflow-y-auto">
+    {{profile.first_name}}
+    {% if profile == user %}
+        Oh, it's you, wanna edit your profile?
+    {% endif %}
+    {{hello}}
+    </div>
+{% endblock content %}

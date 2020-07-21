@@ -758,3 +758,24 @@
 - form.non_field_errors 도 있다.
 
 * message framework.
+
+- 말그대로 framework이기 때문에 사용방법만 알아두자.
+- message 출력 후 다른 메뉴들을 가려서 클릭 안되다던가의 일이 생긴다..??
+- z-index로 해결하자.
+
+- 워낙 방대해서 할 때마다 새로운 ㄱ ㅓㅅ을 배우는데..
+  - reverse에서도 인자를 넘겨줄 수 있다.
+    - reverse("users:user", kwargs = {"pk": self.pk})
+- get_absolute_url (self)
+
+  - model에서 overriding 한다.
+  - 절대 경로를 왜 만들어줄까.. 아직은 이유를 잘 모르겠다.
+    - 일단, nav에서 profile link를 걸어줄때.. 나는 reverse를 사용하였는데, users.get_absolute_url을 사용해도 된다.
+    - 또한, admin 패널에 가면 바로 프로필로 갈 수 있다.. 아 이거 room에서 한것 같은데..? admin 패널에서 사용하려고도 한다는 이유!
+
+## User profile part
+- user detail view를 하고 있는 중에 문제..
+  - user/pk로 들어가면..
+  - detail view에서 자동으로 user를 login session의 user로 바꿔서.. 꼬이게 된다.
+    - context_object_name에서 바꾸면 되는 문제.
+    - get_context_data context를 추가해주려면 이 함수를 overriding  해야 한다.

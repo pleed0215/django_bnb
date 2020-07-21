@@ -2,7 +2,7 @@ import os
 from django.shortcuts import render, redirect, reverse
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import FormView
+from django.views.generic import FormView, DetailView
 from django.contrib.auth import (
     authenticate,
     login,
@@ -19,8 +19,15 @@ import requests
 from . import models, forms
 
 # Create your views here.
-def user_view(request, pk):
-    pass
+class UserDetailView(DetailView):
+    model = models.User
+    context_object_name = "profile"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["hello"] = "Hello"
+        return context
+    
 
 
 # Login Views
@@ -398,7 +405,7 @@ def kakao_callback(request):
                         if profile_url is not None:
                             profile_request = requests.get(profile_url)
                             user.avatar.save(
-                                f"{name}_avatar", ContentFile(profile_request.content)
+                                f"{name}_{user.pk}_avatar", ContentFile(profile_request.content)
                             )
 
                         login(request, user)

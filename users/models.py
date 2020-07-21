@@ -7,6 +7,7 @@ from django.core.mail import send_mail
 from django.utils.html import strip_tags
 from django.template.loader import render_to_string
 from django.conf import settings
+from django.urls import reverse
 
 
 # Create your models here.
@@ -56,6 +57,9 @@ class User(AbstractUser):
     login_method = models.CharField(
         max_length=2, choices=LOGIN_METHOD_CHOICE, default=LOGIN_METHOD_EMAIL
     )
+
+    def get_absolute_url(self):
+        return rerverse("users:user", kwargs={"pk": self.pk})
 
     def verify_email(self):
         if self.email_verified is True:

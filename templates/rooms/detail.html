@@ -6,7 +6,7 @@
     <h4>{{room.description}}</h4>
 </div>
 <div>
-    <h2>By: {{room.host}} {% if room.host.is_superhost %}&lt;&lt;Super host&gt;&gt;{% else %}&lt;&lt;Not a Super host&gt;&gt;{% endif %}</h2>
+    <h2>By: <a href={{room.host.get_absolute_url}}>{{room.host}}</a> {% if room.host.is_superhost %}&lt;&lt;Super host&gt;&gt;{% else %}&lt;&lt;Not a Super host&gt;&gt;{% endif %}</h2>
     <h3>Amenities</h3>
     <h4>Room type: {{room.room_type}}</h4>
     {% for p in room.my_photos.all %}

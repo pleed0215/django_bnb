@@ -7,7 +7,7 @@
     <h5>{{object.price}}</h5>
 </div>
 <div>
-    <h2>By: {{object.host}} {% if object.host.is_superhost %}&lt;&lt;Super host&gt;&gt;{% else %}&lt;&lt;Not a Super host&gt;&gt;{% endif %}</h2>
+    <h2>By: <a href={{object.host.get_absolute_url}}>{{object.host}}</a> {% if object.host.is_superhost %}&lt;&lt;Super host&gt;&gt;{% else %}&lt;&lt;Not a Super host&gt;&gt;{% endif %}</h2>
     <h4>Room type: {{object.room_type}}</h4>
     {% for p in object.my_photos.all %}
         <img src="{{p.image.url}}" width="100px" height="100px" />

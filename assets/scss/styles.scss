@@ -48,11 +48,23 @@
 }
 
 @keyframes fadeout {
-  from {
-    opacity: 1;
-  }
-  to {
+  0% {
     opacity: 0;
+    transform: translateY(-50px);
+  }
+
+  5% {
+    opacity: 1;
+    transform: translateY(50px);
+  }
+
+  95% {
+    opacity: 1;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-50px);
   }
 }
 
@@ -72,8 +84,7 @@
 
   &.fade-out {
     opacity: 1;
-    animation: fadeout 0.7s linear 3s;
-    animation-fill-mode: forwards;
+    animation: fadeout 5s ease-in-out forwards;
   }
 }
 
