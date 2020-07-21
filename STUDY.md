@@ -751,4 +751,10 @@
   - 이렇게 핸들링하면 된다.
 
 - form을 iterate 할수도 있다!!
+
   - 이걸 왜 지금 알려주는거야..
+
+- field.errors django error message 접근 가능~!
+- form.non_field_errors 도 있다.
+
+* message framework.

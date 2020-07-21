@@ -12,6 +12,7 @@ from django.contrib.auth import (
 )
 from django.http import Http404
 from django.core.files.base import ContentFile
+from django.contrib import messages
 
 import requests
 
@@ -109,6 +110,7 @@ def send_verify_view(request, user_id):
 
 def logout_view(request):
     logout(request)
+    messages.info(request, "Good by!")
     return redirect(reverse("core:home"))
 
 
@@ -255,6 +257,11 @@ def github_callback(request):
                                 and user.login_method == models.User.LOGIN_METHOD_GITHUB
                             ):
                                 login(request, user)
+                                messages.success(
+                                    request,
+                                    f"Github login success, hello {user.first_name}.",
+                                )
+                                return redirect(reverse("core:home"))
                             else:
                                 raise GithubException(
                                     "The github email that you logged in is already exist"
@@ -271,6 +278,11 @@ def github_callback(request):
                             user.set_unusable_password()
                             user.save()
                             login(request, user)
+                            messages.success(
+                                request,
+                                f"Github login success, hello {user.first_name}.",
+                            )
+                            return redirect(reverse("core:home"))
                     else:
                         raise GithubException(
                             "Error in receiving username on github profile."
@@ -282,11 +294,8 @@ def github_callback(request):
             # while getting code from github auth page, error occured.
             raise GithubException("While getting code, error occured.")
     except GithubException as e:
-        print(e)
+        messages.error(request, e)
         return redirect(reverse("users:login"))
-    finally:
-        print("Success getting github login data.")
-        return redirect(reverse("core:home"))
 
 
 class KakaoException(Exception):
@@ -366,6 +375,10 @@ def kakao_callback(request):
                             and user.login_method == models.User.LOGIN_METHOD_KAKAO
                         ):
                             login(request, user)
+                            messages.success(
+                                request, f"Login Success, hello {user.first_name}"
+                            )
+                            return redirect(reverse("core:home"))
                         else:
                             raise KakaoException(
                                 "The kakao email that you logged in is already exist"
@@ -389,6 +402,10 @@ def kakao_callback(request):
                             )
 
                         login(request, user)
+                        messages.success(
+                            request, f"Login Success, hello {user.first_name}"
+                        )
+                        return redirect(reverse("core:home"))
                 else:
                     raise KakaoException("Error in receiving profile from kakao.")
             else:
@@ -404,7 +421,7 @@ def kakao_callback(request):
                 )
     except KakaoException as e:
         print("Failed to log in using kakao auth.")
-        print(f"Message: {e}")
+        messages.error(request, e)
+        print(e)
         return redirect(reverse("users:login"))
-    finally:
-        return redirect(reverse("core:home"))
+

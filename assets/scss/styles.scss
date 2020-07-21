@@ -47,4 +47,34 @@
   }
 }
 
+@keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.message {
+  &.error {
+    @apply bg-red-300;
+  }
+  &.success {
+    @apply bg-green-300;
+  }
+  &.debug {
+    @apply bg-indigo-300;
+  }
+  &.info {
+    @apply bg-blue-300;
+  }
+
+  &.fade-out {
+    opacity: 1;
+    animation: fadeout 0.7s linear 3s;
+    animation-fill-mode: forwards;
+  }
+}
+
 @tailwind utilities;
