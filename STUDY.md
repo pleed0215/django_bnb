@@ -774,8 +774,15 @@
     - 또한, admin 패널에 가면 바로 프로필로 갈 수 있다.. 아 이거 room에서 한것 같은데..? admin 패널에서 사용하려고도 한다는 이유!
 
 ## User profile part
+
 - user detail view를 하고 있는 중에 문제..
+
   - user/pk로 들어가면..
   - detail view에서 자동으로 user를 login session의 user로 바꿔서.. 꼬이게 된다.
+
     - context_object_name에서 바꾸면 되는 문제.
-    - get_context_data context를 추가해주려면 이 함수를 overriding  해야 한다.
+    - get_context_data context를 추가해주려면 이 함수를 overriding 해야 한다.
+
+  - 말해주지 않은 것이 있다면서..
+    - url rule: 끝에 '/'가 붙어야 한다.
+    - 니꼬도 매번 까먹는다고 한다.

@@ -10,7 +10,7 @@ urlpatterns = [
 """
 
 urlpatterns = [
-    path("<int:pk>", views.RoomDetailView.as_view(), name="detail"),
-    path("search", views.search_view, name="search"),
+    path("<int:pk>/", views.RoomDetailView.as_view(), name="detail"),
+    path("search/", views.search_view, name="search"),
 ]
 

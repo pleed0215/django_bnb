@@ -19,6 +19,10 @@
   @apply flex rounded items-center h-20 mb-2;
 }
 
+.btn {
+  @apply flex rounded items-center justify-center h-10 w-1/2;
+}
+
 .auth-input {
   @apply flex rounded items-center h-20 mb-2 w-full border px-5;
   &:focus {
