@@ -786,3 +786,25 @@
   - 말해주지 않은 것이 있다면서..
     - url rule: 끝에 '/'가 붙어야 한다.
     - 니꼬도 매번 까먹는다고 한다.
+
+### UpdateProfile part
+
+- UpdateProfileView를 만드는 도중
+  - django.views.generic.UpdateView가 있어서 상속 받아서 쓰려고 하는 도중.
+    - model, fields 세팅하고 사용하려는데,
+    - 꼭 pk가 들어가야 된다고 하는데... 이는 초기에 query_set, pk_url_kwarg, query_pk_and_slug 와 관련 있는 것으로 보인다.
+      - get_object method를 override.
+        - query set이나 pk_url_kwarg 등의 속성들이 설정되어 있으면, ,그것에 해당하는 오브젝트를 반환하는데 여기서
+        - url 자체가 users/update-profile이기 때문에 pk를 주어주지 않는다. 그러면 어떡해야 하냐..??
+        - get_object에 self.request.user를 리턴해주면 된다.
+      - object name은 context_object_name으로 수정하면 template에 넘어가고,
+      - form은 form 을 만들어서 form이라는 이름으로 template에 form을 넘겨준다.
+      - 자동으로 만들어지는 폼에 submit을 하면 자동으로 get_absolute_url이 있으면 그쪽으로 이동해 준다.
+      - image가 좀 문제가 되는데, form에 enctype="multipart/form-data"가 포함되어 있어야 이미지 정보가 올라간다.
+        - django가 기본적으로 제공해주는 image file filed는 너무 못생겼다. customizing이 필요하다.
+        - customizing에 대해서는 자세히 설명을 해주지 않고 html inspecting을 하여서 class 이름을 확인했고, 변경하든말든.. 님들 맘이라고 함.
+      - username, email을 변경하고 싶다면....???
+        - 놀랍게도 Form에만 있던 form_valid 메소드가 있다. 이걸 오버라이딩 하면 된다.
+        - username을 수정하면서 이미 있는 이메일 계정으로 바꿔봤다.. 우리는 이메일 계정이 곧 username이고 이는 unique해야 한다능 규칙이 있는데,
+        - 이 규칙을 체크를 안하고 바로 저장을 할 수 있었다.. 이것을 체크 해야 한다.
+        - filter로 점검하는게 가장 간단한가 보다.

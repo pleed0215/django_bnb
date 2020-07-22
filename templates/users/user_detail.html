@@ -15,7 +15,7 @@
     </p>
     {% if profile == user %}
     <div class="btn mt-6 text-center bg-red-600 w-4/5 hover:bg-red-500 transition-colors duration-300">
-        <a class="text-white" href="users:edit">Edit Profile</a>
+        <a class="text-white" href="{% url 'users:update' %}">Edit Profile</a>
     </div>
     {% endif %}
 </div>

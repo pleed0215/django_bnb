@@ -59,7 +59,7 @@ class User(AbstractUser):
     )
 
     def get_absolute_url(self):
-        return rerverse("users:user", kwargs={"pk": self.pk})
+        return reverse("users:user", kwargs={"pk": self.pk})
 
     def verify_email(self):
         if self.email_verified is True:
@@ -79,7 +79,4 @@ class User(AbstractUser):
                 fail_silently=False,
                 html_message=html_msg,
             )
-
-    def get_absolute_url(self):
-        return reverse("users:user", kwargs={"pk": self.pk})
 

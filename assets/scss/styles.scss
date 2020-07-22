@@ -31,11 +31,22 @@
 }
 
 .form-auth {
-  input {
-    @apply flex rounded items-center h-20 my-2 w-full border px-5;
+  input,
+  textarea,
+  select {
+    @apply flex rounded items-center h-16 my-2 w-full border p-3;
     &:focus {
       @apply outline-none border-teal-500;
     }
+  }
+
+  textarea {
+    resize: none;
+    height: 200px;
+  }
+
+  select {
+    height: 3em;
   }
 
   &.input-error {

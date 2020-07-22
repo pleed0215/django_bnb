@@ -2,6 +2,7 @@ import os
 from django.shortcuts import render, redirect, reverse
 from django.urls import reverse_lazy
 from django.views import View
+from django.views.generic import UpdateView
 from django.views.generic import FormView, DetailView
 from django.contrib.auth import (
     authenticate,
@@ -17,6 +18,7 @@ from django.contrib import messages
 import requests
 
 from . import models, forms
+from django import forms as django_forms
 
 # Create your views here.
 class UserDetailView(DetailView):
@@ -27,7 +29,6 @@ class UserDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context["hello"] = "Hello"
         return context
-    
 
 
 # Login Views
@@ -88,6 +89,61 @@ def send_verify_view(request, user_id):
         )
     except models.User.DoesNotExist:
         return redirect("404.html")
+
+
+# edit profile view
+# url - users:edit
+class UpdateProfileView(UpdateView):
+    fields = (
+        "email",
+        "first_name",
+        "last_name",
+        "avatar",
+        "bio",
+        "gender",
+        "currency",
+        "language",
+    )
+    model = models.User
+    template_name = "users/update-profile.html"
+    context_object_name = "profile"
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def form_valid(self, form):
+        email = form.cleaned_data.get("email")
+        user = models.User.objects.get(pk=self.request.user.pk)
+
+        if email != user.email:
+            # email(username) changed.
+            try:
+                # check if username is unique.
+                models.User.objects.get(username=email)
+                messages.error(
+                    self.request,
+                    "The email address you wrote is already exist. Use another please.",
+                )
+                return redirect(reverse("users:update"))
+
+            except models.User.DoesNotExist:
+                # case of username is unique.
+                user.username = email
+                user.email_verified = False
+                print(user.username)
+                user.login_method = models.User.LOGIN_METHOD_EMAIL
+                user.save()
+                user.verify_email()
+
+                messages.info(
+                    self.request,
+                    f"We send a verification email to {email}. Please check your email for verification.",
+                )
+
+                return super().form_valid(form)
+        else:
+            # except email, other things are changed.
+            return super().form_valid(form)
 
 
 # login form page, using just View Class.
@@ -255,7 +311,7 @@ def github_callback(request):
 
                         try:
                             # user has the github email is exist.
-                            user = models.User.objects.get(email=email)
+                            user = models.User.objects.get(username=email)
 
                             # todo: think about already exist email and git hub login method.
 
@@ -373,7 +429,7 @@ def kakao_callback(request):
 
                     try:
                         # user has the github email is exist.
-                        user = models.User.objects.get(email=email)
+                        user = models.User.objects.get(username=email)
 
                         # todo: think about already exist email and git hub login method.
 
@@ -405,7 +461,8 @@ def kakao_callback(request):
                         if profile_url is not None:
                             profile_request = requests.get(profile_url)
                             user.avatar.save(
-                                f"{name}_{user.pk}_avatar", ContentFile(profile_request.content)
+                                f"{name}_{user.pk}_avatar",
+                                ContentFile(profile_request.content),
                             )
 
                         login(request, user)
