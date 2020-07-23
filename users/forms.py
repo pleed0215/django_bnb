@@ -1,5 +1,11 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import (
+    UserCreationForm,
+    AuthenticationForm,
+    PasswordChangeForm,
+)
+from django.contrib.auth import password_validation
+from django.utils.translation import gettext, gettext_lazy as _
 
 from . import models
 
@@ -192,3 +198,25 @@ class SignupForm(forms.ModelForm):
         except models.User.DoesNotExist as e:
             print(e)
             raise forms.ValidationError("User has that email address doesn't exist.")"""
+
+
+class UpdatePasswordForm(PasswordChangeForm):
+    old_password = forms.CharField(
+        label=_("Old password"),
+        strip=False,
+        widget=forms.PasswordInput(
+            attrs={"autofocus": True, "placeholder": "Write current password"}
+        ),
+    )
+    new_password1 = forms.CharField(
+        label=_("New password"),
+        strip=False,
+        help_text=password_validation.password_validators_help_text_html(),
+        widget=forms.PasswordInput(attrs={"placeholder": "Write new password"}),
+    )
+    new_password2 = forms.CharField(
+        label=_("New password confirmation"),
+        strip=False,
+        widget=forms.PasswordInput(attrs={"placeholder": "Verify new password"}),
+    )
+

@@ -808,3 +808,7 @@
         - username을 수정하면서 이미 있는 이메일 계정으로 바꿔봤다.. 우리는 이메일 계정이 곧 username이고 이는 unique해야 한다능 규칙이 있는데,
         - 이 규칙을 체크를 안하고 바로 저장을 할 수 있었다.. 이것을 체크 해야 한다.
         - filter로 점검하는게 가장 간단한가 보다.
+
+### PasswordChangeView
+
+- django.contrib.auth.views.PasswordChangeView

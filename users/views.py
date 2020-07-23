@@ -11,6 +11,7 @@ from django.contrib.auth import (
     views as auth_views,
     forms as auth_forms,
 )
+
 from django.http import Http404
 from django.core.files.base import ContentFile
 from django.contrib import messages
@@ -112,8 +113,15 @@ class UpdateProfileView(UpdateView):
         return self.request.user
 
     def form_valid(self, form):
-        email = form.cleaned_data.get("email")
         user = models.User.objects.get(pk=self.request.user.pk)
+        email = form.cleaned_data.get("email")
+        first_name = form.cleaned_data.get("first_name")
+        last_name = form.cleaned_data.get("last_name")
+        avatar = form.cleaned_data.get("avatar")
+        bio = form.cleaned_data.get("bio")
+        gender = form.cleaned_data.get("gender")
+        currency = form.cleaned_data.get("currency")
+        language = form.cleaned_data.get("language")
 
         if email != user.email:
             # email(username) changed.
@@ -128,19 +136,29 @@ class UpdateProfileView(UpdateView):
 
             except models.User.DoesNotExist:
                 # case of username is unique.
+                ### 문제 발생: super().form_valid를 사용하면 내가 저장한 데이터가 없어지고
+                ### super().form_save를 안 쓰자니..너무 번거롭네.
+                messages.info(
+                    self.request,
+                    f"Logged out. Your login method is changed.\n"
+                    f"We send a verification email to {email}. Please check your email for verification.",
+                )
+                logout(self.request)
                 user.username = email
+                user.email = email
+                user.first_name = first_name
+                user.last_name = last_name
+                user.avatar = avatar
+                user.bio = bio
+                user.gender = gender
+                user.currency = currency
+                user.language = language
                 user.email_verified = False
-                print(user.username)
                 user.login_method = models.User.LOGIN_METHOD_EMAIL
                 user.save()
                 user.verify_email()
 
-                messages.info(
-                    self.request,
-                    f"We send a verification email to {email}. Please check your email for verification.",
-                )
-
-                return super().form_valid(form)
+                return redirect(reverse("core:home"))
         else:
             # except email, other things are changed.
             return super().form_valid(form)
@@ -173,7 +191,7 @@ class UpdateProfileView(UpdateView):
 
 def logout_view(request):
     logout(request)
-    messages.info(request, "Good by!")
+    messages.info(request, "Good bye!")
     return redirect(reverse("core:home"))
 
 
@@ -219,6 +237,18 @@ def complete_verification(request, key):
         return render(
             request, "users/verification.html", context={"success": is_success}
         )
+
+
+class UpdatePasswordView(auth_views.PasswordChangeView):
+    template_name = "users/update-password.html"
+    form_class = forms.UpdatePasswordForm
+
+    def form_valid(self, form):
+        self.success_url = reverse_lazy(
+            "users:user", kwargs={"pk": self.request.user.pk}
+        )
+        messages.success(self.request, "Password updated")
+        return super().form_valid(form)
 
 
 """
