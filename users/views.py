@@ -15,10 +15,11 @@ from django.contrib.auth import (
 from django.http import Http404
 from django.core.files.base import ContentFile
 from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 
 import requests
 
-from . import models, forms
+from . import models, forms, mixins
 from django import forms as django_forms
 
 # Create your views here.
@@ -52,7 +53,7 @@ class UserDetailView(DetailView):
         return super().form_valid(form)"""
 
 
-class LoginView(auth_views.LoginView):
+class LoginView(mixins.LoggedOutOnlyView, auth_views.LoginView):
     template_name = "users/login.html"
     form_class = forms.LoginForm
     success_url = reverse_lazy("core:home")
@@ -94,7 +95,7 @@ def send_verify_view(request, user_id):
 
 # edit profile view
 # url - users:edit
-class UpdateProfileView(UpdateView):
+class UpdateProfileView(SuccessMessageMixin, UpdateView):
     fields = (
         "email",
         "first_name",
@@ -108,6 +109,7 @@ class UpdateProfileView(UpdateView):
     model = models.User
     template_name = "users/update-profile.html"
     context_object_name = "profile"
+    success_message = "Profile updated"
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -163,6 +165,13 @@ class UpdateProfileView(UpdateView):
             # except email, other things are changed.
             return super().form_valid(form)
 
+    def get_form(self, form_class=None):
+        form = super().get_form (form_class=form_class)
+        form.fields['email'].widget.attrs = {"placeholder" : "Username", "autofocus": True}
+        form.fields['first_name'].widget.attrs = {"placeholder" : "First name"}
+        form.fields['last_name'].widget.attrs = {"placeholder" : "Last name"}
+        form.fields['bio'].widget.attrs = {"placeholder" : "Write your profile message here"}
+        return form
 
 # login form page, using just View Class.
 """class LoginView(View):
@@ -241,14 +250,27 @@ def complete_verification(request, key):
 
 class UpdatePasswordView(auth_views.PasswordChangeView):
     template_name = "users/update-password.html"
-    form_class = forms.UpdatePasswordForm
+#    form_class = forms.UpdatePasswordForm
 
     def form_valid(self, form):
-        self.success_url = reverse_lazy(
+        # 이렇게 하는 대신에 get_success_url을 overriding 해도 된다.
+        """self.success_url = reverse_lazy(
             "users:user", kwargs={"pk": self.request.user.pk}
-        )
+        )"""
         messages.success(self.request, "Password updated")
         return super().form_valid(form)
+
+    def get_success_url(self):
+        return self.request.user.get_absolute_url()
+
+    def get_form(self, form_class=None):
+        form = super().get_form (form_class=form_class)
+        form.fields['old_password'].widget.attrs = {"placeholder" : "Current password here.", "autofocus": True}
+        form.fields['new_password1'].widget.attrs = {"placeholder" : "Write new password here"}
+        form.fields['new_password2'].widget.attrs = {"placeholder" : "Verify your new password"}
+        return form
+    
+        
 
 
 """

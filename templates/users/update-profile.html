@@ -4,11 +4,11 @@ update {{profile.first_name}}'s profile
 {% endblock pagename %}
 
 {% block content %}
-    <div class="xl:w-2/5 lg:w-2/5 md:w-40 sm:flex-shrink-0 border p-10 min-w-1/2 h-75vh overflow-y-auto">
-        {% include "partials/form_auth.html" with form=form cta="Update Profile" %}
-        <div class="auth-btn mb-2 bg-red-500 text-white hover:bg-red-400 transition duration-200">
-            <a class="mx-auto" href="{% url "users:password" %}">Change Password</a>
-        </div>
-    </div>
-    
+<div class="xl:w-2/5 lg:w-2/5 md:w-40 sm:flex-shrink-0 border p-10 min-w-1/2 h-75vh overflow-y-auto">
+    {% include "partials/form_auth.html" with form=form cta="Update Profile" %}
+    <a class="text-teal-400 hover:underline mx-auto" href="{% url "users:password" %}">
+        <p class="text-center">Change Password</p>
+    </a>
+</div>
+
 {% endblock content %}

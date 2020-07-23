@@ -812,3 +812,29 @@
 ### PasswordChangeView
 
 - django.contrib.auth.views.PasswordChangeView
+  - 다 좋은데, placeholder를 넣는데 애먹었다.
+  - PasswordChangeView는 PasswordChangeForm을 가지고 있는데..
+    - 이 클래스를 상속받아서, old_password, new_password1, new_password2를 재정의했다. 근데 다른 방법이 있나봐 글쎄.
+    - get_form 메소드를 재정의 하는거야.. PasswordChangeView를 상속 받은 뷰에서 말이지.
+      - UpdateProfile get_form method를 override하였다. 이거 확인 하면 될듯.
+    - 또는 form클래스를 만들어서 form_class 속성에 넣어주면 되는 것.
+- template에서 field 받아 온 경우 field.label을 사용하면 label을 자동적으로 쓸 수 있다.
+
+## 이상한 접근을 막아라.
+
+- 예를들어, login한 상태에서 로그인 페이지로 강제 이동할 수 있다.
+
+## Mixin??
+
+- 메세지 추가 등.. 추가 적으로 뭔가 할 수 있는?
+- 대표적인 것이 MessageMixin
+
+  - django message mixin -> django.contrib.messages.views SuccessMessageMixin
+  - UpdateProfileView에 SuccessMessageMixin을 오버라이딩하고 success_message를 추가했을 뿐인데.. 잘 완료 되면 메시지를 보낼 수 있다.
+
+- django condition mixin
+
+  - UserPassesTestMixin, class-based view를 사용할 때, 가능.
+  - test_func을 overriding 해야함.
+
+- mixins.py를 만들어서.. django.contrib.auth.mixins 에서 UserPassesTestMixin을 상속 받는다.
