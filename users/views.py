@@ -56,8 +56,6 @@ class UserDetailView(DetailView):
 class LoginView(mixins.LoggedOutOnlyView, auth_views.LoginView):
     template_name = "users/login.html"
     form_class = forms.LoginForm
-    success_url = reverse_lazy("core:home")
-    redirect_authenticated_user = True
 
     def form_valid(self, form):
         email = form.cleaned_data.get("username")
@@ -68,7 +66,7 @@ class LoginView(mixins.LoggedOutOnlyView, auth_views.LoginView):
             if user.email_verified is True:
                 print("login success")
                 login(self.request, user)
-                return redirect(reverse("core:home"))
+                return super().form_valid(form)
             else:
                 return render(
                     self.request,
@@ -78,6 +76,13 @@ class LoginView(mixins.LoggedOutOnlyView, auth_views.LoginView):
         else:
             print("login failed")
         return redirect(self.get_success_url())
+
+    def get_success_url(self):
+        next_arg = self.request.GET.get("next")
+        if next_arg is not None:
+            return next_arg
+        else:
+            return reverse("core:home")
 
 
 def send_verify_view(request, user_id):
@@ -95,7 +100,7 @@ def send_verify_view(request, user_id):
 
 # edit profile view
 # url - users:edit
-class UpdateProfileView(SuccessMessageMixin, UpdateView):
+class UpdateProfileView(mixins.LoginOnlyView, SuccessMessageMixin, UpdateView):
     fields = (
         "email",
         "first_name",
@@ -166,12 +171,18 @@ class UpdateProfileView(SuccessMessageMixin, UpdateView):
             return super().form_valid(form)
 
     def get_form(self, form_class=None):
-        form = super().get_form (form_class=form_class)
-        form.fields['email'].widget.attrs = {"placeholder" : "Username", "autofocus": True}
-        form.fields['first_name'].widget.attrs = {"placeholder" : "First name"}
-        form.fields['last_name'].widget.attrs = {"placeholder" : "Last name"}
-        form.fields['bio'].widget.attrs = {"placeholder" : "Write your profile message here"}
+        form = super().get_form(form_class=form_class)
+        form.fields["email"].widget.attrs = {
+            "placeholder": "Username",
+            "autofocus": True,
+        }
+        form.fields["first_name"].widget.attrs = {"placeholder": "First name"}
+        form.fields["last_name"].widget.attrs = {"placeholder": "Last name"}
+        form.fields["bio"].widget.attrs = {
+            "placeholder": "Write your profile message here"
+        }
         return form
+
 
 # login form page, using just View Class.
 """class LoginView(View):
@@ -248,9 +259,9 @@ def complete_verification(request, key):
         )
 
 
-class UpdatePasswordView(auth_views.PasswordChangeView):
+class UpdatePasswordView(mixins.EmailLoginOnlyView, auth_views.PasswordChangeView):
     template_name = "users/update-password.html"
-#    form_class = forms.UpdatePasswordForm
+    #    form_class = forms.UpdatePasswordForm
 
     def form_valid(self, form):
         # 이렇게 하는 대신에 get_success_url을 overriding 해도 된다.
@@ -264,13 +275,18 @@ class UpdatePasswordView(auth_views.PasswordChangeView):
         return self.request.user.get_absolute_url()
 
     def get_form(self, form_class=None):
-        form = super().get_form (form_class=form_class)
-        form.fields['old_password'].widget.attrs = {"placeholder" : "Current password here.", "autofocus": True}
-        form.fields['new_password1'].widget.attrs = {"placeholder" : "Write new password here"}
-        form.fields['new_password2'].widget.attrs = {"placeholder" : "Verify your new password"}
+        form = super().get_form(form_class=form_class)
+        form.fields["old_password"].widget.attrs = {
+            "placeholder": "Current password here.",
+            "autofocus": True,
+        }
+        form.fields["new_password1"].widget.attrs = {
+            "placeholder": "Write new password here"
+        }
+        form.fields["new_password2"].widget.attrs = {
+            "placeholder": "Verify your new password"
+        }
         return form
-    
-        
 
 
 """

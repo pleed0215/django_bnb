@@ -838,3 +838,23 @@
   - test_func을 overriding 해야함.
 
 - mixins.py를 만들어서.. django.contrib.auth.mixins 에서 UserPassesTestMixin을 상속 받는다.
+
+## next arg
+
+- 대박쓰.. 만약 update password나 update profile로 로그인을 안하고 갔을 때, 로그인 페이지로 가도록
+- (LoginRequireMixin을 이용하여 만들어 놨는데) 해놨는데, 로그인 후 원래 가려던 페이지로 가고 싶다면....????
+- LoginView로 가서 get_success_url을 overriding을 하여서.. next_arg를 request.GET에서 언어오면 된다.
+- 이 값이 NoneType이면, next_arg가 없다라는 의미이니, 그냥 원래 success_url(또는 home)을 리턴해주면 되고, 아니면.. next_arg을 리턴해주면 된다.
+
+## Done wiht user part
+
+### permission
+
+- permission 관련한 강려크한 기능이 있는데, 여기서는 다루지 않는다.
+  - user.has_perm method
+- class 관련하여 뷰를 다뤘기 때문에 mixin을 상속받아 login, logout 을 체크하였는데,
+- 함수기반에서는 decorator를 이용하는 방법이 있다. (ex. @login_required)
+- Auth 관련하여 urlpatterns에 accounts, include('django.contrib.auth.urls')
+  - 를 할 수 있는데...accounts에 관련하여 대부분의 경로를 제공해준다.
+  - password reset 관련된 부분은 꽤 강력하다. password reset을 하면 email을 보내주고,
+  - 이메일 확인하여 패스워드를 리셋할 수 있다.
