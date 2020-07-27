@@ -1,18 +1,32 @@
 {% extends "base.html" %} 
+{% load countries %}
+{% get_countries as countries %}
+
 {% block pagename %} Home {% endblock pagename %}
 {%block content %}
-<div class="container max-w-full mb-20 h-screen">
-    <div class="w-5/6 flex flex-col h-20vh">
+<div class="w-5/6 max-w-full h-screen">
+    <div class="w-5/6 flex flex-col h-20vh mb-10">
         <h2 class="text-2xl">{{object.name}}</h2>
-        <div class="w-full flex items-baseline text-lg">
-            <i class="fas fa-star text-red-600 font-bold text-lg ml-3 mr-2"></i>
+        <div class="w-full flex items-baseline text-base">
+            <i class="fas fa-star text-red-500 font-bold text-base ml-3 mr-2"></i>
             <span>{{object.get_ratings}}</span>
-            <span class="text-base">({{object.my_reviews.count}})</span>
+            <span class="text-base text-gray-700">({{object.my_reviews.count}})</span>
             {% if object.host.is_superhost %}
-            
-            <span class="mx-2 text-gray-900 text-ls"></span>
+            <span class="mx-2 text-gray-700 text-base">﹒ <i class="fas fa-check text-red-500 mr-1"></i>SUPERHOST</span>
             {% endif %}
+            <span class="mx-1 text-gray-700 text-base">﹒ {{object.city}}, {{object.country.name}}</span>
         </div>
+    </div>
+    <div class="w-full flex flex-row h-50vh mb-10 mx-auto">
+        <div class="w-3/5 h-full bg-gray-100 mr-5 bg-cover bg-center rounded-l-lg" style="background-image: url('{{object.first_image}}');"></div>
+        <div class="w-2/5 h-full bg-gray-100 grid-cols-2 grid grid-rows-2 gap-5">
+            {% for image in object.from_second_four_image %}
+            
+            <div class="w-full h-full bg-cover bg-center {% if forloop.counter is 2 %}rounded-tr-lg{% elif forloop.counter is 4 %}rounded-br-lg{% endif %}" style="background-image: url('{{image.image.url}}');">
+            </div>
+            {% endfor %}
+        </div>
+    
     </div>
 </div>
 <div>

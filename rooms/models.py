@@ -101,6 +101,10 @@ class Room(AbstractTimeStamped):
         (first,) = self.my_photos.all()[:1]
         return first.image.url
 
+    def from_second_four_image(self):
+        photos = self.my_photos.all()[1:5]
+        return photos
+
     def get_ratings(self):
         reviews = self.my_reviews.all()
         avgs = 0.0
