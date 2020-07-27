@@ -21,37 +21,26 @@
         <div class="w-3/5 h-full bg-gray-100 mr-5 bg-cover bg-center rounded-l-lg" style="background-image: url('{{object.first_image}}');"></div>
         <div class="w-2/5 h-full bg-gray-100 grid-cols-2 grid grid-rows-2 gap-5">
             {% for image in object.from_second_four_image %}
-            
             <div class="w-full h-full bg-cover bg-center {% if forloop.counter is 2 %}rounded-tr-lg{% elif forloop.counter is 4 %}rounded-br-lg{% endif %}" style="background-image: url('{{image.image.url}}');">
             </div>
             {% endfor %}
         </div>
-    
+    </div>
+    <div class="w-full h-75vh mx-auto flex justify-around">
+        <div class="w-1/2">
+            <div class="flex justify-between items-center mb-8">
+                <div class="block">
+                    <p class="text-gray-800 text-base">{{ object.name }}</p>
+                    <p class="text-base font-thin text-gray-500">{{ object.city }}</p>
+                </div>
+                <div class="w-16 h-16">{% include "partials/avatar.html" with profile=object.host %}</div>
+            </div>
+            <hr>
+        </div>
+        <div class="w-1/3">
+
+        </div>
     </div>
 </div>
-<div>
-    <h2>By: <a href={{object.host.get_absolute_url}}>{{object.host}}</a> {% if object.host.is_superhost %}&lt;&lt;Super host&gt;&gt;{% else %}&lt;&lt;Not a Super host&gt;&gt;{% endif %}</h2>
-    <h4>Room type: {{object.room_type}}</h4>
-    {% for p in object.my_photos.all %}
-        <img src="{{p.image.url}}" width="100px" height="100px" />
-    {% endfor %}
-    <h3>Amenities</h3>
-    <ul>
-    {% for a in object.amenities.all %}
-        <li>{{a}}</li>
-    {% endfor %}
-    </ul>
-    <h3>Facilities</h3>
-    <ul>
-    {% for a in object.facilities.all %}
-        <li>{{a}}</li>
-    {% endfor %}
-    </ul>
-    <h3>House rules</h3>
-    <ul>
-    {% for a in object.house_rules.all %}
-        <li>{{a}}</li>
-    {% endfor %}
-    </ul>
-</div>
+
 {% endblock content %}
