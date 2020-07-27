@@ -33,9 +33,19 @@
                     <p class="text-gray-800 text-base">{{ object.name }}</p>
                     <p class="text-base font-thin text-gray-500">{{ object.city }}</p>
                 </div>
-                <div class="w-16 h-16">{% include "partials/avatar.html" with profile=object.host %}</div>
+                <div class="w-12 h-12">
+                    {% include "partials/avatar.html" with profile=object.host %}
+                    <p class="text-gray-600 font-light text-center text-xs">{{ object.host.first_name }}</p>
+                </div>
             </div>
-            <hr>
+            <hr class="mb-4">
+            <div>
+                <span class="text-gray-700 font-normal text-base">{{ room.room_type }} / </span>
+                <span class="text-gray-700 font-normal text-base">max guests {{ room.guests }} / </span>
+                <span class="text-gray-700 font-normal text-base">beds {{ room.beds }} / </span>
+                <span class="text-gray-700 font-normal text-base">bedrooms {{ room.bedrooms }} / </span>
+                <span class="text-gray-700 font-normal text-base">baths {{ room.baths }}</span>
+            </div>
         </div>
         <div class="w-1/3">
 
