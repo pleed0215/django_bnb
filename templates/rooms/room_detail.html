@@ -100,8 +100,25 @@
             {% endfor %}
         </div>
     </div>
-    <div class="border-t border-gray-400 mt-5 pt-5 w-full h-auto">
-
+    <div class="border-t border-gray-400 mt-5 pt-5 w-full h-auto flex justify-center">
+        <div class="w-11/12 h-auto grid grid-cols-2 justify-center">
+        {% for r in object.my_reviews.all %}
+            <div class="h-auto w-full flex flex-col mb-12 px-4">
+                <div class="w-full h-auto flex flex-row mb-2">
+                    <div class="w-16 h-16">
+                    {% include "partials/avatar.html" with profile=r.user %}
+                    </div>
+                    <div class="pl-4 w-auto h-auto flex flex-col">
+                        <p>{{ r.user.first_name }}</p>
+                        <p>{{ r.created_at|date:"Y, M" }}</p>
+                    </div>
+                </div>
+                <div class="w-full h-auto flex flex-row">
+                    <p class="font-light text-base text-gray-700">{{ r.review }}</p>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
     </div>
 </div>
 {% endblock content %}
