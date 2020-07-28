@@ -4,7 +4,7 @@
 
 {% block pagename %} Home {% endblock pagename %}
 {%block content %}
-<div class="w-5/6 max-w-full h-auto">
+<div class="w-5/6 max-w-full h-auto flex flex-col">
     <div class="w-5/6 flex flex-col h-20vh mb-10">
         <h2 class="text-2xl">{{object.name}}</h2>
         <div class="w-full flex items-baseline text-base">
@@ -76,19 +76,32 @@
                         {% endfor %}
                     </div>
             </div>
-            <div class="border-t border-gray-400 mt-5 pt-5">
-                <h2 class="text-xl text-gray-600">
-                    <i class="fas fa-star text-red-500 font-bold text-base ml-3 mr-2"></i>{{ object.get_ratings}} points ({{ room.my_reviews.count }} review{{room.my_reviews.count|pluralize}})</h2>
-                    <div class="grid grid-cols-2 w-full h-auto">
-                        {% for a in room.house_rules.all %}
-                            <p class="text-base font-normal text-gray-500">{{ a }}</p>
-                        {% endfor %}
-                    </div>
-            </div>
         </div>
         <div class="w-1/3">
 
         </div>
+
+    </div>
+    <div class="border-t border-gray-400 mt-5 pt-5 w-full h-auto">
+        <h2 class="text-xl text-gray-600">
+        <i class="fas fa-star text-red-500 font-bold text-base ml-3 mr-2"></i>{{ object.get_ratings}} points ({{ room.my_reviews.count }} review{{room.my_reviews.count|pluralize}})</h2>
+        <div class="grid grid-cols-2 w-full h-auto">
+            {% for i, v in object.sum_reviews.items %}
+            <div class="flex flex-row justify-center w-full h-auto my-auto">
+                <div class="grid grid-cols-2 items-center justify-center w-full h-auto pl-3">
+                    <p class="ml-2 w-full text-lg text-gray-700 font-light">{{ i }}: {{ v.0 }}</p>
+                    <div class="relative px-2 flex items-center w-full">
+                        <div class="overflow-hidden h-2 w-full text-xs flex rounded bg-pink-200">
+                            <div style="width:{{ v.1 }}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-pink-500"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="border-t border-gray-400 mt-5 pt-5 w-full h-auto">
+
     </div>
 </div>
 {% endblock content %}

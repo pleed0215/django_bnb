@@ -115,5 +115,44 @@ class Room(AbstractTimeStamped):
             avgs = avgs / reviews.count()
         return round(avgs, 2)
 
+    def sum_reviews(self):
+        reviews = self.my_reviews.all()
+        sums = {}
+        sum_cleanliness = 0.0
+        sum_location = 0.0
+        sum_communication = 0.0
+        sum_value = 0.0
+        sum_check_in = 0.0
+        sum_accuracy = 0.0
+
+        if len(reviews) >0:
+            count_of = len(reviews)
+            for r in reviews:
+                sum_cleanliness += r.cleanliness
+                sum_location += r.location
+                sum_communication += r.communication
+                sum_value += r.value
+                sum_check_in += r.check_in
+                sum_accuracy += r.accuracy
+
+            sums = {
+                "cleanliness": ( round(sum_cleanliness/count_of,2), int((sum_cleanliness/ count_of/5.0)*100)),
+                "location": (round(sum_location/count_of, 2), int((sum_location/ count_of / 5.0)*100)),
+                "communication": (round(sum_communication/count_of, 2), int((sum_communication / count_of / 5.0)*100)),
+                "value": (round(sum_value/count_of, 2), int((sum_value / count_of / 5.0)*100)),
+                "checkin": (round(sum_check_in/count_of, 2), int((sum_check_in / count_of / 5.0)*100)),
+                "accuracy": (round(sum_accuracy/count_of, 2), int((sum_accuracy / count_of / 5.0)*100)),
+            }
+        else:
+            sums = {
+                "cleanliness": (0.0, 0),
+                "location": (0.0, 0),
+                "communication": (0.0, 0),
+                "value": (0.0, 0),
+                "checkin": (0.0, 0),
+                "accuracy": (0.0, 0),
+            }
+        return sums
+
     def __str__(self):
         return self.name
