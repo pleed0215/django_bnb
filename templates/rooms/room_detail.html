@@ -4,7 +4,7 @@
 
 {% block pagename %} Home {% endblock pagename %}
 {%block content %}
-<div class="w-5/6 max-w-full h-screen">
+<div class="w-5/6 max-w-full h-auto">
     <div class="w-5/6 flex flex-col h-20vh mb-10">
         <h2 class="text-2xl">{{object.name}}</h2>
         <div class="w-full flex items-baseline text-base">
@@ -26,8 +26,8 @@
             {% endfor %}
         </div>
     </div>
-    <div class="w-full h-75vh mx-auto flex justify-around">
-        <div class="w-1/2">
+    <div class="w-full h-auto mx-auto flex justify-around">
+        <div class="w-1/2 h-auto">
             <div class="flex justify-between items-center mb-8">
                 <div class="block">
                     <p class="text-gray-800 text-base">{{ object.name }}</p>
@@ -39,12 +39,51 @@
                 </div>
             </div>
             <hr class="mb-4">
-            <div>
-                <span class="text-gray-700 font-normal text-base">{{ room.room_type }} / </span>
-                <span class="text-gray-700 font-normal text-base">max guests {{ room.guests }} / </span>
-                <span class="text-gray-700 font-normal text-base">beds {{ room.beds }} / </span>
-                <span class="text-gray-700 font-normal text-base">bedrooms {{ room.bedrooms }} / </span>
-                <span class="text-gray-700 font-normal text-base">baths {{ room.baths }}</span>
+            <div class="felx">
+                <span class="mr-5 text-gray-700 font-normal text-base">{{ room.room_type }}</span>
+                <span class="mr-5 text-gray-700 font-normal text-base">max guest{{ room.guests|pluralize }} {{ room.guests }}</span>
+                <span class="mr-5 text-gray-700 font-normal text-base">bed{{ room.beds|pluralize }} {{ room.beds }}</span>
+                <span class="mr-5 text-gray-700 font-normal text-base">bedroom{{ room.bedrooms|pluralize }} {{ room.bedrooms }}</span>
+                <span class="mr-5 text-gray-700 font-normal text-base">bath{{ room.baths|pluralize }} {{ room.baths }}</span>
+            </div>
+            <div class="border-t border-gray-400 mt-5 pt-5">
+                <p class="text-gray-600 text-base">{{ room.description }}</p>
+            </div>
+            <div class="border-t border-gray-400 mt-5 pt-5">
+                <h2 class="text-xl text-gray-600">
+                    Amenities</h2>
+                    <div class="grid grid-cols-2 w-full h-auto">
+                        {% for a in room.amenities.all %}
+                            <p class="text-base font-normal text-gray-500">{{ a }}</p>
+                        {% endfor %}
+                    </div>
+            </div>
+            <div class="border-t border-gray-400 mt-5 pt-5">
+                <h2 class="text-xl text-gray-600">
+                    Facilities</h2>
+                    <div class="grid grid-cols-2 w-full h-auto">
+                        {% for a in room.facilities.all %}
+                            <p class="text-base font-normal text-gray-500">{{ a }}</p>
+                        {% endfor %}
+                    </div>
+            </div>
+            <div class="border-t border-gray-400 mt-5 pt-5">
+                <h2 class="text-xl text-gray-600">
+                    House rules</h2>
+                    <div class="grid grid-cols-2 w-full h-auto">
+                        {% for a in room.house_rules.all %}
+                            <p class="text-base font-normal text-gray-500">{{ a }}</p>
+                        {% endfor %}
+                    </div>
+            </div>
+            <div class="border-t border-gray-400 mt-5 pt-5">
+                <h2 class="text-xl text-gray-600">
+                    <i class="fas fa-star text-red-500 font-bold text-base ml-3 mr-2"></i>{{ object.get_ratings}} points ({{ room.my_reviews.count }} review{{room.my_reviews.count|pluralize}})</h2>
+                    <div class="grid grid-cols-2 w-full h-auto">
+                        {% for a in room.house_rules.all %}
+                            <p class="text-base font-normal text-gray-500">{{ a }}</p>
+                        {% endfor %}
+                    </div>
             </div>
         </div>
         <div class="w-1/3">
@@ -52,5 +91,4 @@
         </div>
     </div>
 </div>
-
 {% endblock content %}

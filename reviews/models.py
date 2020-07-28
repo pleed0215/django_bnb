@@ -15,7 +15,7 @@ class Review(AbstractTimeStamped):
     check_in = models.IntegerField()
     value = models.IntegerField()
 
-    # Forein Key
+    # Foreign Key
     user = models.ForeignKey(
         "users.User", related_name="my_reviews", on_delete=models.CASCADE
     )

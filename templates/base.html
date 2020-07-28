@@ -12,7 +12,7 @@
     {% endblock pagename %}|DjangoBnB</title>
 </head>
 
-<body class="text-gray-800 font-bold mt-20 flex flex-col items-center min-w-full max-w-full mx-auto">
+<body class="text-gray-800 font-bold mt-20 flex flex-col items-center min-w-full max-w-full mx-auto h-auto">
   {% include "partials/messages.html" %}
   <header
     class="container inset-0 max-w-full flex items-center justify-between px-8 h-16 border-b-2 border-gray-500 fixed bg-white">
@@ -39,10 +39,10 @@
       {% include "partials/nav.html" %}
     </div>
   </header>
-  <section class="container flex flex-col items-center w-full h-100vh">
+  <main class="container flex flex-col items-center w-full h-auto">
     {% block content %}
     {% endblock content %}
-  </section>
+  </main>
   {% include "partials/footer.html" %}
 </body>
 
