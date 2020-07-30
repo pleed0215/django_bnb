@@ -11,6 +11,7 @@ urlpatterns = [
 
 urlpatterns = [
     path("<int:pk>/", views.RoomDetailView.as_view(), name="detail"),
+    path("<int:pk>/update", views.UpdateRoomView.as_view(), name="update"),
     path("search/", views.search_view, name="search"),
 ]
 

@@ -2,7 +2,7 @@ import math
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.core.paginator import Paginator, EmptyPage
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, UpdateView
 from django.utils import timezone
 from django.urls import reverse
 from .models import Room, RoomType, Amenity, Facility, HouseRule
@@ -23,6 +23,31 @@ class HomeView(ListView):
         now = timezone.now()
         context["now"] = now
         return context
+
+
+class UpdateRoomView(UpdateView):
+    model = Room
+    fields = (
+        "name",
+        "description",
+        "country",
+        "city",
+        "price",
+        "address",
+        "guests",
+        "beds",
+        "bedrooms",
+        "baths",
+        "check_in",
+        "check_out",
+        "instant_book",
+        "host",
+        "room_type",
+        "amenities",
+        "facilities",
+        "house_rules",
+    )
+    template_name = "rooms/room_update.html"
 
 
 class RoomDetailView(DetailView):
