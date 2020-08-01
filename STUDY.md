@@ -854,6 +854,7 @@
   - user.has_perm method
 - class 관련하여 뷰를 다뤘기 때문에 mixin을 상속받아 login, logout 을 체크하였는데,
 - 함수기반에서는 decorator를 이용하는 방법이 있다. (ex. @login_required)
+  - from django.contrib.auth.decorators import login_required
 - Auth 관련하여 urlpatterns에 accounts, include('django.contrib.auth.urls')
   - 를 할 수 있는데...accounts에 관련하여 대부분의 경로를 제공해준다.
   - password reset 관련된 부분은 꽤 강력하다. password reset을 하면 email을 보내주고,

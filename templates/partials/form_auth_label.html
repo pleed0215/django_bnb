@@ -1,0 +1,16 @@
+<form class="w-full" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-auth {% if field.errors %}input-error{% endif %}">
+        {{field.label}}
+        {{field}}
+        {% include 'partials/input_errors.html' with errors=field.errors %}
+    </div>
+    {% endfor %}
+    <div class="form-auth">
+        {% include "partials/input_errors.html" with errors=form.non_field_errors %}
+    </div>
+    <div class="auth-btn mb-2 bg-red-500 text-white hover:bg-red-400 transition duration-200">
+        <button class="w-full h-full mx-auto">{{cta}}</button>
+    </div>
+</form>

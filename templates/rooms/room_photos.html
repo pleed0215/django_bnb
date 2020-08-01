@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block pagename %}
+{{room.host}}'s photos
+{% endblock pagename %}
+
+{% block content %}
+<div class="container p-10 min-w-1/2 h-75vh overflow-y-auto">
+    {% for p in room.my_photos.all %}
+        <div class="mb-5 w-full p-5 border flex justify-between">
+            <div class="flex items-start">
+                <img src={{p.image.url}} class="w-32 h-32 mr-5" />
+                <span>{{p.caption}}</span>
+            </div>
+            <div class="flex flex-col w-auto">
+                <a class="btn bg-green-400 w-20 mb-2 text-green-700 hover:bg-green-600 hover:text-white transition duration-150" href="#">Edit</a>
+                <a class="btn bg-red-400 w-20 text-red-700 hover:bg-red-600 hover:text-white transition duration-150" href="{% url 'rooms:delete_photo' room_pk=room.pk photo_pk=p.pk %}">Delete</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}

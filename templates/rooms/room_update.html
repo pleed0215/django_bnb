@@ -5,7 +5,10 @@ Update Room
 
 {% block content %}
 <div class="xl:w-2/5 lg:w-2/5 md:w-40 sm:flex-shrink-0 border p-10 min-w-1/2 h-75vh overflow-y-auto">
-    {% include "partials/form_auth.html" with form=form cta="Update Room" %}
+    {% include "partials/form_auth_label.html" with form=form cta="Update Room" %}
+    <a class="text-teal-400 hover:underline mx-auto" href="{% url "rooms:photos" pk=object.pk %}">
+        <p class="text-center">Edit Photos</p>
+    </a>
 </div>
 
 {% endblock content %}

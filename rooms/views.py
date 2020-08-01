@@ -5,10 +5,15 @@ from django.core.paginator import Paginator, EmptyPage
 from django.views.generic import ListView, DetailView, UpdateView
 from django.utils import timezone
 from django.urls import reverse
-from .models import Room, RoomType, Amenity, Facility, HouseRule
+from .models import Room, RoomType, Amenity, Facility, HouseRule, Photo
 from .forms import SearchForm
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from django_countries import countries
+
+
+from users import mixins as user_mixins
 
 # third way. make list.
 class HomeView(ListView):
@@ -25,7 +30,7 @@ class HomeView(ListView):
         return context
 
 
-class UpdateRoomView(UpdateView):
+class UpdateRoomView(user_mixins.LoginOnlyView, UpdateView):
     model = Room
     fields = (
         "name",
@@ -49,11 +54,49 @@ class UpdateRoomView(UpdateView):
     )
     template_name = "rooms/room_update.html"
 
+    def get_object(self, queryset=None):
+        rooms = super().get_object(queryset=queryset)
+        if rooms.host.pk == self.request.user.pk:
+            return rooms
+
+        raise Http404("Do not have access permission for this room")
+
 
 class RoomDetailView(DetailView):
     """ DetailView definition """
 
     model = Room
+
+
+class EditPhotosView(user_mixins.LoginOnlyView, DetailView):
+    model = Room
+    template_name = "rooms/room_photos.html"
+
+    def get_object(self, queryset=None):
+        rooms = super().get_object(queryset=queryset)
+        if rooms.host.pk == self.request.user.pk:
+            return rooms
+
+        raise Http404("Do not have access permission for this room")
+
+
+@login_required
+def delete_photo(request, room_pk, photo_pk):
+    user = request.user
+
+    try:
+        room = Room.objects.get(pk=room_pk)
+
+        if user.pk != room.host.pk:
+            messages.error(request, "While deleting photo, an error occurs.")
+        else:
+            room.my_photos.filter(pk=photo_pk).delete()
+            messages.success(request, "Photo deleted.")
+
+        return redirect("rooms:photos", pk=room_pk)
+
+    except Room.DoesNotExist:
+        return redirect(reverse("core:home"))
 
 
 """  ---------------------------------------------------- """

@@ -109,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Login redirect
-
+LOGIN_URL = "/users/login"
 
 
 # Internationalization
