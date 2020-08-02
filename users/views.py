@@ -1,4 +1,5 @@
 import os
+import requests
 from django.shortcuts import render, redirect, reverse
 from django.urls import reverse_lazy
 from django.views import View
@@ -16,8 +17,8 @@ from django.http import Http404
 from django.core.files.base import ContentFile
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.decorators import login_required
 
-import requests
 
 from . import models, forms, mixins
 from django import forms as django_forms
@@ -182,6 +183,16 @@ class UpdateProfileView(mixins.LoginOnlyView, SuccessMessageMixin, UpdateView):
             "placeholder": "Write your profile message here"
         }
         return form
+
+@login_required
+def switch_host(request):
+    #request.session.pop('is_hosting', True)
+    try:
+        del request.session['is_host']
+    except KeyError:
+        request.session['is_host'] = True
+    finally:
+        return redirect(reverse("core:home"))
 
 
 # login form page, using just View Class.

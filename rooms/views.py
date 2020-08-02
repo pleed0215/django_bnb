@@ -10,7 +10,7 @@ from .forms import SearchForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-
+from django.contrib.auth.decorators import login_required
 from django_countries import countries
 
 
@@ -67,6 +67,10 @@ class RoomDetailView(DetailView):
     """ DetailView definition """
 
     model = Room
+
+    def get(self, request, *args, **kwargs):        
+        request.session['room_detail_from'] = request.META.get('HTTP_REFERER')
+        return super().get(request, *args, **kwargs)
 
 
 class EditPhotosView(user_mixins.LoginOnlyView, DetailView):
@@ -130,6 +134,56 @@ class UploadPhotoView(user_mixins.LoginOnlyView, SuccessMessageMixin, CreateView
         photo.room = room
         return super().form_valid(form)
 
+class CreateRoomView(user_mixins.LoginOnlyView, SuccessMessageMixin, CreateView):
+
+    model = Room
+    template_name = "rooms/room_create.html"        
+    success_message = "Room created"
+    fields = ("name",
+        "description",
+        "country",
+        "city",
+        "price",
+        "address",
+        "guests",
+        "beds",
+        "bedrooms",
+        "baths",
+        "check_in",
+        "check_out",
+        "instant_book",        
+        "room_type",
+        "amenities",
+        "facilities",
+        "house_rules",)
+
+    def get_success_url(self):
+        try:
+            room_pk = Room.objects.get(pk=self.pk).pk
+        except:
+            return reverse("core:home")
+        return reverse ("rooms:detail", kwargs={"pk": room_pk})    
+
+    def form_valid(self, form):
+        room = form.save(commit=False)        
+        room.host = self.request.user
+        self.pk = room.pk
+        return super().form_valid(form)
+
+@login_required
+def delete_room(request, pk):
+    try:                
+        room = Room.objects.filter(pk=pk)        
+        if request.user.pk == room.first().host.pk:
+            room.delete()                    
+            return redirect(reverse("users:user", kwargs={"pk": request.user.pk}))            
+        else:
+            message.error("You do not have authorization.")
+            return redirect(reverse("core:home"))
+    except Room.DoesNotExist:        
+        raise Http404("Error in deleteing room. invalid room.")
+    
+        
 
 """  ---------------------------------------------------- """
 

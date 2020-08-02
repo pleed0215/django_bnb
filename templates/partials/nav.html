@@ -1,7 +1,22 @@
     <ul class="flex justify-end items-center text-sm font-medium w-full h-full">
         {% if user.is_authenticated %}
+            <li class="nav-link"><a href="{% url "users:switch_host" %}">
+            {% if request.session.is_host %}
+            As host
+            {% else %}
+            As guest
+            {% endif %}
+            </a></li>
+            {% if request.session.is_host %}
+            <li class="nav-link"><a href="{% url "rooms:create" %}">Create Room</a>
+            {% endif %}
+            <li class="nav-link">
+                <a href="{% url "users:user" pk=user.pk %}" class="flex items-center">
+                    <div class="w-10 h-10 mr-2 border rounded-full border-gray-700">{% include "partials/avatar.html" with profile=user %}</div>
+                    {{user.username}}
+                </a>
+            </li>    
             <li class="nav-link"><a href="{% url "users:logout" %}">logout</a></li>
-            <li class="nav-link"><a href="{% url "users:user" pk=user.pk %}">Hello, {{user.username}}</a></li>    
         {% else %}
             <li class="nav-link"><a href="{% url "users:login" %}">login</a></li>
             <li class="nav-link"><a href="{% url "users:signup" %}">signup</a></li>

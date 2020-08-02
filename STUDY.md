@@ -865,9 +865,31 @@
 - reverse ("rooms:photos", kwargs={"pk": room_pk})
 
 ### Photo upload part
+
 - Photo upload하는 동안 CreateView를 사용하려고 하였는데, 문제가 발생한다.
 - 바로 foreign key 지정하는 부분에서..
 - 그래서 FormClass를 따로 만들어 주는 것이 좋은듯하다..
 - save method를 formclass에서 overriding을 해줘야 할 듯하다.
 - 또는 stackoverflow에서 찾은 답변.
   - https://stackoverflow.com/questions/10382838/how-to-set-foreignkey-in-createview
+
+### Session
+
+- 여기서는 guest mode, host mode 구분하기 위해 사용함.
+- reqeust.session['is_host'] = True 이런식으로..
+- template 에서도 request.session.is_host 이런식으로 사용하면 된다.
+- preference 등 db에 저장되지 않아도 되는 것들을 저장하는 것.
+
+### 이전 페이지 경로 알고 싶어?
+
+- request.session['report_url'] = request.META.get('HTTP_REFERER')
+
+### save method를 overriding 한 후 주의점.
+
+- 만들어진 instance에 추가적인 data를 주려고 save method를 overriding 할거 아닌가?
+- data를 추가 해준 다음에 save를 할건데.. 보통
+- instnace를 얻어 오기 위해 form의 save method에 commit=False를 줘서 얻어오는데.
+  - hello_instance = some_form.save(commit=False)
+- 이렇게 얻어 온 후에 data 조작한 다음에, save() method 호출하여 commit 한 후에..
+- 다시 form의 save_m2m()을 호출 해줘야 한다.
+- 그러니까 선 세이브 후 save_m2m이다.
