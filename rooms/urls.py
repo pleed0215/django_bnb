@@ -23,6 +23,11 @@ urlpatterns = [
         views.EditPhotoView.as_view(),
         name="edit_photo",
     ),
+    path(
+        "<int:room_pk>/photos/upload/",
+        views.UploadPhotoView.as_view(),
+        name="upload_photo",
+    ),
     path("search/", views.search_view, name="search"),
 ]
 

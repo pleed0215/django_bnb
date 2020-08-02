@@ -2,7 +2,7 @@ import math
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.core.paginator import Paginator, EmptyPage
-from django.views.generic import ListView, DetailView, UpdateView
+from django.views.generic import ListView, DetailView, UpdateView, CreateView
 from django.utils import timezone
 from django.urls import reverse, reverse_lazy
 from .models import Room, RoomType, Amenity, Facility, HouseRule, Photo
@@ -110,6 +110,21 @@ class EditPhotoView(user_mixins.LoginOnlyView, SuccessMessageMixin, UpdateView):
     def get_success_url(self):
         room_pk = self.kwargs.get("room_pk")
         return reverse ("rooms:photos", kwargs={"pk": room_pk})
+
+class UploadPhotoView(user_mixins.LoginOnlyView, SuccessMessageMixin, CreateView):
+
+    model = Photo
+    template_name = "rooms/photo_upload.html"    
+    pk_url_kwarg = "photo_pk"
+    success_message = "Photo uploaded"
+    fields = ("image", "caption",)
+
+    def get_success_url(self):
+        room_pk = self.kwargs.get("room_pk")
+        return reverse ("rooms:photos", kwargs={"pk": room_pk})
+
+    def form_valid(self, form):
+        return super().form_valid(form)
 
 
 """  ---------------------------------------------------- """

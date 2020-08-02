@@ -4,6 +4,11 @@
 {% endblock pagename %}
 
 {% block content %}
+
+<div class="btn bg-blue-500 hover:bg-blue-700 text-white transition duration-150 -mb-5">
+    <a href="{% url 'rooms:upload_photo' room_pk=room.pk %}">Upload photo</a>
+</div>
+
 <div class="container p-10 min-w-1/2 h-75vh overflow-y-auto">
     {% for p in room.my_photos.all %}
         <div class="mb-5 w-full p-5 border flex justify-between">
