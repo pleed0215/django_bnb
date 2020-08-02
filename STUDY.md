@@ -863,3 +863,11 @@
 ### reverse에 keyword argument 넘기는 방법.
 
 - reverse ("rooms:photos", kwargs={"pk": room_pk})
+
+### Photo upload part
+- Photo upload하는 동안 CreateView를 사용하려고 하였는데, 문제가 발생한다.
+- 바로 foreign key 지정하는 부분에서..
+- 그래서 FormClass를 따로 만들어 주는 것이 좋은듯하다..
+- save method를 formclass에서 overriding을 해줘야 할 듯하다.
+- 또는 stackoverflow에서 찾은 답변.
+  - https://stackoverflow.com/questions/10382838/how-to-set-foreignkey-in-createview

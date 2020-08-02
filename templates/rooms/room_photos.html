@@ -5,11 +5,13 @@
 
 {% block content %}
 
-<div class="btn bg-blue-500 hover:bg-blue-700 text-white transition duration-150 -mb-5">
-    <a href="{% url 'rooms:upload_photo' room_pk=room.pk %}">Upload photo</a>
-</div>
+<a href="{% url 'rooms:upload_photo' room.pk %}" class="w-1/5 text-center " style="justify-self: start;">
+    <div class="btn bg-blue-500 hover:bg-blue-700 text-white transition duration-150">
+        Upload photo
+    </div>
+</a>
 
-<div class="container p-10 min-w-1/2 h-75vh overflow-y-auto">
+<div class="container p-5 min-w-1/2 h-75vh overflow-y-auto">
     {% for p in room.my_photos.all %}
         <div class="mb-5 w-full p-5 border flex justify-between">
             <div class="flex items-start">

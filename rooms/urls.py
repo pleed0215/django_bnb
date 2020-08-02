@@ -24,7 +24,7 @@ urlpatterns = [
         name="edit_photo",
     ),
     path(
-        "<int:room_pk>/photos/upload/",
+        "<int:pk>/photos/upload/",
         views.UploadPhotoView.as_view(),
         name="upload_photo",
     ),

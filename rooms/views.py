@@ -120,10 +120,14 @@ class UploadPhotoView(user_mixins.LoginOnlyView, SuccessMessageMixin, CreateView
     fields = ("image", "caption",)
 
     def get_success_url(self):
-        room_pk = self.kwargs.get("room_pk")
+        room_pk = self.kwargs.get("pk")
         return reverse ("rooms:photos", kwargs={"pk": room_pk})
 
     def form_valid(self, form):
+        photo = form.save(commit=False)
+        pk = self.kwargs.get("pk")
+        room = Room.objects.get(pk=pk)
+        photo.room = room
         return super().form_valid(form)
 
 
