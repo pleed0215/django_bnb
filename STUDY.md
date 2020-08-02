@@ -859,3 +859,7 @@
   - 를 할 수 있는데...accounts에 관련하여 대부분의 경로를 제공해준다.
   - password reset 관련된 부분은 꽤 강력하다. password reset을 하면 email을 보내주고,
   - 이메일 확인하여 패스워드를 리셋할 수 있다.
+
+### reverse에 keyword argument 넘기는 방법.
+
+- reverse ("rooms:photos", kwargs={"pk": room_pk})

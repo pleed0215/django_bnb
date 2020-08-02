@@ -12,11 +12,15 @@
                 <span>{{p.caption}}</span>
             </div>
             <div class="flex flex-col w-auto">
-                <a class="btn bg-green-400 w-20 mb-2 text-green-700 hover:bg-green-600 hover:text-white transition duration-150" href="#">Edit</a>
+                <a class="btn bg-green-400 w-20 mb-2 text-green-700 hover:bg-green-600 hover:text-white transition duration-150" href="{% url 'rooms:edit_photo' room_pk=room.pk photo_pk=p.pk %}">Edit</a>
                 <a class="btn bg-red-400 w-20 text-red-700 hover:bg-red-600 hover:text-white transition duration-150" href="{% url 'rooms:delete_photo' room_pk=room.pk photo_pk=p.pk %}">Delete</a>
             </div>
         </div>
     {% endfor %}
+
+    <div class="flex justify-center">
+        <a class="text-teal-500 font-2xl font-medium hover:underline" href="{% url 'rooms:update' pk=room.pk %}">Back to room</a>
+    </div>
 </div>
 
 {% endblock content %}
