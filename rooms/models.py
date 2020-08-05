@@ -1,7 +1,9 @@
+from django.utils import timezone
 from django.db import models
 from django.urls import reverse
 from core.models import AbstractTimeStamped
 from django_countries.fields import CountryField
+from cal import Calendar
 
 
 # Create your models here.
@@ -153,6 +155,22 @@ class Room(AbstractTimeStamped):
                 "accuracy": (0.0, 0),
             }
         return sums
+
+    def get_this_and_next_months(self):
+        now = timezone.now()
+        year = now.year
+        month = now.month
+        next_month = month+1
+        next_year = year
+
+        if month == 12:
+            next_month = 1
+            next_year = year+1
+
+        this_month_day = Calendar(year, month)
+        next_month_day = Calendar(next_year, next_month)
+
+        return [this_month_day, next_month_day]
 
     def __str__(self):
         return self.name

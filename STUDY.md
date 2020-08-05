@@ -893,3 +893,15 @@
 - 이렇게 얻어 온 후에 data 조작한 다음에, save() method 호출하여 commit 한 후에..
 - 다시 form의 save_m2m()을 호출 해줘야 한다.
 - 그러니까 선 세이브 후 save_m2m이다.
+
+### calendar
+
+- python의 개쩌는 라이브러리.. 기본이라..
+- cal.py 확인.
+  - monthdays2calendar라는 것이...
+  - unpacking 연습해보는 것도 좋다.
+  - for value1, value2 in tuple_array
+    ````for the_tuple in tuple_array:
+    > value1, value2 = the_tuple ```
+    > 이런식으로..
+    ````
