@@ -1,6 +1,21 @@
+import datetime
+
 from django.db import models
 from core.models import AbstractTimeStamped
 from django.utils import timezone
+
+
+class BookedDay(AbstractTimeStamped):
+    day = models.DateField(null=True)
+    reservation = models.ForeignKey(
+        "reservations.Reservation",
+        related_name="my_booked_days",
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self):
+        return str(self.day)
+
 
 # Create your models here.
 class Reservation(AbstractTimeStamped):
@@ -45,4 +60,22 @@ class Reservation(AbstractTimeStamped):
 
     is_finished.short_description = "finished?"
     is_finished.boolean = True
+
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            start = self.checkin_date
+            end = self.checkout_date
+            difference = end - start
+
+            is_reservated = BookedDay.objects.filter(day__range=(start, end)).exists()
+            if is_reservated is False:
+                super().save(*args, **kwargs)
+
+                for i in range(difference.days + 1):
+                    day = start + datetime.timedelta(days=i)
+                    BookedDay.objects.create(day=day, reservation=self)
+
+        else:
+
+            return super().save(*args, **kwargs)
 

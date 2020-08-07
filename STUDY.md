@@ -905,3 +905,78 @@
     > value1, value2 = the_tuple ```
     > 이런식으로..
     ````
+
+### tag, filter 만들기
+
+[Custom Filter & Tag](https://docs.djangoproject.com/en/3.0/howto/custom-template-tags/)
+
+- app에 폴더를 먼저 만들어주자.
+  - templatetags
+  - 그런 후 안에 \_\_init\_\_.py도 만들어주자.
+
+```python
+  from django import template
+  register = template.Library()
+
+  @register.filter
+  def custom_filter(name):
+    pass
+```
+
+- decorator 기능이 몇가지가 있는데...
+- decorator에 함수 이름과 필터 이름이 같다면 위의 코드처럼 filter() 괄호 부분을 생략해도 된다.
+
+```python
+  @register.filter (name="blabla")
+  def weired_name(name):
+    pass
+```
+
+- 이런식으로도 작성이 가능하다.
+
+  - template에서는
+    > {% load custom_filter %}
+  - 이런식으로 선언을 해줘야 사용이 가능하다.
+
+- tag 만들기
+
+```python
+  # option
+  # takes_context -> django가 전달해주는 context를 받을 수 있다..고한다.
+
+  @register.simple_tag(takes_context=True)
+  def is_booked (room, day):
+    pass
+  # boolean을 리턴 값으로 가질 예정.
+```
+
+장고 템플릿에서는 어떤식으로 활용할 수 있나하면..
+
+```html
+{% load is_booked %}
+<!-- 이런식으로 사용한다면.. 결과 값이 True, False로 화면에 표시되기 때문에 안된다. 
+  {% is_booked room day %} -->
+{% is_booked room day as is_booked_bool %}
+<!-- 이렇게 하면.. 변수처럼 사용이 되는 것.. -->
+```
+
+- room/teamplatetags/is_booked.py
+  > reserved = BookedDay.objects.get (day=date, reservation\_\_room=room)
+  - 필터 할 때, foreign 필드를 이용하고 싶을 때.. 이렇게 해주면 된다.
+
+### reservations.models.BookedDay
+
+- 예약이 되었는지 안되었는지.. 미리 예약이 되어 있는 곳이라면 그 날짜는 예약을 못하도록 해야 하기 때문.
+- 강의에서는 BookedDay라는 모델을 만들어서, 이 모델 안에 예약된 날짜를 저장하는 역할을 할 예정인가보다.
+- 그를 위해 reservation을 세이브할 때마다, bookedday 모델을 활용할 예정.
+- 그래서 save method를 overriding 한다.
+- 여기서 한가지 배운 점이.. 쿼리셋에서 filter 메소드를 사용할 때, range를 줄 수도 있다는 것 배움.
+  > BookedDay.objects.filter ( day\_\_range=(start, end))
+  - 이렇게 만들어 줄 수 있다. 대박적..
+- 한가지 또 배움. QuerySet은 method가 많아서 다 모르는 편이지만, 이렇게 한개씩 배워 놓으면 될듯하다.
+  - 쿼리셋의 결과가 존재하는지 여부? -> exits()
+- timedelta를 이용하여 날짜를 조작하는 방법
+
+```python
+  day = start + datetime.timedetla(days=1)
+```

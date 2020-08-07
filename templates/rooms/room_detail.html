@@ -1,5 +1,6 @@
 {% extends "base.html" %} 
 {% load countries %}
+{% load is_booked %}
 {% get_countries as countries %}
 
 {% block pagename %} Home {% endblock pagename %}
@@ -99,9 +100,12 @@
                                     <p class="{% if week_day == 'Sun' %}text-red-500{% elif week_day == 'Sat' %}text-blue-500{% endif %}">{{ week_day }}</p>
                                 {% endfor %}
                                 {% for day in month.get_days %}
+                                    {% is_booked room day as is_booked_bool %}
                                     {% if day.day != 0 %}
                                         {% if day.past %}
                                         <p class="p-1 p-1 bg-gray-200 text-gray-300">{{ day.day }}</p>
+                                        {% elif is_booked_bool %}
+                                        <p class="p-1 p-1 bg-gray-200 text-gray-400 line-through">{{ day.day }}</p>
                                         {% else %}
                                         <p class="p-1 bg-gray-200 hover:bg-gray-500 hover:text-white duration-150 transition rounded cursor-pointer">{{ day.day }}</p>
                                         {% endif %}
