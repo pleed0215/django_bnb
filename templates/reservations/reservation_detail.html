@@ -1,0 +1,9 @@
+{% extends 'base.html' %} 
+{% block pagename %} {{object.guest.first_name}}'s reservation{% endblock pagename %} 
+{% block content %}
+<div>
+    <p>from: {{object.checkin_date}}</p>
+    <p>to: {{object.checkout_date}}</p>
+    <p>room: {{object.room}}</p>
+</div>
+{% endblock content %}

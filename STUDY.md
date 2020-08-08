@@ -980,3 +980,37 @@
 ```python
   day = start + datetime.timedetla(days=1)
 ```
+
+### reservation trouble..
+
+- javascript를 이용하지 않는 이상 1일 이상의 예약을 만들 수가 없다.
+  - 왜냐하면 클릭 한번 후에 또 한번 클릭을 해야 reservation의 처음과 끝을 알 수가 있기 때문..
+
+### model managers?
+
+- 설명을 하다가 갑자기.. models.model.DoesNotExist 자꾸 반복하는거 짜증나지 않냐 하면서..
+- managers.py를 만들자 한다.
+- managers.py에서는...
+
+```python
+  from django.db import models
+
+  class CustomReservationManager(models.Manager):
+    def get_or_none(self, **kwargs):
+      try:
+        return super().get(**kwargs)
+      except self.model.DoesNotExist:
+        return None
+```
+
+- 이렇게 overriding 하고, models.py로 가서는..
+
+```python
+  from . import managers
+  class Reservation(models.Model):
+    ...
+    objects = managers.CustomReservationManager()
+    ...
+```
+
+- 사용 시에는... get 대신에 get_or_none을 이용하면 특별한 경우 아니면 get_or_none을 사용하면 된다.
