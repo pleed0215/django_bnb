@@ -1014,3 +1014,36 @@
 ```
 
 - 사용 시에는... get 대신에 get_or_none을 이용하면 특별한 경우 아니면 get_or_none을 사용하면 된다.
+
+### django choice field... 에 관련해서..
+
+- reservation model의 status field를 보면..
+- text field 의 choices가 있다.
+
+```python
+STATUS_PENDING = "peding"
+    STATUS_CONFIRMED = "confirmed"
+    STATUS_CANCELED = "canceled"
+    STATUS_CHOICE = (
+        (STATUS_PENDING, "Pending"),
+        (STATUS_CONFIRMED, "Confirmed"),
+        (STATUS_CANCELED, "Canceled"),
+    )
+    status = models.CharField(
+        max_length=12, choices=STATUS_CHOICE, default=STATUS_PENDING
+    )
+```
+
+- 프론트나 다른 곳에서 저장되는 코드명인 pending이 아니라 값인 Pending이 나타나게 하고 싶으면 어떨까??
+- 사실 db용량을 줄이기 위해 코드명은 더 간단하게 해도 되지만 여기서는 강의를 따라 하느라 이렇게 하였으니..
+- record.status 이렇게 말고.. record.get_status_display 라는 메소드를 사용하면 된다고 한다...
+- reservation의 template detail 관련된 html을 확인 해보면..
+
+```html
+  <div class="p-3 border-b">
+      <span>{{object.checkin_date}} - {{object.checkout_date}}</span>
+      <span class="ml-5 text-green-400 font-bold">{{object.get_status_display}}
+  </div>
+```
+
+- 이런식으로 사용할 수 있는 것..

@@ -43,7 +43,7 @@ class ReservationDetailView(View):
 
         print (reservation.guest != self.request.user)
         print (reservation.room.host != self.request.user)
-        if reservation.guest != self.request.user or reservation.room.host != self.request.user:
+        if reservation.guest != self.request.user and reservation.room.host != self.request.user:
             raise Http404("Neither guest or host.")
 
         return render(self.request, "reservations/reservation_detail.html", {"object": reservation})
