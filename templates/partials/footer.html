@@ -1,7 +1,23 @@
 {% load i18n %}
-<footer class="border-t flex items-center w-full h-20 mt-10">
-    <div class="flex flex-col w-full h-full justify-center items-center">
+{% get_current_language as LANGUAGE_CODE %}
+<footer class="border-t w-full h-auto mt-10">
+    <div class="flex flex-col w-full h-full justify-center items-center mx-auto">
         <span class="text-gray-600 font-semibold">&copy; DjangoBnB</span>
         <span class="text-gray-600 font-semibold">{% trans "please don't copy us" %}</span>
+    </div>
+    <div class="mx-auto w-1/2 flex content-center my-5">
+        <select id="lang-select" class="mx-auto w-1/5" style="outline: 1px gray solid;">
+            <option value="en" 
+            {% if LANGUAGE_CODE == 'en' %}
+                selected
+            {% endif %}
+                >English</option>
+            <option value="es" {% if LANGUAGE_CODE == 'es' %}
+            selected
+        {% endif %}>Spanish</option>
+            <option value="ko" {% if LANGUAGE_CODE == 'ko' %}
+            selected
+        {% endif %}>Korean</option>
+        </select>
     </div>
 </footer>

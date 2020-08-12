@@ -8,6 +8,7 @@ from django.utils.html import strip_tags
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 
 
 # Create your models here.
@@ -19,18 +20,19 @@ class User(AbstractUser):
     GENDER_OTHER = "Other"
 
     GENDER_CHOICE = (
-        (GENDER_MALE, "Male"),
-        (GENDER_FEMALE, "Female"),
-        (GENDER_OTHER, "Other"),
+        (GENDER_MALE, _("Male")),
+        (GENDER_FEMALE, _("Female")),
+        (GENDER_OTHER, _("Other")),
     )
 
     LANG_KOR = "KR"
     LANG_ENG = "EN"
-    LANG_CHOICE = ((LANG_KOR, "Korean"), (LANG_ENG, "English"))
+    LANG_CHOICE = ((LANG_KOR, _("Korean")), (LANG_ENG, _("English")))
 
     CURRENCY_USD = "USD"
     CURRENCY_KRW = "KRW"
-    CURRENCY_CHOICE = ((CURRENCY_USD, "US dollor"), (CURRENCY_KRW, "Korea Won"))
+    CURRENCY_CHOICE = ((CURRENCY_USD, _("US dollor")),
+                       (CURRENCY_KRW, _("Korea Won")))
 
     LOGIN_METHOD_EMAIL = "EM"
     LOGIN_METHOD_GITHUB = "GH"
@@ -41,18 +43,19 @@ class User(AbstractUser):
         (LOGIN_METHOD_KAKAO, "Kakao"),
     )
 
-    avatar = models.ImageField(blank=True, upload_to="avatars")
-    gender = models.CharField(choices=GENDER_CHOICE, max_length=10, blank=True)
-    bio = models.TextField(blank=True, default="")
-    birthday = models.DateField(null=True, blank=True)
-    language = models.CharField(
-        choices=LANG_CHOICE, max_length=2, blank=True, default=LANG_KOR
-    )
-    currency = models.CharField(
-        choices=CURRENCY_CHOICE, max_length=3, blank=True, default=CURRENCY_KRW
-    )
-    is_superhost = models.BooleanField(default=False)
-    email_verified = models.BooleanField(default=False)
+    avatar = models.ImageField(_("avatar"), blank=True, upload_to="avatars")
+    gender = models.CharField(
+        _("gender"), choices=GENDER_CHOICE, max_length=10, blank=True)
+    bio = models.TextField(_("bio"), blank=True, default="")
+    birthday = models.DateField(_("birthday"), null=True, blank=True)
+    language = models.CharField(_("language"),
+                                choices=LANG_CHOICE, max_length=2, blank=True, default=LANG_KOR
+                                )
+    currency = models.CharField(_("currency"),
+                                choices=CURRENCY_CHOICE, max_length=3, blank=True, default=CURRENCY_KRW
+                                )
+    is_superhost = models.BooleanField(_("is superhost"), default=False)
+    email_verified = models.BooleanField(_("email verified"), default=False)
     email_secret = models.CharField(max_length=128, default="")
     login_method = models.CharField(
         max_length=2, choices=LOGIN_METHOD_CHOICE, default=LOGIN_METHOD_EMAIL
@@ -69,14 +72,14 @@ class User(AbstractUser):
             self.save()
             # using template file instead.
             link = f"http://127.0.0.1:8000/users/verify/{self.email_secret}"
-            html_msg = render_to_string("mail_body.html", context={"link": link})
+            html_msg = render_to_string(
+                "mail_body.html", context={"link": link})
             # html_msg = f'<p>This is just verficiatino mail and do not reply.</p><p>To verify click <a href="http://127.0.0.1:8000/users/{self.email_secret}">here</a></p>'
             send_mail(
-                "Hello, from DjangoBnB, account verification mail!",
+                _("Hello, from DjangoBnB, account verification mail!"),
                 strip_tags(html_msg),
                 "pleed0215@hotmail.com",
-                [self.email,],
+                [self.email, ],
                 fail_silently=False,
                 html_message=html_msg,
             )
-

@@ -1,5 +1,6 @@
 {% load static %}
 {% load i18n %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,5 +43,13 @@
   </main>
   {% include "partials/footer.html" %}
 </body>
+<script>
+  const langSelect = document.getElementById("lang-select");
+  
+  const onChange = () => {
+    fetch (`{% url 'users:switch_lang' %}?lang=${langSelect.value}`).then ( () => window.location.reload() );
+  }
 
+  langSelect.addEventListener("change", onChange);
+</script>
 </html>

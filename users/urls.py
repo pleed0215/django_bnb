@@ -19,4 +19,5 @@ urlpatterns = [
     path("login/kakao/", views.kakao_login, name="kakao"),
     path("login/kakao/callback", views.kakao_callback, name="kakao_callback"),
     path("start-host/", views.switch_host, name="switch_host"),    
+    path("switch-language/", views.switch_language, name="switch_lang"),    
 ]

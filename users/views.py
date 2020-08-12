@@ -18,12 +18,27 @@ from django.core.files.base import ContentFile
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.utils import translation
 
 
 from . import models, forms, mixins
 from django import forms as django_forms
 
+# switch language
+
+
+def switch_language(request):
+    lang = request.GET.get("lang", None)
+
+    if lang is not None:
+        request.session[translation.LANGUAGE_SESSION_KEY] = lang
+
+    return HttpResponse(status=200)
+
 # Create your views here.
+
+
 class UserDetailView(DetailView):
     model = models.User
     context_object_name = "profile"
@@ -144,8 +159,8 @@ class UpdateProfileView(mixins.LoginOnlyView, SuccessMessageMixin, UpdateView):
 
             except models.User.DoesNotExist:
                 # case of username is unique.
-                ### 문제 발생: super().form_valid를 사용하면 내가 저장한 데이터가 없어지고
-                ### super().form_save를 안 쓰자니..너무 번거롭네.
+                # 문제 발생: super().form_valid를 사용하면 내가 저장한 데이터가 없어지고
+                # super().form_save를 안 쓰자니..너무 번거롭네.
                 messages.info(
                     self.request,
                     f"Logged out. Your login method is changed.\n"
@@ -183,6 +198,7 @@ class UpdateProfileView(mixins.LoginOnlyView, SuccessMessageMixin, UpdateView):
             "placeholder": "Write your profile message here"
         }
         return form
+
 
 @login_required
 def switch_host(request):
@@ -312,7 +328,9 @@ def login_view(request):
 
 # Social login part
 
-## Github Login
+# Github Login
+
+
 class GithubException(Exception):
     pass
 
@@ -349,7 +367,7 @@ def github_callback(request):
                     "code": code,
                     "redirect_uri": callback,
                 },
-                headers={"Accept": "application/json",},
+                headers={"Accept": "application/json", },
             )
             if receive:
                 result_json = receive.json()
@@ -464,7 +482,8 @@ def kakao_callback(request):
             # Getting auth_code success
             auth_host = os.environ.get("KAKAO_AUTH_HOST") + "/oauth/token"
             auth_id = os.environ.get("KAKAO_AUTH_ID")
-            redirect_uri = "http://127.0.0.1:8000" + reverse("users:kakao_callback")
+            redirect_uri = "http://127.0.0.1:8000" + \
+                reverse("users:kakao_callback")
             payloads = {
                 "grant_type": "authorization_code",
                 "client_id": auth_id,
@@ -474,7 +493,8 @@ def kakao_callback(request):
             headers = {
                 "Content-type": "application/x-www-form-urlencoded;charset=utf-8"
             }
-            received = requests.post(auth_host, params=payloads, headers=headers)
+            received = requests.post(
+                auth_host, params=payloads, headers=headers)
 
             received_json = received.json()
             access_token = received_json.get("access_token", None)
@@ -550,7 +570,8 @@ def kakao_callback(request):
                         )
                         return redirect(reverse("core:home"))
                 else:
-                    raise KakaoException("Error in receiving profile from kakao.")
+                    raise KakaoException(
+                        "Error in receiving profile from kakao.")
             else:
                 raise KakaoException(error)
         else:
@@ -567,4 +588,3 @@ def kakao_callback(request):
         messages.error(request, e)
         print(e)
         return redirect(reverse("users:login"))
-

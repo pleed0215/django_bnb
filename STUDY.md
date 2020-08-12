@@ -1087,6 +1087,8 @@ STATUS_PENDING = "peding"
 
 # Translation
 
+[관련문서](https://docs.djangoproject.com/en/3.1/topics/i18n/translation/)
+
 1. translations를 저장할 폴더를 먼저 만들자.
 
 - /locale
@@ -1125,3 +1127,46 @@ STATUS_PENDING = "peding"
 - 를 해주자.
 
 7. 바뀐점을 보고 싶다면.. session을 바꿔줘야 한다.
+
+8. html 수정.. 자바스크립트를 조금 이용해야 한다. base.html 참고.
+
+9. user.views.switch_lang 함수 참조.
+
+10. session을 이용해서 언어를 바꿔주면 되는데... 그냥 바꾸지 말고..
+
+> request.session[translation.LANGUAGE_SESSION_KEY] = ~~~
+
+등으로 사용해주자.
+
+11. 이렇게 세팅한다고 해서 되는 것은 아니고... LocaleMiddleware를 활성화시켜줘야 한다.
+
+```python
+  (in config.settings.py)
+  MIDDLEWARE = ...
+    django.middleware.locale.LocaleMiddleware,
+```
+
+를 추가해주자.
+
+12. javascript와 python 연계 관계로 select가 항상 english로 고정되어 있어서 영어로 다시 가기가 어려워지는 문제가 있는데...
+
+- {% get_current_language as LANGUAGE_CODE %} 이렇게 사용해도 된다.
+
+### blocktrans
+
+- 이를테면 Page 1 of 13 이런식으로 되어 있을 때 번역을 어떻게 할 것인가.. 에대해..
+- block trans를 이용한다.
+- block trans 안에 외부 변수는 태그가 이해하지 못하므로, blocktrans 태그 시작할 대 변수를 새로 지정해줘야 한다.
+
+```python
+  {% blocktrans with curr_page = obj.currentpage max_page = obj.max_page %}
+    Page {{ curr_page }} of {{ max_page }}
+  {% endblocktrans %}
+```
+
+이런식으로 활용해준다.
+
+### python 코드에서 번역.
+
+- 이건 모델에도 적용이 되는데, gettext, gettext_lazy를 이용하면 된다.
+- 자꾸 쓰기 힘드니까 gettext as \_로 이름 바꾸는걸 추천한다고 한다.

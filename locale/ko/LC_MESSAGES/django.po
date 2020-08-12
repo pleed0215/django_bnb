@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-12 21:10+0900\n"
+"POT-Creation-Date: 2020-08-12 21:17+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,88 +16,100 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: templates/base.html:32
 msgid "Search by city"
-msgstr "Buscar por ciudad"
+msgstr "도시명으로 검색"
 
 #: templates/partials/footer.html:6
 msgid "please don't copy us"
-msgstr "por favor no nos copie"
+msgstr "따라하지 마쇼용"
 
 #: users/forms.py:205
 msgid "Old password"
-msgstr "Contraseña anterior"
+msgstr "이전 패스워드"
 
 #: users/forms.py:212
 msgid "New password"
-msgstr "Nueva confirmación"
+msgstr "새로운 패스워드"
 
 #: users/forms.py:218
 msgid "New password confirmation"
-msgstr "Nueva confirmación de contraseña"
+msgstr "새로운 패스워드 확인"
+
+#: users/mixins.py:18
+msgid "Only email loggin user can go there"
+msgstr "로그인을 이메일로 해야 가능합니다"
+
+#: users/mixins.py:29
+msgid "user who logged in can't go there."
+msgstr "로그인한 유저는 사용할 수 없는 메뉴입니다"
+
+#: users/mixins.py:38
+msgid "You need to login"
+msgstr "로그인이 필요합니다"
 
 #: users/models.py:23
 msgid "Male"
-msgstr ""
+msgstr "남자"
 
 #: users/models.py:24
 msgid "Female"
-msgstr ""
+msgstr "여자"
 
 #: users/models.py:25
 msgid "Other"
-msgstr ""
+msgstr "기타"
 
 #: users/models.py:30
 msgid "Korean"
-msgstr ""
+msgstr "한국어"
 
 #: users/models.py:30
 msgid "English"
-msgstr ""
+msgstr "영어"
 
 #: users/models.py:34
 msgid "US dollor"
-msgstr ""
+msgstr "미국달러"
 
 #: users/models.py:35
 msgid "Korea Won"
-msgstr ""
+msgstr "한국통화(원)"
 
 #: users/models.py:46
 msgid "avatar"
-msgstr ""
+msgstr "아바타"
 
 #: users/models.py:48
 msgid "gender"
-msgstr ""
+msgstr "성별"
 
 #: users/models.py:49
 msgid "bio"
-msgstr ""
+msgstr "프로필"
 
 #: users/models.py:50
 msgid "birthday"
-msgstr ""
+msgstr "생일"
 
 #: users/models.py:51
 msgid "language"
-msgstr ""
+msgstr "언어"
 
 #: users/models.py:54
 msgid "currency"
-msgstr ""
+msgstr "통화"
 
 #: users/models.py:57
 msgid "is superhost"
-msgstr ""
+msgstr "슈퍼호스트"
 
 #: users/models.py:58
 msgid "email verified"
-msgstr ""
+msgstr "이메일 인증"
 
 #: users/models.py:79
 msgid "Hello, from DjangoBnB, account verification mail!"
-msgstr ""
+msgstr "안녕하십니까, 이메일 주소 인증 메일입니다."
