@@ -1047,3 +1047,40 @@ STATUS_PENDING = "peding"
 ```
 
 - 이런식으로 사용할 수 있는 것..
+
+## Review
+
+- Reservation에서 작업 중..
+- Review에서 form을 만들어서,
+- Reservation에서 활용하는 중..
+- 니콜라스의 강의에서는.. review.views.create_review(request, room)에서
+
+```python
+  form = CreateReviewForm(reuqest.POST)
+```
+
+- 라고 활용을 하는데... POST안에 필요한 데이터가 다 있는데 왜 이렇게 활용을 하지?? 라는 생각이 들었다.
+- form.is_valid를 사용하기 위함이고, save method를 오버라이딩하여, room, user foreing key를 채우려는 것..
+
+### Review를 정렬하고 싶을 땐..??
+
+- review models에서
+
+```python
+  class Meta:
+    ordering = ('-created_at',)
+```
+
+- '-'를 붙이면 역으로 정렬, 최신 리뷰를 보여주고 싶다면 그렇다면 -를 붙여서 역으로 정렬이 필요한 것이다.
+
+### Validator??
+
+- review 값은 0~5점 사이로 제한을 두려고 한다.
+- 그렇다면 어떻게 검증을 할 것인가 문제가 생기는데, form이나 model에서 필드에 validator 속성을 사용하면 된다.
+- [관련문서](https://docs.djangoproject.com/en/3.0/ref/validators/)
+
+```python
+  value = models.IntegerField(validator=[MaxValueValidator...(이하 생략)])
+```
+
+- 이건 model에서 protect를 해준거지, form에서 해준 건 아니기 때문에, form에서도 protect를 해줘야한다.

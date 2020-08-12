@@ -6,7 +6,7 @@
     <div class="bg-cover bg-center h-56 rounded-t-lg" style="background-image: url({{object.room.first_image}})"></div>
     <div class="p-3 border-b">
         <span>{{object.checkin_date}} - {{object.checkout_date}}</span>
-        <span class="ml-5 text-green-400 font-bold">{{object.get_status_display}}
+        <span class="ml-5 {% if object.status == 'pending' %} text-green-400 {% elif object.status == 'cancelled' %} text-red-400 {% else %} text-blue-400 {% endif %} font-bold">{{object.get_status_display}}
     </div>
     <div class="p-5 border-b text-lg">
         {{object.room.name}}
@@ -18,11 +18,32 @@
         </div>
         <div>
             <p>Contact your Airbnb Host</p>
-            <a href="#" class="text-green-400">Send a Message</p>
+            <a href="#" class="text-green-400">Send a Message</a>
         </div>
     </div>
-    <div class="w-full h-auto p-5">
-        <a href="#" class="btn bg-red-500 hover:bg-red-600 text-white transition duration-150">Cancel Reservation</a>
+    <div class="w-full h-auto p-5 flex flex-col items-center">
+        
+        {% if objects.status != 'canceled' %}
+        
+            {% if object.status == 'confirmed' and object.is_finished %}
+                <span class="text-2xl font-medium mx-auto mb-5">Write you review</span>
+                <form method="POST" action="{% url 'reviews:create' object.room.pk %}" class="flex flex-col w-1/2 border rounded-lg p-5 mx-auto form-auth">
+                    {% csrf_token %}
+                    {{ review_form }}
+                    <button class="btn mx-auto w-1/2 bg-red-500 hover:bg-red-600 text-white transition duration-150">Write Review</button>
+                </form>
+            {% else %}
+        
+                {% if object.status == 'pending' %}
+                <a href="{% url 'reservations:edit' object.pk 'cancel' %}" class="btn w-1/5 bg-red-500 hover:bg-red-600 text-white transition duration-150">Cancel Reservation</a>
+                    {% if object.room.host != user %}
+                    <a href="{% url 'reservations:edit' object.pk 'confirm' %}" class="ml-5 btn w-1/5 bg-red-500 hover:bg-red-600 text-white transition duration-150">Confirm Reservation</a>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        {% endif %}
+            
+            
     </div>
 </div>
 

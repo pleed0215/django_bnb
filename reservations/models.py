@@ -3,7 +3,6 @@ import datetime
 from django.db import models
 from core.models import AbstractTimeStamped
 from django.utils import timezone
-from . import managers
 
 
 class BookedDay(AbstractTimeStamped):
@@ -22,7 +21,7 @@ class BookedDay(AbstractTimeStamped):
 class Reservation(AbstractTimeStamped):
     """ Reservation model definition """
 
-    STATUS_PENDING = "peding"
+    STATUS_PENDING = "pending"
     STATUS_CONFIRMED = "confirmed"
     STATUS_CANCELED = "canceled"
     STATUS_CHOICE = (
@@ -44,7 +43,6 @@ class Reservation(AbstractTimeStamped):
     room = models.ForeignKey(
         "rooms.Room", related_name="my_reservations", on_delete=models.CASCADE
     )
-    objects = managers.CustomReservationManager()
 
     def __str__(self):
         return f"Room: {self.room} reservation on {self.checkin_date}"

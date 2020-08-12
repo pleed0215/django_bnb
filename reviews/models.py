@@ -1,5 +1,6 @@
 from django.db import models
 from core.models import AbstractTimeStamped
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 class Review(AbstractTimeStamped):
@@ -8,12 +9,42 @@ class Review(AbstractTimeStamped):
     review = models.TextField()
 
     # evaluation points
-    accuracy = models.IntegerField()
-    communication = models.IntegerField()
-    cleanliness = models.IntegerField()
-    location = models.IntegerField()
-    check_in = models.IntegerField()
-    value = models.IntegerField()
+    accuracy = models.IntegerField(
+        validators=[
+            MinValueValidator(0, "Must greater than 0"),
+            MaxValueValidator(5, "Must be under 5"),
+        ]
+    )
+    communication = models.IntegerField(
+        validators=[
+            MinValueValidator(0, "Must greater than 0"),
+            MaxValueValidator(5, "Must be under 5"),
+        ]
+    )
+    cleanliness = models.IntegerField(
+        validators=[
+            MinValueValidator(0, "Must greater than 0"),
+            MaxValueValidator(5, "Must be under 5"),
+        ]
+    )
+    location = models.IntegerField(
+        validators=[
+            MinValueValidator(0, "Must greater than 0"),
+            MaxValueValidator(5, "Must be under 5"),
+        ]
+    )
+    check_in = models.IntegerField(
+        validators=[
+            MinValueValidator(0, "Must greater than 0"),
+            MaxValueValidator(5, "Must be under 5"),
+        ]
+    )
+    value = models.IntegerField(
+        validators=[
+            MinValueValidator(0, "Must greater than 0"),
+            MaxValueValidator(5, "Must be under 5"),
+        ]
+    )
 
     # Foreign Key
     user = models.ForeignKey(
@@ -41,3 +72,6 @@ class Review(AbstractTimeStamped):
         return round(avg, 2)
 
     rating_average.short_description = "ratings"
+
+    class Meta:
+        ordering = ("-created_at",)
