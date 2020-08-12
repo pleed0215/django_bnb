@@ -145,3 +145,8 @@ EMAIL_HOST = os.environ.get("MAILGUN_HOST")
 EMAIL_PORT = os.environ.get("MAILGUN_PORT")
 EMAIL_HOST_USER = os.environ.get("MAILGUN_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("MAILGUN_HOST_PASSWORD")
+
+# locale settings
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, "locale"),
+)

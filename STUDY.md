@@ -1084,3 +1084,44 @@ STATUS_PENDING = "peding"
 ```
 
 - 이건 model에서 protect를 해준거지, form에서 해준 건 아니기 때문에, form에서도 protect를 해줘야한다.
+
+# Translation
+
+1. translations를 저장할 폴더를 먼저 만들자.
+
+- /locale
+
+2. settings.py 설정
+   > LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),) 추가.
+3. tempalte에서 사용하려면..
+
+- 일단 <code>{% load i18n %}</code>을 해줘야 한다.
+- 그리고 번역할 내용에는 <code>{% trans "please translate me" %}</code> 이런식으로 사용해주면 된다.
+- make_messages, compile messages 두가지가 있다
+
+4. 사전에 설치할 것들이 있다.
+
+- 맥 사용자는
+
+  ````sh
+  brew install gettext
+  brew link gettext --force```
+
+  ````
+
+- 윈도우 사용자는..
+  - 웹에 gettext window binary로 검색.
+
+5.  vscode extension도 설치하자. gettext로 검색해서..
+
+- 새로 메세지를 번역하고 싶다면, {% trans %} 태그를 이용해야지, 만들어진 po파일에 임의로 추가하면 안된다.
+
+6. 번역 다 끝났다 생각이 되면,
+
+```sh
+  django-admin compilemessages
+```
+
+- 를 해주자.
+
+7. 바뀐점을 보고 싶다면.. session을 바꿔줘야 한다.
