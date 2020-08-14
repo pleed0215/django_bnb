@@ -21,4 +21,4 @@ def toggle_list(request, room_pk):
             if fav_list is not None:
                 fav_list.rooms.remove(room)
 
-    return redirect(reverse("core:home"))
+    return redirect(reverse("users:favorite"))

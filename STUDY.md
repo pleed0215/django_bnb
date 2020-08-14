@@ -1186,5 +1186,26 @@ STATUS_PENDING = "peding"
 
 - ManyToManyField에 아이템을 추가하는 방법.
   - add method를 이용하면 된다. save()를 따로 호출 할 필요는 없다.
+  - add method에는 여러가지 아이템에 들어가도 상관이 없다.
 - ManyToManyField 안에 아이템이 있는지 확인 하는 방법.
   - <code>item in Model.objects.mtomfield.all()</code>
+
+# Conversations
+
+### url 구조
+
+- conversations/go/host_a/host_b 구조.
+
+  - go에서 먼저 대화가 있는지 없는지 확인을 하고 대화가 없다면 만들 수 있도록 해준다.
+  - 대화 수락을 넣을지..? 지금 설명 코드로는 바로 대화로 넘어가는건디.. 방법이 있겠지..
+
+- Q Object (django.db.models.Q) [문서](https://docs.djangoproject.com/en/3.1/topics/db/queries/#Complex%20lookups%20with)
+  - 복잡한 쿼리를 사용하고자 할 때 사용한다.
+  - 이를테면 Conersations에서 participants 참가자 둘을 찾아야 되는데.. 아마 이런 식으로 할 것이다.
+  ```python
+    conversation = Conversations.objects.filter (participants=a_user).filter( participants=b_user)
+  ```
+  - 이렇게 써얄테지만.. Q object를 사용하면, 한 번에 끝낼 수 있다.
+  ```python
+    conversation = Conversations.objects.get_or_none ( Q(participants=a_user) & Q(particivpants=b_user))
+  ```

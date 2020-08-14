@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-12 21:17+0900\n"
+"POT-Creation-Date: 2020-08-14 20:56+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,6 +25,14 @@ msgstr "도시명으로 검색"
 #: templates/partials/footer.html:6
 msgid "please don't copy us"
 msgstr "따라하지 마쇼용"
+
+#: templates/rooms/room_detail.html:47
+msgid "Remove favorite list"
+msgstr "즐겨찾기에서 제거"
+
+#: templates/rooms/room_detail.html:49
+msgid "Add favorite list"
+msgstr "즐겨찾기 추가"
 
 #: users/forms.py:205
 msgid "Old password"
