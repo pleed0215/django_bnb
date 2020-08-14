@@ -1,0 +1,16 @@
+{% extends 'base.html' %} {% block pagename %} Favorite list
+{% endblock pagename %} {% block content %}
+
+{% if user.my_lists.count > 0 %}
+<div class="w-full h-auto p-5 border rounded mt-5">
+    <h3 class="text-lg text-gray-600 mb-4">{{user.first_name}}'s favorite list</h3>
+    <div class="grid grid-cols-4 gap-4">
+        {% for list in user.my_lists.all %}
+            {% for r in list.rooms.all %}
+                {% include "partials/room.html" with room=r %}
+            {% endfor %}
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock content %}

@@ -3,7 +3,7 @@ import requests
 from django.shortcuts import render, redirect, reverse
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, TemplateView
 from django.views.generic import FormView, DetailView
 from django.contrib.auth import (
     authenticate,
@@ -26,6 +26,10 @@ from . import models, forms, mixins
 from django import forms as django_forms
 
 # switch language
+
+
+class FavoriteView (TemplateView):
+    template_name = "users/favorite.html"
 
 
 def switch_language(request):

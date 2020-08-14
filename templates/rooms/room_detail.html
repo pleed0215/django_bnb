@@ -1,6 +1,7 @@
 {% extends "base.html" %} 
 {% load countries %}
-{% load is_booked %}
+{% load is_booked i18n %}
+{% load is_in_fav %}
 {% get_countries as countries %}
 
 {% block pagename %} Home {% endblock pagename %}
@@ -39,6 +40,15 @@
                     <p class="text-gray-600 font-light text-center text-xs">{{ object.host.first_name }}</p>
                 </div>
             </div>
+            {% is_in_fav room.pk as is_in_fav_boolean %}
+
+            
+            {% if is_in_fav_boolean %}
+                <a href="{% url 'lists:toggle' room.pk %}?action=remove" class="btn w-1/2 text-gray-700 bg-red-300 hover:bg-red-500 transition duration-150 mb-4">{% trans "Remove favorite list" %}</a>
+            {% else %}
+                <a href="{% url 'lists:toggle' room.pk %}?action=add" class="btn w-1/2 text-gray-700 bg-yellow-300 hover:bg-yellow-500 transition duration-150 mb-4">{% trans "Add favorite list" %}</a>
+            {% endif %}
+                
             <hr class="mb-4">
             <div class="felx">
                 <span class="mr-5 text-gray-700 font-normal text-base">{{ room.room_type }}</span>

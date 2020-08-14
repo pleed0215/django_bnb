@@ -11,6 +11,11 @@
             <li class="nav-link"><a href="{% url "rooms:create" %}">Create Room</a>
             {% endif %}
             <li class="nav-link">
+                <a href="{% url "users:favorite" %}" class="flex items-center">
+                    Favorite
+                </a>
+            </li>
+            <li class="nav-link">
                 <a href="{% url "users:user" pk=user.pk %}" class="flex items-center">
                     <div class="w-10 h-10 mr-2 border rounded-full border-gray-700">{% include "partials/avatar.html" with profile=user %}</div>
                     {{user.username}}
