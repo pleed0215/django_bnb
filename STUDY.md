@@ -945,9 +945,11 @@
   # takes_context -> django가 전달해주는 context를 받을 수 있다..고한다.
 
   @register.simple_tag(takes_context=True)
-  def is_booked (room, day):
+  def is_booked (context, room, day):
     pass
   # boolean을 리턴 값으로 가질 예정.
+  # takes_context=True 하면 처음자리에는 context가 들어오는데..
+  # context.request라고 사용해야 request 정보를 받아 올 수 있는 것.
 ```
 
 장고 템플릿에서는 어떤식으로 활용할 수 있나하면..
@@ -1170,3 +1172,19 @@ STATUS_PENDING = "peding"
 
 - 이건 모델에도 적용이 되는데, gettext, gettext_lazy를 이용하면 된다.
 - 자꾸 쓰기 힘드니까 gettext as \_로 이름 바꾸는걸 추천한다고 한다.
+
+# Favorite list
+
+### get_or_create
+
+- tuple을 리턴해준다.
+  - (object, created)
+- 코드에서는..
+  <code python> obj, created = SomeModel.objects.get_or_created (pk=...)</code>
+- 이런식으로 사용가능하다.
+- get의 중요한 포인트 중 하나는, 반드시 한 개 값만 존재해야 한다는 것.. 여러가지가 리턴 되면 에러 난다.
+
+- ManyToManyField에 아이템을 추가하는 방법.
+  - add method를 이용하면 된다. save()를 따로 호출 할 필요는 없다.
+- ManyToManyField 안에 아이템이 있는지 확인 하는 방법.
+  - <code>item in Model.objects.mtomfield.all()</code>
