@@ -1197,7 +1197,7 @@ STATUS_PENDING = "peding"
 - conversations/go/host_a/host_b 구조.
 
   - go에서 먼저 대화가 있는지 없는지 확인을 하고 대화가 없다면 만들 수 있도록 해준다.
-  - 대화 수락을 넣을지..? 지금 설명 코드로는 바로 대화로 넘어가는건디.. 방법이 있겠지..
+  - 대화 수락을 넣을지..? 지금 설명f 코드로는 바로 대화로 넘어가는건디.. 방법이 있겠지..
 
 - Q Object (django.db.models.Q) [문서](https://docs.djangoproject.com/en/3.1/topics/db/queries/#Complex%20lookups%20with)
   - 복잡한 쿼리를 사용하고자 할 때 사용한다.
