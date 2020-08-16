@@ -13,7 +13,7 @@ class Conversation(AbstractTimeStamped):
         joined_user = []
         for p in self.participants.all():
             joined_user.append(p.username)
-        text = "Conersations of [" + ", ".join(joined_user) + "]"
+        text = "Conversations of [" + ", ".join(joined_user) + "]"
 
         return text
 
