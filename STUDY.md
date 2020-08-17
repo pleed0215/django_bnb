@@ -1241,3 +1241,9 @@ STATUS_PENDING = "peding"
 5. virtualenv 설치
 6. .ebextentions 폴더 만들기
 7. django.config 복사 해주기.
+8. pip freeze > requirement.txt
+
+- 또는 pipenv-to-requirements라는 모듈을 이용해도 된다.
+  - pipenv run pipenv_to_requirements
+  - heroku든 aws든 python 앱을 설치하려면 requirements.txt를 봐야 한단다.
+  - 만들고 나서 github에 push
