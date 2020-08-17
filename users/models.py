@@ -10,6 +10,8 @@ from django.conf import settings
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
+from core.managers import CustomReservationManager
+
 
 # Create your models here.
 class User(AbstractUser):
@@ -60,6 +62,8 @@ class User(AbstractUser):
     login_method = models.CharField(
         max_length=2, choices=LOGIN_METHOD_CHOICE, default=LOGIN_METHOD_EMAIL
     )
+
+    objects = CustomReservationManager()
 
     def get_absolute_url(self):
         return reverse("users:user", kwargs={"pk": self.pk})
