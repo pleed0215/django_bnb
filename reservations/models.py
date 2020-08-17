@@ -1,6 +1,7 @@
 import datetime
 
 from django.db import models
+from django.db.models import Q
 from core.models import AbstractTimeStamped
 from django.utils import timezone
 
@@ -67,15 +68,16 @@ class Reservation(AbstractTimeStamped):
             end = self.checkout_date
             difference = end - start
 
-            is_reservated = BookedDay.objects.filter(day__range=(start, end)).exists()
+            is_reservated = BookedDay.objects.filter(
+                Q(day__range=(start, end)) & Q(reservation=self)
+            ).exists()
+            print(is_reservated)
             if is_reservated is False:
                 super().save(*args, **kwargs)
-
                 for i in range(difference.days + 1):
                     day = start + datetime.timedelta(days=i)
                     BookedDay.objects.create(day=day, reservation=self)
 
         else:
-
             return super().save(*args, **kwargs)
 

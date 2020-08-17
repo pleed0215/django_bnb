@@ -33,6 +33,7 @@ def create(request, room, year, month, day):
             room=room,
             guest=request.user,
         )
+
         return redirect(reverse("reservations:detail", kwargs={"pk": reservation.pk}))
 
 

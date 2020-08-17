@@ -27,8 +27,14 @@
             {% endfor %}                            
         </div>
     </div>
-    <div class="w-2/3 h-25vh max-h-50vh border mt-20 ml-5 p-8">
-        
+    <div class="w-2/3 h-auto border mt-20 ml-5 p-2">
+
+        {% if object.my_messages.count == 0 %}
+            
+                <p>No messages. Send messages here.</p>
+            
+        {% endif %}
+        <div class="w-full h-50vh border p-4">
         {% for m in object.my_messages.all %}
             
             <div class="flex flex-col justify-start {% if m.user == user %}items-end{% else %}items-start{% endif %} w-full h-20 mb-2">
@@ -39,7 +45,12 @@
             </div>
             
         {% endfor %}
-            
+        </div>
+        <form method="POST" class="w-full h-auto mt-4 flex items-center">
+            {% csrf_token %}
+            {{ form.message }}
+            <button class="btn bg-teal-500 text-white hover:bg-teal-700 duration-150 transition h-16 w-1/5 ml-2">Send your message</button>
+        </form>
     </div>
 </div>
 
