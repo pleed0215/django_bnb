@@ -1252,3 +1252,9 @@ STATUS_PENDING = "peding"
 
 - psycopg requirements에 설정을 해줄 것..
 - password, id 설정을 해줄것..
+- 후에 aws elastic beanstalk에 가서 .env 변수를 추가해주자.. git에 env를 추가하지 않기 때문이다...
+
+### PostgreSQL 설정 이후에...?
+
+- 이렇게 해도 안된다. postgres를 설치 해줘야 한다고 한다... 그래ㅓㅅ
+- .elasticbeanstalk 폴더에... packages.config 를 추가해줘야 한다고 하네..
