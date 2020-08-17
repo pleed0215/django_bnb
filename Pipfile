@@ -8,6 +8,7 @@ pylint = "*"
 autopep8 = "*"
 flake8 = "*"
 black = "*"
+awsebcli = "*"
 
 [packages]
 django = "==2.2.5"

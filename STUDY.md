@@ -1209,3 +1209,35 @@ STATUS_PENDING = "peding"
   ```python
     conversation = Conversations.objects.get_or_none ( Q(participants=a_user) & Q(particivpants=b_user))
   ```
+
+# Deployment
+
+## AWS CLI 설치
+
+### Step
+
+1.
+
+```sh
+  pipenv install awsebcli --upgrade --user
+```
+
+2.
+
+```sh
+  eb init
+```
+
+3. AWS 가서 서비서 메뉴 -> IAM 검색해서 amazon access id를 만들어야 한다.
+
+- 서비스로 이동 후 add user 해줄 것.
+- 액세스 유형은 Programmatic access를 선택.
+- 권한: 원래 이렇게 하면 안되는데 하면서 관리자 권한... 정책을 설정.
+
+4. 공식 문서를 읽어 보길...
+
+- [Go](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create-deploy-python-django.html)
+
+5. virtualenv 설치
+6. .ebextentions 폴더 만들기
+7. django.config 복사 해주기.

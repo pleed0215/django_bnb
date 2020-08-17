@@ -34,7 +34,7 @@
                 <p>No messages. Send messages here.</p>
             
         {% endif %}
-        <div class="w-full h-50vh border p-4">
+        <div class="w-full h-50vh border p-4 overflow-scroll">
         {% for m in object.my_messages.all %}
             
             <div class="flex flex-col justify-start {% if m.user == user %}items-end{% else %}items-start{% endif %} w-full h-20 mb-2">
