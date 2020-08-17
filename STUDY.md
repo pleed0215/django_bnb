@@ -1247,3 +1247,8 @@ STATUS_PENDING = "peding"
   - pipenv run pipenv_to_requirements
   - heroku든 aws든 python 앱을 설치하려면 requirements.txt를 봐야 한단다.
   - 만들고 나서 github에 push
+
+### PostgreSQL 설정
+
+- psycopg requirements에 설정을 해줄 것..
+- password, id 설정을 해줄것..

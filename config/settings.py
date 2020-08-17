@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = "_v#i6r1gu$ksslt3t8e)98vw_4pv%p3f#j8mhe_$se5(nukdk1"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(os.envrion.get("DEBUG"))
 
 ALLOWED_HOSTS = ["*"]
 
@@ -89,12 +89,25 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+
+if DEBUG:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("RDS_NAME"),
+            "HOST": os.environ.get("RDS_HOST"),
+            "PASSWORD": os.envirion.get("RDS_PASSWORD"),
+            "PORT": "5432",
+            "USER": os.environ.get("RDS_USER"),
+        }
+    }
 
 
 # Password validation
