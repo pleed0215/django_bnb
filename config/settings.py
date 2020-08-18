@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = "_v#i6r1gu$ksslt3t8e)98vw_4pv%p3f#j8mhe_$se5(nukdk1"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.envrion.get("DEBUG", False))
+DEBUG = bool(os.environ.get("DEBUG", False))
 
 ALLOWED_HOSTS = ["http://django-bnb-dev.ap-northeast-2.elasticbeanstalk.com/"]
 
