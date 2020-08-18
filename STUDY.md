@@ -1250,7 +1250,7 @@ STATUS_PENDING = "peding"
 
 ### PostgreSQL 설정
 
-- psycopg requirements에 설정을 해줄 것..
+- psycopg2 requirements에 설정을 해줄 것..
 - password, id 설정을 해줄것..
 - 후에 aws elastic beanstalk에 가서 .env 변수를 추가해주자.. git에 env를 추가하지 않기 때문이다...
 
@@ -1258,3 +1258,14 @@ STATUS_PENDING = "peding"
 
 - 이렇게 해도 안된다. postgres를 설치 해줘야 한다고 한다... 그래ㅓㅅ
 - .elasticbeanstalk 폴더에... packages.config 를 추가해줘야 한다고 하네..
+- packages.config에
+
+````
+packages:
+    yum:
+        postgresql96-devel: []
+``` 추가
+
+- 추가하고 deploy 다시 한 후 database(RDS)로 가서 security group 을 설정해준다.
+  - 규칙을 추가한다.
+````
