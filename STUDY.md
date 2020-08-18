@@ -1269,3 +1269,11 @@ packages:
 - 추가하고 deploy 다시 한 후 database(RDS)로 가서 security group 을 설정해준다.
   - 규칙을 추가한다.
 ````
+
+- django secret key도 업데이트 해주자..
+
+- 그리고 해줄 것.. command 설정. 왜냐하면 마이그레이션을 아직 안해줬기 때문이다. 프로그레스큐엘에..
+- 참고로 .ebextensions에 보면.. config 파일에 01-, 02 이렇게 지정되어 있는데, 이렇게 지정되어 있지 않은면 알파벳 순서대로 읽는다고 한다.
+- 그러니까 패키지 먼저 설치하고 장고 관련된 것이 실행 되야 한다는 말인 것 같다.
+
+  - 그리고, django.config에 가서... container_commands 관련 내용을 추가해준다. django aws 공식 문서 참고를 해야 한다.
