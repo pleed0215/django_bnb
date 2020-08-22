@@ -1277,3 +1277,9 @@ packages:
 - 그러니까 패키지 먼저 설치하고 장고 관련된 것이 실행 되야 한다는 말인 것 같다.
 
   - 그리고, django.config에 가서... container_commands 관련 내용을 추가해준다. django aws 공식 문서 참고를 해야 한다.
+
+# 진짜 삽질도 이런 삽질이 없다.
+
+- 뭔가 잘 안된다.
+- 에러가 굉장히 많다.
+- sql error, migrate error,... 정말 많았다.
