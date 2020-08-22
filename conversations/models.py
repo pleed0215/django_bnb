@@ -28,7 +28,7 @@ class Message(AbstractTimeStamped):
 
     message = models.TextField()
     user = models.ForeignKey(
-        "users.User", related_name="my_messages", on_delete=models.CASCADE
+        "users.User", related_name="my_messages", on_delete=models.CASCADE, null=True
     )
     conversation = models.ForeignKey(
         Conversation, related_name="my_messages", on_delete=models.CASCADE
