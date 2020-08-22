@@ -19,6 +19,7 @@ django-dotenv = "*"
 requests = "*"
 flake8 = "*"
 pipenv-to-requirements = "*"
+awsebcli = "*"
 
 [requires]
 python_version = "3.8"
