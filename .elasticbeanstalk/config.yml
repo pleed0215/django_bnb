@@ -2,6 +2,10 @@ branch-defaults:
   master:
     environment: django-bnb-dev
     group_suffix: null
+environment-defaults:
+  django-bnb-dev:
+    branch: null
+    repository: null
 global:
   application_name: django_bnb
   branch: null

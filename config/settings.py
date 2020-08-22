@@ -25,7 +25,8 @@ SECRET_KEY = "_v#i6r1gu$ksslt3t8e)98vw_4pv%p3f#j8mhe_$se5(nukdk1"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get("DEBUG", False))
 
-ALLOWED_HOSTS = ["django-bnb-dev2.ap-northeast-2.elasticbeanstalk.com", "172.31.35.230"]
+ALLOWED_HOSTS = ["django-bnb-dev2.ap-northeast-2.elasticbeanstalk.com",
+                 "3.35.101.195", "169.254.169.254", "example.com"]
 
 DJANGO_APPS = [
     "django.contrib.admin",
