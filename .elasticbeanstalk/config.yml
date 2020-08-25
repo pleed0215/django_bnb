@@ -6,10 +6,13 @@ environment-defaults:
   django-bnb-dev:
     branch: null
     repository: null
+  djangobnb-env:
+    branch: null
+    repository: null
 global:
   application_name: djangobnb
   branch: null
-  default_ec2_keyname: aws-eb2
+  default_ec2_keyname: aws-eb3
   default_platform: Python 3.6
   default_region: ap-northeast-2
   include_git_submodules: true

@@ -20,6 +20,7 @@ requests = "*"
 flake8 = "*"
 pipenv-to-requirements = "*"
 awsebcli = "*"
+sentry-sdk = "*"
 
 [requires]
 python_version = "3.8"
