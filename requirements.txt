@@ -20,3 +20,4 @@ pillow
 pipenv-to-requirements
 requests
 sentry-sdk
+psycopg2
