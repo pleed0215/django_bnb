@@ -40,7 +40,7 @@ SECRET_KEY = "_v#i6r1gu$ksslt3t8e)98vw_4pv%p3f#j8mhe_$se5(nukdk1"
 
 
 ALLOWED_HOSTS = [
-    "3.35.101.195", "13.125.192.58", "169.254.169.254", "172.31.35.235", "example.com", "djangbnb.ap-northeast-2.elasticbeanstalk.com/", "localhost"]
+    "3.35.101.195", "13.125.192.58", "169.254.169.254", "172.31.35.235", "example.com", "djangbnb.ap-northeast-2.elasticbeanstalk.com", "localhost"]
 
 DJANGO_APPS = [
     "django.contrib.admin",
