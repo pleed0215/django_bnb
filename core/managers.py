@@ -10,5 +10,5 @@ class CustomReservationManager(models.Manager):
             return None
 
 
-class CustomuserManager (UserManager, CustomReservationManager):
+class CustomUserManager (UserManager, CustomReservationManager):
     pass
