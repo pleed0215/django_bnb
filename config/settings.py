@@ -38,7 +38,7 @@ SECRET_KEY = "_v#i6r1gu$ksslt3t8e)98vw_4pv%p3f#j8mhe_$se5(nukdk1"
 DEBUG = bool(os.environ.get("DEBUG", False))
 
 ALLOWED_HOSTS = [
-    "3.35.101.195", "169.254.169.254", "example.com", "djangobnb-env.eba-rda4mzuc.ap-northeast-2.elasticbeanstalk.com"]
+    "3.35.101.195", "13.125.192.58", "169.254.169.254", "172.31.34.228", "example.com", "djangobnb-env.eba-rda4mzuc.ap-northeast-2.elasticbeanstalk.com"]
 
 DJANGO_APPS = [
     "django.contrib.admin",
@@ -114,7 +114,6 @@ else:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.environ.get("RDS_NAME"),
             "HOST": os.environ.get("RDS_HOST"),
             "PASSWORD": os.environ.get("RDS_PASSWORD"),
             "PORT": "5432",
