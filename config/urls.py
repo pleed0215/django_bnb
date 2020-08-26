@@ -28,7 +28,7 @@ urlpatterns = [
     path("conversations/", include("conversations.urls", namespace="conversations")),
     path("reviews/", include("reviews.urls", namespace="reviews")),
     path("lists/", include("lists.urls", namespace="lists")),
-    path("admin/", admin.site.urls),
+    path(os.environ.get("DJANGO_ADIN", "admin/"), admin.site.urls),
 ]
 
 if settings.DEBUG:

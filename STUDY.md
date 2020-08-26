@@ -1283,3 +1283,10 @@ packages:
 - 뭔가 잘 안된다.
 - 에러가 굉장히 많다.
 - sql error, migrate error,... 정말 많았다.
+
+## create super user
+
+- command를 .ebextenions/02-django.config에 추가해줘야한다.
+- django-admin.py createsu
+  - users/management/command에 createsu.py추가.
+  - createsu.py 에서는 User.objects.create_superuser(username, email, password) 등의 정보를 받는다
