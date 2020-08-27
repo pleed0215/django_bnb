@@ -43,7 +43,7 @@ ALLOWED_HOSTS = [
     "3.35.101.195", "13.125.192.58", "169.254.169.254", "172.31.35.235", "example.com", "djangbnb.ap-northeast-2.elasticbeanstalk.com", "localhost"]
 
 DJANGO_APPS = [
-    #"django.contrib.admin",
+    "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
