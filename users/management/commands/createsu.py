@@ -6,7 +6,7 @@ class Command(BaseCommand):
     help = "This command will make super user."
 
     def handle(self, *args, **options):
-        ebadmin = User.objects.get_or_none("ebadmin")
+        ebadmin = User.objects.get_or_none(username="ebadmin")
 
         if ebadmin is None:
             User.objects.create_superuser(
