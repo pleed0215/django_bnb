@@ -1296,3 +1296,8 @@ packages:
 - django-storages 설치.
 - 문서 보고 변수들 설정.
 - settings.py에서 변수들 설정하고, static, media url도 설정해주자.
+
+## django image kit
+
+- django image kit
+- user가 큰 이미지 파일을 업로드할 때 추천한다고 함.
