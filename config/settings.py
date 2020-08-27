@@ -15,19 +15,8 @@ import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
 
-# SECURITY WARNING: don't run with debug turned on in production!
+
 DEBUG = bool(os.environ.get("DEBUG", False))
-if not DEBUG:
-    sentry_sdk.init(
-        dsn="https://39ee9a820dad484a987f8c3765283cdf@o438795.ingest.sentry.io/5404155",
-        integrations=[DjangoIntegration()],
-        traces_sample_rate=1.0,
-
-        # If you wish to associate users to errors (assuming you are using
-        # django.contrib.auth) you may enable sending PII data.
-        send_default_pii=True
-    )
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -61,10 +50,13 @@ PROJECT_APPS = [
     "conversations.apps.ConversationsConfig",
 ]
 
+
+
 # Application definition
 THIRD_PARTY_APPS = [
     "django_countries",
     "django_seed",
+    "storages",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
@@ -162,11 +154,37 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
+MEDIA_URL = "/media/"
+
+# SECURITY WARNING: don't run with debug turned on in production!
+if not DEBUG:
+    sentry_sdk.init(
+        dsn="https://39ee9a820dad484a987f8c3765283cdf@o438795.ingest.sentry.io/5404155",
+        integrations=[DjangoIntegration()],
+        traces_sample_rate=1.0,
+
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True
+    )
+    # Setting django-storages
+    #DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    #STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    DEFAULT_FILE_STORAGE = 'config.custom_storages.StaticStorage'
+    STATICFILES_STORAGE = 'config.custom_storages.UploadsStorage'
+    AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_ID")
+    AWS_SECRET_ACCESS_KEY =os.environ.get("AWS_ACCESS_SECRET")
+    AWS_STORAGE_BUCKET_NAME = "djangobnb-clone-storage"
+    AWS_AUTO_CREATE_BUCKET = True
+    AWS_BUCKET_ACL = "public-read"
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+    
 
 # Modifying user model
 AUTH_USER_MODEL = "users.User"
-MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
-MEDIA_URL = "/media/"
 
 
 # Email Configuration

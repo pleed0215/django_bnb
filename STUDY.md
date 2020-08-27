@@ -1290,3 +1290,9 @@ packages:
 - django-admin.py createsu
   - users/management/command에 createsu.py추가.
   - createsu.py 에서는 User.objects.create_superuser(username, email, password) 등의 정보를 받는다
+
+## static settings
+
+- django-storages 설치.
+- 문서 보고 변수들 설정.
+- settings.py에서 변수들 설정하고, static, media url도 설정해주자.
