@@ -345,7 +345,7 @@ def github_login(request):
 
     auth_id = os.environ.get("GITHUB_AUTH_ID")
 
-    callback = f'http://127.0.0.1:8000{reverse_lazy("users:github_callback")}'
+    callback = f'{os.environ.get("SITE_URL")}{reverse_lazy("users:github_callback")}'
     auth_to = os.environ.get("GITHUB_REDIRECT")
     scope = "read:user"  # only read github users profil.
 
@@ -362,7 +362,7 @@ def github_callback(request):
             auth_id = os.environ.get("GITHUB_AUTH_ID")
             auth_secret = os.environ.get("GITHUB_AUTH_SECRET")
             auth_to = os.environ.get("GITHUB_POST_URL")
-            callback = f'http://127.0.0.1:8000{reverse_lazy("users:github_callback")}'
+            callback = f'{os.environ.get("SITE_URL")}{reverse_lazy("users:github_callback")}'
             receive = requests.post(
                 auth_to,
                 data={
@@ -469,7 +469,7 @@ class KakaoException(Exception):
 def kakao_login(request):
     auth_id = os.environ.get("KAKAO_AUTH_ID")
     auth_host = os.environ.get("KAKAO_AUTH_HOST")
-    redirect_uri = "http://127.0.0.1:8000" + reverse("users:kakao_callback")
+    redirect_uri = os.environ.get("SITE_URL") + reverse("users:kakao_callback")
 
     redirect_to = (
         f"{auth_host}/oauth/authorize?client_id={auth_id}&redirect_uri={redirect_uri}"
@@ -486,8 +486,7 @@ def kakao_callback(request):
             # Getting auth_code success
             auth_host = os.environ.get("KAKAO_AUTH_HOST") + "/oauth/token"
             auth_id = os.environ.get("KAKAO_AUTH_ID")
-            redirect_uri = "http://127.0.0.1:8000" + \
-                reverse("users:kakao_callback")
+            redirect_uri = os.environ.get("SITE_URL") + reverse("users:kakao_callback")
             payloads = {
                 "grant_type": "authorization_code",
                 "client_id": auth_id,
