@@ -1,4 +1,5 @@
 import uuid
+import os
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -75,14 +76,14 @@ class User(AbstractUser):
             self.email_secret = uuid.uuid4().hex[:20]
             self.save()
             # using template file instead.
-            link = f"http://127.0.0.1:8000/users/verify/{self.email_secret}"
+            link = f"{os.environ.get('SITE_URL')}/users/verify/{self.email_secret}"
             html_msg = render_to_string(
                 "mail_body.html", context={"link": link})
             # html_msg = f'<p>This is just verficiatino mail and do not reply.</p><p>To verify click <a href="http://127.0.0.1:8000/users/{self.email_secret}">here</a></p>'
             send_mail(
                 _("Hello, from DjangoBnB, account verification mail!"),
                 strip_tags(html_msg),
-                "pleed0215@hotmail.com",
+                "pleed0215@gmail.com",
                 [self.email, ],
                 fail_silently=False,
                 html_message=html_msg,
