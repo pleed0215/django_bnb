@@ -4,6 +4,7 @@ from django.contrib.admin.utils import flatten
 from django_seed import Seed
 from rooms import models as rooms_models
 from users.models import User
+from config.settings import MEDIA_ROOT
 
 
 class Command(BaseCommand):
@@ -52,7 +53,7 @@ class Command(BaseCommand):
                 rooms_models.Photo.objects.create(
                     caption=seeder.faker.sentence(),
                     room=room,
-                    image=f"/uploads/room_photos/{random.randint(1,31)}.webp",
+                    image=f"/room_photos/{random.randint(1,31)}.webp",
                 )
             for a in amenities:
                 fifty_fifty = random.randint(0, 100)
