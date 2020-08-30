@@ -180,8 +180,8 @@ if not DEBUG:
     AWS_BUCKET_ACL = "public-read"
     AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
-    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
-    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+    STATIC_ROOT = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+    MEDIA_ROOT = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
     
 
 # Modifying user model
