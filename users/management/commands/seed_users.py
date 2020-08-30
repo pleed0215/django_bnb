@@ -17,11 +17,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         seeder = Seed.seeder()
         number = options.get("number", 1)
-        seeder.add_entity(User, number, {"is_staff": False, "is_superuser": False,})
+        seeder.add_entity(
+            User, number, {"is_staff": False, "is_superuser": False, })
         seeder.execute()
         self.stdout.write(
             self.style.SUCCESS(
                 f"{number} user{number>1 and 's' or ''} that are no admin or staff succefully made."
             )
         )
-
