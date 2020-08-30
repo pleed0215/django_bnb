@@ -171,17 +171,16 @@ if not DEBUG:
     # Setting django-storages
     #DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     #STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    DEFAULT_FILE_STORAGE = 'config.custom_storages.StaticStorage'
-    STATICFILES_STORAGE = 'config.custom_storages.UploadsStorage'
+    DEFAULT_FILE_STORAGE = 'config.custom_storages.UploadsStorage'
+    STATICFILES_STORAGE = 'config.custom_storages.StaticStorage'
     AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_ID")
     AWS_SECRET_ACCESS_KEY =os.environ.get("AWS_ACCESS_SECRET")
     AWS_STORAGE_BUCKET_NAME = "djangobnb-clone-storage"
     AWS_AUTO_CREATE_BUCKET = True
     AWS_BUCKET_ACL = "public-read"
     AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
-    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
-    STATIC_ROOT = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
-    MEDIA_ROOT = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"    
+    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static"    
     
 
 # Modifying user model
