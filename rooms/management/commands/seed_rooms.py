@@ -52,7 +52,7 @@ class Command(BaseCommand):
                 rooms_models.Photo.objects.create(
                     caption=seeder.faker.sentence(),
                     room=room,
-                    image=f"/room_photos/{random.randint(1,31)}.webp",
+                    image=f"/uploads/room_photos/{random.randint(1,31)}.webp",
                 )
             for a in amenities:
                 fifty_fifty = random.randint(0, 100)
