@@ -2,5 +2,5 @@
 <div class="w-full h-full bg-gray-300 rounded-full flex justify-center items-center bg-cover bg-center bg-no-repeat"
     {% if profile.avatar %} style="background-image: url('{{profile.avatar.url}}')">{% else %}>
     <span
-        class="text-5xl text-gray-500">{% filter capfirst|first %}{{profile.first_name}}{% endfilter %}</span>{% endif %}
+        class="text-3xl text-gray-500">{% filter capfirst|first %}{{profile.first_name}}{% endfilter %}</span>{% endif %}
 </div>
